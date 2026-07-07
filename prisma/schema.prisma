@@ -1,0 +1,50 @@
+// Prisma schema for Shiftwork.
+//
+// Local dev uses SQLite (no server to install). To move to Postgres for
+// production, change `provider` below to "postgresql" and point
+// DATABASE_URL at your instance — no other code changes are required
+// because every query in this app goes through Prisma's query builder
+// (never raw SQL), so there is nothing engine-specific to rewrite.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  // provider = "postgresql" // <- flip this for production
+  url      = env("DATABASE_URL")
+}
+
+// Mirrors the Clerk user. We never store passwords, tokens, or session data
+// ourselves — Clerk owns all of that. This table exists only so simulation
+// runs can be linked to a stable local id via a foreign key.
+model User {
+  id        String   @id // Clerk user id (e.g. "user_2abc..."), never client-generated
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  runs SimulationRun[]
+}
+
+// One completed (or in-progress-and-abandoned) playthrough.
+// `decisions` stores the ordered list of choice ids the player made, so a
+// run can be replayed/audited without trusting anything the client sends
+// back later.
+model SimulationRun {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  career        String   @default("trauma_surgeon")
+  difficulty    String   @default("normal")
+  endingKey     String
+  finalStress   Int
+  finalEnergy   Int
+  finalRep      Int
+  finalMoney    Int
+  patientsSaved Int
+  decisions     String
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+}
