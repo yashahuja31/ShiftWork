@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-ink text-ivory font-body antialiased;
+}
+
+/* Always-visible keyboard focus ring — never remove this for aesthetics. */
+:focus-visible {
+  outline: 2px solid theme('colors.vital');
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respect the user's OS-level motion preference: the ECG line still shows
+   (it's informational, not decorative) but stops sweeping, and page
+   transitions become instant instead of animated. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::selection {
+  background: theme('colors.vital');
+  color: theme('colors.ink');
+}
