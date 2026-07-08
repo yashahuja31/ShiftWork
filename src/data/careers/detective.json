@@ -1,0 +1,351 @@
+{
+  "id": "detective",
+  "title": "One Case, Whatever It Takes",
+  "emoji": "🕵️",
+  "tagline": "A body at dawn, a nervous witness, and a captain who wants this closed by tonight.",
+  "highlightLabel": "Leads cracked",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:10 AM",
+      "text": "Your phone buzzes before your alarm does. \"Body found near the river. Captain wants you on it personally.\" You're awake before you've decided to be.",
+      "choices": [
+        {
+          "id": "coffee_first",
+          "text": "Make coffee before you do anything else",
+          "next": "crime_scene",
+          "effects": {
+            "energy": 10,
+            "stress": -4
+          }
+        },
+        {
+          "id": "out_the_door",
+          "text": "Grab your badge and go straight there",
+          "next": "crime_scene",
+          "effects": {
+            "rep": 5,
+            "energy": -3
+          }
+        }
+      ]
+    },
+    "crime_scene": {
+      "time": "05:50 AM",
+      "text": "Tape's already up. Uniforms are keeping a small crowd back. The scene tells a story if you're patient enough to read it — and impatient enough not to lose the morning to it.",
+      "choices": [
+        {
+          "id": "process_methodically",
+          "text": "Process every inch of the scene yourself before anyone else touches it",
+          "next": "witness_interview",
+          "effects": {
+            "energy": -8,
+            "rep": 10,
+            "stress": 4
+          }
+        },
+        {
+          "id": "quick_read",
+          "text": "Get the fast read and let forensics handle the rest",
+          "next": "witness_interview",
+          "effects": {
+            "energy": -2,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "witness_interview": {
+      "time": "06:40 AM",
+      "text": "A jogger found the scene and is still shaking. She saw something — you can tell — but she keeps stopping herself before she says it.",
+      "choices": [
+        {
+          "id": "gentle_approach",
+          "text": "Slow down, build trust, let her get there on her own time",
+          "next": "captain_pressure",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "energy": -4
+          }
+        },
+        {
+          "id": "press_witness",
+          "text": "Push — you don't have time for slow this morning",
+          "next": "captain_pressure",
+          "effects": {
+            "rep": -6,
+            "stress": 6
+          }
+        }
+      ]
+    },
+    "captain_pressure": {
+      "time": "08:00 AM",
+      "text": "The captain calls. \"Press is already asking questions. I need something by end of day.\" You have a partial description and a theory, not a suspect.",
+      "choices": [
+        {
+          "id": "promise_update",
+          "text": "Promise a solid update by evening, no more",
+          "next": "evidence_lab",
+          "effects": {
+            "stress": 4,
+            "rep": 4
+          }
+        },
+        {
+          "id": "push_back",
+          "text": "Push back — this needs the time it needs",
+          "next": "evidence_lab",
+          "effects": {
+            "stress": -4,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "evidence_lab": {
+      "time": "10:30 AM",
+      "text": "Forensics comes back faster than expected: a partial print and fiber evidence pointing at someone with a record two blocks away. It's thin, but it's something.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Go talk to him",
+          "next": "chase_scene",
+          "effects": {}
+        }
+      ]
+    },
+    "chase_scene": {
+      "time": "11:15 AM",
+      "text": "The moment he sees your badge, he bolts down the fire escape. You're not as young as you used to be, and neither is he.",
+      "choices": [
+        {
+          "id": "pursue_alone",
+          "text": "Chase him yourself, right now",
+          "next": "interrogation_setup",
+          "effects": {
+            "stress": 10,
+            "rep": 8,
+            "energy": -12
+          }
+        },
+        {
+          "id": "call_backup",
+          "text": "Call it in and let backup box him in",
+          "next": "interrogation_setup",
+          "effects": {
+            "stress": -4,
+            "rep": -3,
+            "energy": -2
+          }
+        }
+      ]
+    },
+    "interrogation_setup": {
+      "time": "12:30 PM",
+      "text": "He's in the box now, across the table, arms crossed. His story has holes in it. You can feel he's close to talking.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin the interview",
+          "next": "interrogation_room",
+          "effects": {}
+        }
+      ]
+    },
+    "interrogation_room": {
+      "time": "12:45 PM",
+      "text": "\"I know you were there,\" you say. He shifts, cracks just slightly — then asks for a lawyer. This is the moment that decides whether this case holds up in court, or falls apart in it.",
+      "choices": [
+        {
+          "id": "press_hard",
+          "text": "Keep pressing before the lawyer arrives",
+          "next": "interrogation_outcome_press",
+          "effects": {
+            "stress": 14,
+            "rep": -10
+          }
+        },
+        {
+          "id": "offer_deal",
+          "text": "Offer a deal for cooperation",
+          "next": "interrogation_outcome_deal",
+          "effects": {
+            "stress": 8,
+            "rep": 4
+          }
+        },
+        {
+          "id": "wait_for_lawyer",
+          "text": "Stop and wait for his lawyer, by the book",
+          "next": "interrogation_outcome_lawyer",
+          "effects": {
+            "stress": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "let_him_go",
+          "text": "You don't have enough — let him go for now",
+          "next": "interrogation_outcome_release",
+          "effects": {
+            "stress": -8,
+            "rep": -12
+          }
+        }
+      ]
+    },
+    "interrogation_outcome_press": {
+      "time": "01:10 PM",
+      "text": "He talks. It's not pretty, and the DA's office is going to have questions about how you got it — but you have a confession on record.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Write it up",
+          "next": "media_pressure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "interrogation_outcome_deal": {
+      "time": "01:15 PM",
+      "text": "He gives you a name in exchange for a word to the DA. It's not the ending you wanted, but it's a lead that holds up.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Write it up",
+          "next": "media_pressure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "interrogation_outcome_lawyer": {
+      "time": "01:40 PM",
+      "text": "The lawyer arrives, and with them, a clean, unimpeachable confession twenty minutes later — the kind that survives every appeal.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Write it up",
+          "next": "media_pressure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "interrogation_outcome_release": {
+      "time": "01:20 PM",
+      "text": "You let him walk. It's the right call on the evidence you actually have — and it means the case is still open tonight.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back to the evidence",
+          "next": "media_pressure",
+          "effects": {}
+        }
+      ]
+    },
+    "media_pressure": {
+      "time": "03:00 PM",
+      "text": "A reporter catches you on the courthouse steps. \"Any comment on the river case?\" Behind her, three more are walking over.",
+      "choices": [
+        {
+          "id": "no_comment",
+          "text": "\"No comment\" and keep walking",
+          "next": "captain_review",
+          "effects": {
+            "stress": -3,
+            "rep": 3
+          }
+        },
+        {
+          "id": "share_details",
+          "text": "Give her something to work with, off the record",
+          "next": "captain_review",
+          "effects": {
+            "rep": -8,
+            "stress": 5
+          }
+        }
+      ]
+    },
+    "captain_review": {
+      "time": "04:30 PM",
+      "text": "The captain wants the full rundown before it goes anywhere near a press release.",
+      "choices": [
+        {
+          "id": "full_briefing",
+          "text": "Walk through every detail, including what went sideways",
+          "next": "paperwork",
+          "effects": {
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "highlight_reel",
+          "text": "Give the clean version that makes the department look good",
+          "next": "paperwork",
+          "effects": {
+            "rep": -5,
+            "energy": 4
+          }
+        }
+      ]
+    },
+    "paperwork": {
+      "time": "06:00 PM",
+      "text": "Every case lives or dies on the paperwork eventually. Tonight's version is thick.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "File it properly",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6,
+            "rep": 6
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "07:30 PM",
+      "text": "The night detective picks up the case file. Whatever happens next, it isn't yours until tomorrow.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Case Closed, Clean",
+      "blurb": "It'll hold up in front of any jury, and everyone from the captain to the DA knows it. This is the case people remember your name for."
+    },
+    "steady_hand": {
+      "title": "Solved, Not Spectacular",
+      "blurb": "No headlines, no controversy. Just careful work that got the right person off the street."
+    },
+    "ordinary_day": {
+      "title": "One More File",
+      "blurb": "A case, worked, filed, closed. Tomorrow there's another one exactly like it."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You closed it, but you can barely remember driving home. This pace has a cost, and it's coming due."
+    },
+    "written_up": {
+      "title": "Internal Review",
+      "blurb": "Something about how this case was handled is going in front of a review board. The case might hold. Your process is in question."
+    }
+  }
+}

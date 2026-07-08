@@ -2,20 +2,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { UserButton } from '@clerk/nextjs';
 import { CareerCard } from '@/components/CareerCard';
-
-const CAREERS = [
-  {
-    emoji: '🩺',
-    title: 'Trauma Surgeon',
-    tagline: 'Three patients, one critical, sixteen hours to get it right.',
-    href: '/simulation',
-  },
-  { emoji: '🧑‍🚀', title: 'Astronaut', tagline: 'A full day aboard the station.', locked: true },
-  { emoji: '🕵️', title: 'Detective', tagline: 'One case, whatever it takes.', locked: true },
-  { emoji: '🧑‍🍳', title: 'Michelin Chef', tagline: 'Service starts at 5pm sharp.', locked: true },
-  { emoji: '🧑‍✈️', title: 'Pilot', tagline: 'Pre-flight to touchdown.', locked: true },
-  { emoji: '📷', title: 'Wildlife Photographer', tagline: 'The shot is never guaranteed.', locked: true },
-];
+import { CAREER_GRAPHS } from '@/lib/simulationEngine';
 
 export default async function CareersPage() {
   // Defense in depth: proxy.ts already gates this route, but this page
@@ -25,6 +12,11 @@ export default async function CareersPage() {
   if (!userId) {
     redirect('/sign-in');
   }
+
+  // Generated straight from the engine's career registry — adding a new
+  // career JSON file automatically puts an unlocked card here. There is no
+  // separate hardcoded list to remember to update.
+  const careers = Object.values(CAREER_GRAPHS);
 
   return (
     <main className="min-h-screen px-6 sm:px-10 py-10">
@@ -37,8 +29,14 @@ export default async function CareersPage() {
       </header>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl">
-        {CAREERS.map((career) => (
-          <CareerCard key={career.title} {...career} />
+        {careers.map((career) => (
+          <CareerCard
+            key={career.id}
+            emoji={career.emoji}
+            title={career.title}
+            tagline={career.tagline}
+            href={`/simulation/${career.id}`}
+          />
         ))}
       </div>
     </main>

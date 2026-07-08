@@ -1,0 +1,405 @@
+{
+  "id": "trauma_surgeon",
+  "title": "A Day as a Trauma Surgeon",
+  "emoji": "🩺",
+  "tagline": "Three patients, one critical, sixteen hours to get it right.",
+  "highlightLabel": "Patients saved",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "04:45 AM",
+      "text": "Your alarm blares. Somewhere in the dark, your pager is already glowing — a text from the night resident: \"Busy one. See you at handoff.\" Today you're covering three cases. One of them is critical.",
+      "choices": [
+        {
+          "id": "snooze",
+          "text": "Hit snooze for 15 more minutes",
+          "next": "late_start",
+          "effects": {
+            "energy": 8,
+            "stress": 6,
+            "rep": -4
+          }
+        },
+        {
+          "id": "up_now",
+          "text": "Get up immediately and prep your bag",
+          "next": "commute",
+          "effects": {
+            "energy": -4,
+            "stress": -2,
+            "rep": 4
+          }
+        }
+      ]
+    },
+    "late_start": {
+      "time": "05:20 AM",
+      "text": "You're moving fast now, coffee in one hand, badge in the other. You'll make it — barely.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep moving",
+          "next": "commute",
+          "effects": {}
+        }
+      ]
+    },
+    "commute": {
+      "time": "05:40 AM",
+      "text": "Empty roads. The hospital lights up ahead like a lighthouse. You have a few minutes to spare before handoff.",
+      "choices": [
+        {
+          "id": "coffee_stop",
+          "text": "Stop for real coffee, not the break-room sludge",
+          "next": "arrive_hospital",
+          "effects": {
+            "energy": 10,
+            "stress": -6,
+            "money": -6
+          }
+        },
+        {
+          "id": "straight_in",
+          "text": "Skip it and go straight in early",
+          "next": "arrive_hospital",
+          "effects": {
+            "rep": 5,
+            "energy": -3
+          }
+        }
+      ]
+    },
+    "arrive_hospital": {
+      "time": "06:00 AM",
+      "text": "Night shift hands you the board: a hernia repair, a gallbladder, and a motorcycle-accident admit with internal bleeding they've stabilized overnight. That last one is yours first.",
+      "choices": [
+        {
+          "id": "read_full_chart",
+          "text": "Read the full overnight chart before rounds",
+          "next": "morning_rounds",
+          "effects": {
+            "energy": -6,
+            "rep": 8,
+            "stress": 3
+          }
+        },
+        {
+          "id": "quick_briefing",
+          "text": "Get the two-minute verbal summary and move on",
+          "next": "morning_rounds",
+          "effects": {
+            "energy": -2,
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "morning_rounds": {
+      "time": "06:45 AM",
+      "text": "You check in on the motorcycle patient, stable but pale, and the two elective cases waiting downstairs. The board says you're in OR 3 by 08:30.",
+      "choices": [
+        {
+          "id": "reassure_patient",
+          "text": "Sit with the trauma patient for a minute before scrubbing in",
+          "next": "or_prep",
+          "effects": {
+            "stress": -4,
+            "rep": 6,
+            "energy": -3
+          }
+        },
+        {
+          "id": "head_to_or",
+          "text": "Head straight to the OR to prep",
+          "next": "or_prep",
+          "effects": {
+            "energy": 2
+          }
+        }
+      ]
+    },
+    "or_prep": {
+      "time": "08:15 AM",
+      "text": "Gloves on, mask up. The room is cold and quiet, the way it always is right before it isn't. Your resident checks the monitors one last time.",
+      "choices": [
+        {
+          "id": "begin",
+          "text": "Begin the procedure",
+          "next": "surgery_start",
+          "effects": {}
+        }
+      ]
+    },
+    "surgery_start": {
+      "time": "09:15 AM",
+      "text": "Forty minutes in, the nurse's voice cuts through the room: \"BP's dropping — 88 over 52 and falling.\" Every second you spend deciding is a second the patient doesn't have.",
+      "choices": [
+        {
+          "id": "continue_surgery",
+          "text": "Continue — stopping now is riskier than pushing through",
+          "next": "surgery_outcome_continue",
+          "effects": {
+            "stress": 18,
+            "rep": -6
+          }
+        },
+        {
+          "id": "stabilize_bp",
+          "text": "Pause and stabilize BP yourself before continuing",
+          "next": "surgery_outcome_stabilize",
+          "effects": {
+            "stress": 10,
+            "energy": -10,
+            "rep": 10
+          }
+        },
+        {
+          "id": "ask_anesthesiologist",
+          "text": "Ask the anesthesiologist to manage it while you keep working",
+          "next": "surgery_outcome_team",
+          "effects": {
+            "stress": 6,
+            "rep": 6
+          }
+        },
+        {
+          "id": "call_senior",
+          "text": "Call in the senior surgeon on backup",
+          "next": "surgery_outcome_senior",
+          "effects": {
+            "stress": -4,
+            "rep": -8,
+            "energy": -4
+          }
+        }
+      ]
+    },
+    "surgery_outcome_continue": {
+      "time": "09:40 AM",
+      "text": "You push through. It's close — closer than you'd like — but the bleeding was where you expected it, and the numbers climb back on their own right as you close. It worked. This time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish up and scrub out",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "surgery_outcome_stabilize": {
+      "time": "09:50 AM",
+      "text": "You take the extra six minutes. The room tenses, but the numbers steady, and when you go back in, everything is exactly where you left it. Textbook.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish up and scrub out",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "surgery_outcome_team": {
+      "time": "09:45 AM",
+      "text": "The anesthesiologist works the numbers while your hands stay exactly where they need to be. It's the kind of moment that reminds you why you trust this team.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish up and scrub out",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "surgery_outcome_senior": {
+      "time": "10:05 AM",
+      "text": "Backup arrives in four minutes flat. Between the two of you, the case wraps clean — but you catch the look the resident gives you. Some of them will remember you called for help on a routine drop.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish up and scrub out",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "lunch_break": {
+      "time": "01:00 PM",
+      "text": "Two cases down, one to go. You have maybe twenty real minutes before the pager goes off again.",
+      "choices": [
+        {
+          "id": "eat_properly",
+          "text": "Sit down and actually eat",
+          "next": "afternoon_call",
+          "effects": {
+            "energy": 14,
+            "stress": -10,
+            "money": -10
+          }
+        },
+        {
+          "id": "skip_lunch",
+          "text": "Skip it and get ahead on paperwork",
+          "next": "afternoon_call",
+          "effects": {
+            "rep": 5,
+            "energy": -12,
+            "stress": 8
+          }
+        }
+      ]
+    },
+    "afternoon_call": {
+      "time": "02:30 PM",
+      "text": "Trauma page: multi-car accident inbound, ETA six minutes. Two patients, one described as \"unstable.\" Your third scheduled case will have to wait.",
+      "choices": [
+        {
+          "id": "lead_team",
+          "text": "Take point on the unstable patient yourself",
+          "next": "equipment_failure",
+          "effects": {
+            "rep": 10,
+            "stress": 14,
+            "energy": -10
+          }
+        },
+        {
+          "id": "delegate",
+          "text": "Assign your resident to lead under your supervision",
+          "next": "equipment_failure",
+          "effects": {
+            "stress": -5,
+            "rep": -4,
+            "energy": -3
+          }
+        }
+      ]
+    },
+    "equipment_failure": {
+      "time": "04:00 PM",
+      "text": "Mid-assessment, the portable monitor glitches and drops the readout entirely. The tech line is backed up for another eight minutes.",
+      "choices": [
+        {
+          "id": "manual_backup",
+          "text": "Switch to manual vitals and keep going",
+          "next": "family_conversation",
+          "effects": {
+            "stress": 10,
+            "rep": 14,
+            "energy": -8
+          }
+        },
+        {
+          "id": "wait_for_tech",
+          "text": "Hold the assessment and wait for a working unit",
+          "next": "family_conversation",
+          "effects": {
+            "stress": -6,
+            "rep": -9
+          }
+        }
+      ]
+    },
+    "family_conversation": {
+      "time": "05:30 PM",
+      "text": "The patient's family arrives, frightened and talking over each other in the hallway. Someone has to walk them through what happens next.",
+      "choices": [
+        {
+          "id": "honest_direct",
+          "text": "Be direct about the risks, plainly and without softening it",
+          "next": "evening_rounds",
+          "effects": {
+            "rep": 8,
+            "stress": 5
+          }
+        },
+        {
+          "id": "gentle_hopeful",
+          "text": "Focus on what's going right and keep the tone hopeful",
+          "next": "evening_rounds",
+          "effects": {
+            "stress": -5,
+            "rep": 2
+          }
+        }
+      ]
+    },
+    "evening_rounds": {
+      "time": "07:00 PM",
+      "text": "One last pass through all three patients. Vitals hold. The hallway is quieter now than it's been all day.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to handoff",
+          "next": "handoff_night_shift",
+          "effects": {}
+        }
+      ]
+    },
+    "handoff_night_shift": {
+      "time": "08:00 PM",
+      "text": "The night resident is waiting with a coffee and a fresh chart. Fourteen hours in, this is the last thing standing between you and the parking lot.",
+      "choices": [
+        {
+          "id": "thorough_handoff",
+          "text": "Walk through every case in full detail",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -8
+          }
+        },
+        {
+          "id": "quick_summary",
+          "text": "Give the short version and trust them to ask questions",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "08:15 PM",
+      "text": "The board is clear. Whatever today was, it's over now.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Clock out",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Hero of the Shift",
+      "blurb": "Every call held. The department is already talking about it — calmly, confidently, the way you like it."
+    },
+    "steady_hand": {
+      "title": "Steady Hand",
+      "blurb": "Nothing flashy. Nothing missed. The kind of day that quietly builds a reputation."
+    },
+    "ordinary_day": {
+      "title": "Ordinary Day",
+      "blurb": "A normal, forgettable Tuesday in trauma surgery — which, in this job, is its own kind of win."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it to the parking lot, but there is nothing left in the tank. Tomorrow needs to look different."
+    },
+    "written_up": {
+      "title": "Under Review",
+      "blurb": "A few calls today are going to come up in tomorrow's case review. Nobody was hurt — but questions are coming."
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "id": "astronaut",
+  "title": "A Day Aboard the Station",
+  "emoji": "🧑‍🚀",
+  "tagline": "Three hundred miles up, a full EVA on the schedule, and no room for error.",
+  "highlightLabel": "Objectives met",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 ship time",
+      "text": "The cabin lights fade up slowly, no alarm needed at this altitude — your body just knows. Outside the window, sunrise number one of sixteen today. Mission control's first message is already waiting: today's EVA is confirmed.",
+      "choices": [
+        {
+          "id": "quick_stretch",
+          "text": "Take a few minutes to stretch and orient before anything else",
+          "next": "system_check",
+          "effects": {
+            "energy": 8,
+            "stress": -4
+          }
+        },
+        {
+          "id": "dive_into_tasks",
+          "text": "Get straight into the task list",
+          "next": "system_check",
+          "effects": {
+            "rep": 4,
+            "energy": -4
+          }
+        }
+      ]
+    },
+    "system_check": {
+      "time": "05:50 ship time",
+      "text": "Overnight telemetry is in: life support nominal, one solar array reading slightly off-angle. Nothing urgent, but worth a look.",
+      "choices": [
+        {
+          "id": "full_diagnostic",
+          "text": "Run a full diagnostic on the array before breakfast",
+          "next": "morning_briefing",
+          "effects": {
+            "energy": -6,
+            "rep": 8,
+            "stress": 3
+          }
+        },
+        {
+          "id": "quick_glance",
+          "text": "Note it in the log and move on",
+          "next": "morning_briefing",
+          "effects": {
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "morning_briefing": {
+      "time": "06:30 ship time",
+      "text": "Mission control's voice crackles in: today's EVA is a repair on a coolant line, plus a materials experiment with a narrow window. \"Suit up by 09:00,\" they say. \"We'd like this done before the next comms blackout.\"",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Copy that",
+          "next": "exercise_block",
+          "effects": {}
+        }
+      ]
+    },
+    "exercise_block": {
+      "time": "07:00 ship time",
+      "text": "Two hours on the resistance machine, mandatory in microgravity or your bones pay for it later. Today it feels like it's taking forever.",
+      "choices": [
+        {
+          "id": "full_session",
+          "text": "Push through the entire two hours properly",
+          "next": "eva_prep",
+          "effects": {
+            "energy": -8,
+            "stress": -6,
+            "rep": 5
+          }
+        },
+        {
+          "id": "cut_it_short",
+          "text": "Cut it short to bank time for prep",
+          "next": "eva_prep",
+          "effects": {
+            "energy": 5,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "eva_prep": {
+      "time": "08:30 ship time",
+      "text": "Suit-up begins. Your crewmate hands you the checklist — sixty items, and every one of them exists because someone, once, skipped it.",
+      "choices": [
+        {
+          "id": "thorough_check",
+          "text": "Go through every item yourself, even the ones your crewmate already checked",
+          "next": "eva_start",
+          "effects": {
+            "energy": -5,
+            "rep": 8,
+            "stress": 4
+          }
+        },
+        {
+          "id": "trust_yesterday",
+          "text": "Trust yesterday's inspection and move quickly",
+          "next": "eva_start",
+          "effects": {
+            "energy": 3,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "eva_start": {
+      "time": "09:15 ship time",
+      "text": "The airlock cycles and Earth swings into view, enormous and silent. Forty minutes into the coolant repair, tethered and focused, your suit's CO2 scrubber alarm chirps once, then again.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Check the readout",
+          "next": "eva_alarm",
+          "effects": {}
+        }
+      ]
+    },
+    "eva_alarm": {
+      "time": "10:05 ship time",
+      "text": "\"CO2 levels climbing,\" your suit computer reports flatly. \"Estimated eighteen minutes to threshold.\" You're two bolts from finishing the repair. Every second you spend deciding is a second the scrubber doesn't have.",
+      "choices": [
+        {
+          "id": "finish_repair",
+          "text": "Finish the repair first — you're almost done",
+          "next": "eva_outcome_finish",
+          "effects": {
+            "stress": 18,
+            "rep": -6
+          }
+        },
+        {
+          "id": "switch_backup",
+          "text": "Switch to the backup scrubber cartridge and keep working",
+          "next": "eva_outcome_backup",
+          "effects": {
+            "stress": 10,
+            "energy": -10,
+            "rep": 10
+          }
+        },
+        {
+          "id": "radio_control",
+          "text": "Radio mission control and let them walk you through it",
+          "next": "eva_outcome_radio",
+          "effects": {
+            "stress": 6,
+            "rep": 6
+          }
+        },
+        {
+          "id": "abort_airlock",
+          "text": "Abort the repair and head straight back to the airlock",
+          "next": "eva_outcome_abort",
+          "effects": {
+            "stress": -4,
+            "rep": -8,
+            "energy": -4
+          }
+        }
+      ]
+    },
+    "eva_outcome_finish": {
+      "time": "10:20 ship time",
+      "text": "You finish with your ears ringing and the alarm blaring the whole time. The repair holds. Mission control's silence on the channel says more than a reprimand would.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back inside",
+          "next": "post_eva",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "eva_outcome_backup": {
+      "time": "10:25 ship time",
+      "text": "The backup cartridge seats with a click and the numbers start falling almost immediately. You finish the repair with room to breathe — literally.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back inside",
+          "next": "post_eva",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "eva_outcome_radio": {
+      "time": "10:30 ship time",
+      "text": "Ground talks you through a scrubber reset in real time, calm and precise. It works. It's exactly what the channel is for, and everyone on it knows it.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back inside",
+          "next": "post_eva",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "eva_outcome_abort": {
+      "time": "10:35 ship time",
+      "text": "You cycle back through the airlock with the repair unfinished. Safe, breathing easy, and aware that tomorrow's EVA schedule just got a new line item.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get out of the suit",
+          "next": "post_eva",
+          "effects": {}
+        }
+      ]
+    },
+    "post_eva": {
+      "time": "11:30 ship time",
+      "text": "Suit off, water first, then the debrief. Ground wants a full report on the scrubber event.",
+      "choices": [
+        {
+          "id": "log_full_report",
+          "text": "Write the full, detailed incident report",
+          "next": "experiment_time",
+          "effects": {
+            "rep": 8,
+            "energy": -6
+          }
+        },
+        {
+          "id": "quick_log",
+          "text": "Log a short summary and move on",
+          "next": "experiment_time",
+          "effects": {
+            "energy": 4,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "experiment_time": {
+      "time": "13:00 ship time",
+      "text": "The materials experiment has a narrow window before the station's orbit puts it in shadow. You're behind schedule after the EVA.",
+      "choices": [
+        {
+          "id": "prioritize_experiment",
+          "text": "Push to get it done in the window",
+          "next": "comms_window",
+          "effects": {
+            "rep": 8,
+            "stress": 8
+          }
+        },
+        {
+          "id": "prioritize_rest",
+          "text": "Let it slip to tomorrow and rest",
+          "next": "comms_window",
+          "effects": {
+            "energy": 10,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "comms_window": {
+      "time": "15:30 ship time",
+      "text": "Your scheduled call home comes up on the manifest. Ten minutes, maybe fifteen if you're efficient with everything else.",
+      "choices": [
+        {
+          "id": "full_call",
+          "text": "Take the full call, whatever else waits",
+          "next": "equipment_glitch",
+          "effects": {
+            "stress": -8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "short_call",
+          "text": "Keep it short to get back to the task list",
+          "next": "equipment_glitch",
+          "effects": {
+            "rep": 4,
+            "stress": 3
+          }
+        }
+      ]
+    },
+    "equipment_glitch": {
+      "time": "17:00 ship time",
+      "text": "A cabin-wide CO2 sensor throws a fault code — probably a sensor glitch, but \"probably\" isn't a word anyone likes hearing about air quality.",
+      "choices": [
+        {
+          "id": "manual_override",
+          "text": "Manually verify air quality yourself before trusting the sensor",
+          "next": "dinner_prep",
+          "effects": {
+            "stress": 10,
+            "rep": 12,
+            "energy": -8
+          }
+        },
+        {
+          "id": "wait_for_ground",
+          "text": "Wait for ground control to confirm it's a false alarm",
+          "next": "dinner_prep",
+          "effects": {
+            "stress": -5,
+            "rep": -8
+          }
+        }
+      ]
+    },
+    "dinner_prep": {
+      "time": "19:00 ship time",
+      "text": "Rehydrated stew, again, but the crew's gathered around the galley table — as much as anyone gathers around anything in zero-g.",
+      "choices": [
+        {
+          "id": "eat_with_crew",
+          "text": "Eat with the crew and decompress",
+          "next": "sleep_prep",
+          "effects": {
+            "stress": -8,
+            "energy": 8
+          }
+        },
+        {
+          "id": "eat_alone",
+          "text": "Eat quickly at your station and keep working",
+          "next": "sleep_prep",
+          "effects": {
+            "rep": 3,
+            "stress": 4
+          }
+        }
+      ]
+    },
+    "sleep_prep": {
+      "time": "21:00 ship time",
+      "text": "Log time. Ground wants a handoff summary before the next shift's morning briefing.",
+      "choices": [
+        {
+          "id": "thorough_handoff",
+          "text": "Write a complete, detailed handoff",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "quick_handoff",
+          "text": "Keep it brief — tomorrow's crew can ask if they need to",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "21:30 ship time",
+      "text": "Lights dim for the sleep period. Sixteen sunrises today, and you saw maybe three of them properly.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Strap in and sleep",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Textbook Orbit",
+      "blurb": "Every system nominal, every objective met. Ground control's sign-off message tonight has an exclamation point in it, which from them, means everything."
+    },
+    "steady_hand": {
+      "title": "Solid Rotation",
+      "blurb": "Nothing dramatic, nothing missed. The kind of day that makes you exactly the crewmate everyone wants on the next mission."
+    },
+    "ordinary_day": {
+      "title": "Just Another Orbit",
+      "blurb": "Sixteen sunrises, one repair, one experiment, one very long checklist. Tomorrow brings sixteen more."
+    },
+    "burned_out": {
+      "title": "Redlining",
+      "blurb": "You made it to sleep period, but your vitals log is going to raise an eyebrow at mission control tomorrow. Pace yourself."
+    },
+    "written_up": {
+      "title": "Debrief Pending",
+      "blurb": "A few calls today are going into tomorrow's mission review. Nobody was hurt — but ground wants a conversation."
+    }
+  }
+}

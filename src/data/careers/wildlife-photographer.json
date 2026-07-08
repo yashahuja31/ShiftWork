@@ -1,0 +1,384 @@
+{
+  "id": "wildlife_photographer",
+  "title": "The Shot Is Never Guaranteed",
+  "emoji": "📷",
+  "tagline": "Ten hours in a hide, one chance at the shot, and an animal that doesn't care about your deadline.",
+  "highlightLabel": "Rare shots captured",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "04:15 AM",
+      "text": "Pitch dark outside the tent. The guide is already up, boiling water for coffee neither of you will fully wake up from. Today's the last full day before the magazine's deadline.",
+      "choices": [
+        {
+          "id": "check_gear_first",
+          "text": "Check every piece of gear before anything else",
+          "next": "trek_to_hide",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "coffee_first",
+          "text": "Coffee first, gear on the move",
+          "next": "trek_to_hide",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "trek_to_hide": {
+      "time": "05:00 AM",
+      "text": "An hour's hike in the dark to reach the hide before the animals start moving. Your guide knows this ground better than the map does.",
+      "choices": [
+        {
+          "id": "follow_guide_pace",
+          "text": "Follow the guide's slower, quieter pace",
+          "next": "waiting_game",
+          "effects": {
+            "energy": -2,
+            "rep": 6,
+            "stress": -3
+          }
+        },
+        {
+          "id": "push_ahead",
+          "text": "Push ahead faster to maximize hide time",
+          "next": "waiting_game",
+          "effects": {
+            "energy": -8,
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "waiting_game": {
+      "time": "06:00 AM",
+      "text": "Settled into the hide, lens through the gap in the blind. Nothing moves for a long time. This is most of the job, and almost none of the job people imagine.",
+      "choices": [
+        {
+          "id": "patient_wait",
+          "text": "Stay perfectly still and wait it out",
+          "next": "gear_malfunction",
+          "effects": {
+            "stress": -6,
+            "energy": -4,
+            "rep": 6
+          }
+        },
+        {
+          "id": "scout_further",
+          "text": "Move to scout a second location",
+          "next": "gear_malfunction",
+          "effects": {
+            "energy": -6,
+            "rep": 3
+          }
+        }
+      ]
+    },
+    "gear_malfunction": {
+      "time": "07:30 AM",
+      "text": "Condensation has fogged the lens at exactly the wrong moment — a family of animals just stepped into frame at the water's edge.",
+      "choices": [
+        {
+          "id": "fix_gear_fast",
+          "text": "Work the lens cloth fast and try to save the shot",
+          "next": "first_sighting",
+          "effects": {
+            "stress": 8,
+            "rep": 6
+          }
+        },
+        {
+          "id": "shoot_with_backup",
+          "text": "Grab the backup camera instead of risking the moment",
+          "next": "first_sighting",
+          "effects": {
+            "stress": -3,
+            "rep": 4
+          }
+        }
+      ]
+    },
+    "first_sighting": {
+      "time": "08:00 AM",
+      "text": "You get a decent frame, nothing extraordinary, but proof the morning wasn't wasted. Your guide's radio crackles quietly — a call from another hide, further upriver.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Listen to the report",
+          "next": "guide_warning",
+          "effects": {}
+        }
+      ]
+    },
+    "guide_warning": {
+      "time": "09:15 AM",
+      "text": "\"There's a big cat working that stretch of river,\" your guide says quietly. \"Could come this way. Could also decide we don't exist. Either way, we stay careful.\"",
+      "choices": [
+        {
+          "id": "reposition_carefully",
+          "text": "Reposition to a safer vantage point with a view of that stretch",
+          "next": "rare_animal_appears",
+          "effects": {
+            "energy": -5,
+            "rep": 6,
+            "stress": 4
+          }
+        },
+        {
+          "id": "hold_position",
+          "text": "Hold your current position and wait",
+          "next": "rare_animal_appears",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ]
+    },
+    "rare_animal_appears": {
+      "time": "10:40 AM",
+      "text": "The cat steps out of the tree line thirty meters closer than expected, mid-hunt, utterly unaware of you — for now. This is the shot every photographer in this business would trade a year for. It's also thirty meters closer than is entirely safe.",
+      "choices": [
+        {
+          "id": "move_closer",
+          "text": "Move quietly closer for a cleaner angle",
+          "next": "photo_outcome_closer",
+          "effects": {
+            "stress": 16,
+            "rep": -6
+          }
+        },
+        {
+          "id": "stay_hidden",
+          "text": "Stay hidden and take the shot you have",
+          "next": "photo_outcome_hidden",
+          "effects": {
+            "stress": -6,
+            "rep": 6
+          }
+        },
+        {
+          "id": "use_drone",
+          "text": "Launch the drone for an aerial angle instead",
+          "next": "photo_outcome_drone",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "abandon_shot",
+          "text": "Abandon the shot and quietly withdraw",
+          "next": "photo_outcome_withdraw",
+          "effects": {
+            "stress": -10,
+            "rep": -10
+          }
+        }
+      ]
+    },
+    "photo_outcome_closer": {
+      "time": "10:55 AM",
+      "text": "You get the frame — impossibly close, impossibly sharp — and the cat never once looks your way. It's the cover shot. It also wasn't the safe call, and your guide's face makes that clear.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Retreat slowly",
+          "next": "weather_turns",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "photo_outcome_hidden": {
+      "time": "10:50 AM",
+      "text": "The shot from the blind is still remarkable — the whole hunt, start to finish, through a clean gap in the brush. Nobody was ever in danger, and the photo doesn't show the difference.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Stay still until it passes",
+          "next": "weather_turns",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "photo_outcome_drone": {
+      "time": "10:58 AM",
+      "text": "The aerial angle is something almost nobody has captured before — the whole hunt from above, context and drama neither of the ground angles could show.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Bring the drone back in",
+          "next": "weather_turns",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "photo_outcome_withdraw": {
+      "time": "10:45 AM",
+      "text": "You lower the camera and back away. The shot is gone. You and your guide both walk out of the reeds exactly as safe as you walked in, which was always the actual point.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back toward camp",
+          "next": "weather_turns",
+          "effects": {}
+        }
+      ]
+    },
+    "weather_turns": {
+      "time": "12:30 PM",
+      "text": "Clouds build fast over the river, the kind of storm that arrives before the forecast does. Your gear bag is only rated for so much rain.",
+      "choices": [
+        {
+          "id": "shelter_gear_first",
+          "text": "Get the gear under cover first, yourself second",
+          "next": "injured_animal",
+          "effects": {
+            "rep": 8,
+            "stress": 4,
+            "energy": -4
+          }
+        },
+        {
+          "id": "shelter_together",
+          "text": "Get everyone and everything under cover together, fast",
+          "next": "injured_animal",
+          "effects": {
+            "stress": -3,
+            "rep": -2
+          }
+        }
+      ]
+    },
+    "injured_animal": {
+      "time": "02:00 PM",
+      "text": "On the walk back, you spot an animal caught in old discarded fishing line, struggling. Your guide has a knife. Getting close enough to help means getting close enough to be hurt if it panics.",
+      "choices": [
+        {
+          "id": "help_carefully",
+          "text": "Help free it, carefully and slowly",
+          "next": "editing_photos",
+          "effects": {
+            "stress": 10,
+            "rep": 12,
+            "energy": -6
+          }
+        },
+        {
+          "id": "report_dont_intervene",
+          "text": "Photograph it and report the location to local rangers instead",
+          "next": "editing_photos",
+          "effects": {
+            "stress": -4,
+            "rep": 2
+          }
+        }
+      ]
+    },
+    "editing_photos": {
+      "time": "04:00 PM",
+      "text": "Back at camp, laptop open, memory cards backing up in triplicate the way you learned to do the hard way, years ago.",
+      "choices": [
+        {
+          "id": "back_up_everything",
+          "text": "Back up every card before doing anything else",
+          "next": "return_trek",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "start_editing_now",
+          "text": "Start editing the best frames right away",
+          "next": "return_trek",
+          "effects": {
+            "rep": -4,
+            "stress": 3
+          }
+        }
+      ]
+    },
+    "return_trek": {
+      "time": "05:30 PM",
+      "text": "Last light on the walk back to base camp. Your guide asks, quietly, whether today was worth it.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Answer honestly",
+          "next": "submission_deadline",
+          "effects": {}
+        }
+      ]
+    },
+    "submission_deadline": {
+      "time": "07:00 PM",
+      "text": "The magazine's editor is waiting on the satellite line for a file. You have hours of footage and photos, and one deadline that doesn't care about any of it.",
+      "choices": [
+        {
+          "id": "curate_carefully",
+          "text": "Take the time to pick and caption the strongest set properly",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "send_fast",
+          "text": "Send the obvious best shot fast and sleep",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "08:00 PM",
+      "text": "The satellite connection drops after the file finishes uploading. Somewhere, an editor is opening it for the first time.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Zip the tent and sleep",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Cover Shot",
+      "blurb": "This is the image that gets printed, shared, and remembered — the one that reminds people why this work matters."
+    },
+    "steady_hand": {
+      "title": "A Strong Set",
+      "blurb": "Not the cover, but a genuinely strong set of images from a day that respected the animals and the risk in equal measure."
+    },
+    "ordinary_day": {
+      "title": "Another Day in the Field",
+      "blurb": "Some decent frames, a lot of waiting, nothing extraordinary. That's most days in this job, and it's still a good one."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You got the file uploaded, but you're not sure you could hold a camera steady right now if you tried. Rest before the next trek."
+    },
+    "written_up": {
+      "title": "A Hard Conversation",
+      "blurb": "Something about today's choices in the field is going to need explaining to your guide, or your editor, or both."
+    }
+  }
+}

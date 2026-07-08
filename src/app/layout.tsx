@@ -28,22 +28,12 @@ export const metadata: Metadata = {
     'Live a full 16-hour trauma surgery shift, one decision at a time. A branching career simulation.',
 };
 
-// export default function RootLayout({ children }: { children: React.ReactNode }) {
-//   return (
-//     <ClerkProvider>
-//       <html lang="en" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
-//         <body>{children}</body>
-//       </html>
-//     </ClerkProvider>
-//   );
-// }
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
-      <body>
-        <ClerkProvider>{children}</ClerkProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}>
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }

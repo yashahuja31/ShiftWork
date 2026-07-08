@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   //    score/ending — see validation.ts and simulationEngine.ts for why.
   let result;
   try {
-    result = replay(parsed.data.decisions, parsed.data.difficulty);
+    result = replay(parsed.data.career, parsed.data.decisions, parsed.data.difficulty);
   } catch (err) {
     if (err instanceof InvalidDecisionError) {
       return NextResponse.json({ error: err.message }, { status: 400 });
@@ -57,15 +57,15 @@ export async function POST(req: NextRequest) {
   const run = await db.simulationRun.create({
     data: {
       userId,
-      career: 'trauma_surgeon',
+      career: parsed.data.career,
       difficulty: parsed.data.difficulty,
       endingKey: result.endingKey,
       finalStress: result.finalStats.stress,
       finalEnergy: result.finalStats.energy,
       finalRep: result.finalStats.rep,
       finalMoney: result.finalStats.money,
-      patientsSaved: result.finalStats.patientsSaved,
-      decisions: JSON.stringify(parsed.data.decisions),
+      highlights: result.finalStats.highlights,
+      decisions: parsed.data.decisions,
     },
   });
 

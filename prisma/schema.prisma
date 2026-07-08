@@ -42,8 +42,8 @@ model SimulationRun {
   finalEnergy   Int
   finalRep      Int
   finalMoney    Int
-  patientsSaved Int
-  decisions     String
+  highlights    Int // generic "career milestone" counter; label shown in UI comes from each career's own JSON (highlightLabel)
+  decisions     Json
   createdAt     DateTime @default(now())
 
   @@index([userId])

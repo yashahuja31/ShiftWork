@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { rateLimit } from '@/lib/rateLimit';
 import { narrateRequestSchema } from '@/lib/validation';
+import { getGraph } from '@/lib/simulationEngine';
 
 // Static fallback used whenever no AI key is configured, or the call fails.
 // This is what makes the app fully playable offline out of the box (see
 // "Suggested MVP Scope" in the design doc: AI augments, never gates, the
-// experience).
+// experience). Kept deliberately generic since it now needs to fit any
+// career, not just the original trauma-surgeon MVP.
 const FALLBACK_TEXT =
-  'The monitor beeps steady, then hesitates — a half-second stutter that makes everyone in the room look up at once. It passes. For now.';
+  'Something in the routine catches — a half-second where everything hesitates before falling back into place. It passes. For now.';
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -39,12 +41,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ text: FALLBACK_TEXT, source: 'fallback' });
   }
 
-  // Every value interpolated into the prompt is a bounded number or an id
-  // drawn from our own scene graph (validated above) — never raw free-text
-  // from the client — so there is no user-controlled prompt-injection
-  // surface here.
+  const graph = getGraph(parsed.data.career);
+
+  // Every value interpolated into the prompt is either a bounded number, an
+  // id drawn from our own scene graph, or a title string we wrote ourselves
+  // — never raw free-text from the client — so there is no user-controlled
+  // prompt-injection surface here.
   const prompt =
-    `You are narrating one beat of a realistic trauma-surgery shift simulation. ` +
+    `You are narrating one beat of a realistic "${graph.title}" day-in-the-life simulation. ` +
     `Current time: ${parsed.data.currentTime}. Current stress level: ${parsed.data.stress}/100. ` +
     `Write 2-3 sentences describing an unexpected complication at scene "${parsed.data.sceneId}". ` +
     `Keep it grounded and under 60 words. No dialogue tags, just narration.`;

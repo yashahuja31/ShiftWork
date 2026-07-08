@@ -1,14 +1,10 @@
 # Shiftwork
 
-**A Day as a Trauma Surgeon** — a branching, stat-driven day-in-the-life career
-simulation. Sixteen hours, three patients, one critical. Every choice moves
-four numbers — stress, energy, reputation, pay — and by the end of the shift
-those numbers decide which of five endings you get.
-
-This is the MVP slice of a larger idea: a library of careers (astronaut,
-detective, chef, pilot, wildlife photographer, ...) each playable as a full
-simulated day. The architecture below is built so adding a new career is
-mostly "write a JSON file," not "write a new engine."
+A branching, stat-driven day-in-the-life career simulator — Sims-style
+mechanics (tracked needs, floating stat pop-ups, a day that visibly moves
+from dawn to night) applied to the question "what does this job actually
+feel like, minute to minute?" Eight careers are fully playable end to end,
+sharing one engine.
 
 > **Before you read further:** see [`SECURITY.md`](./SECURITY.md). It explains
 > what security measures are actually in place, and — just as important —
@@ -17,29 +13,72 @@ mostly "write a JSON file," not "write a new engine."
 
 ---
 
-## What's actually built (MVP scope)
+## What's actually built
 
 | Feature | Status |
 |---|---|
 | Landing page, career picker, difficulty picker | ✅ |
-| One full playable career: Trauma Surgeon (17 scenes, 4 branches on the signature "BP is dropping" decision, 5 possible endings) | ✅ |
-| Live stat tracking (stress / energy / reputation / pay / patients saved) | ✅ |
+| **8 fully playable careers**, ~15-18 scenes each, each with a signature high-stakes 4-way decision and 5 possible endings: Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller | ✅ |
+| Live stat tracking (stress / energy / reputation / pay / a career-specific highlight counter) | ✅ |
 | Signature UI: an animated ECG line whose speed and color react to your stress in real time | ✅ |
-| End-of-shift report with a "career compatibility" score | ✅ |
+| **Sims-style "living" animation layer** — see below | ✅ |
+| End-of-shift report with a "career compatibility" score that's actually tied to how the run went (see "Fixing the compatibility score") | ✅ |
 | Accounts via Clerk (email + social login), session-gated routes | ✅ |
 | Server-side scoring — the server replays your decisions itself rather than trusting a client-submitted score | ✅ |
 | Run history persisted per user (Postgres/SQLite via Prisma) | ✅ |
 | Optional AI narration hook for one scene (OpenAI), with a static fallback so the game is fully playable with zero API keys | ✅ |
-| Additional careers (astronaut, detective, chef, pilot, photographer) | 🔜 shown as locked cards, not yet implemented |
-| Random/chaos events beyond difficulty scaling, NPC conversations, leaderboards, voice narration, multiplayer, VR | 🔜 see the original design doc's "Future Features" — intentionally out of scope for this MVP |
+| More careers, random/chaos events beyond difficulty scaling, NPC conversations, leaderboards, voice narration, multiplayer, a literal 3D/graphical world | 🔜 see "Future enhancements" below |
 
-This intentionally does **not** try to build all six careers, a full AI-driven
-story engine, or a 3D/Sims-style graphical world in one pass — the original
-brief's own "Suggested MVP Scope" section recommends exactly this kind of cut,
-and it's the right call for something you can actually ship, review, and
-harden. "Sims-like" here means the mechanic (a life simulated through
-tracked needs/stats and consequence, not literal 3D avatars) — extending
-toward a graphical world is listed as a future direction in the roadmap.
+"Sims-like" here means the mechanic (a life simulated through tracked
+needs/stats, visible consequence, and a day that palpably passes) — a literal
+3D graphical world is a much larger undertaking and is listed as a future
+direction, not attempted here.
+
+### The Sims-style animation layer
+
+This is the part that's meant to make a text-and-buttons game feel like a
+person is actually living through the day, not filling out a form:
+
+- **Typewriter narration** — scene text reveals a couple of characters at a
+  time instead of appearing all at once; choices fade in only once it's
+  finished, so a beat has to land before you can act on it.
+- **Floating stat pop-ups** (`FloatingDeltas.tsx`) — the moment a choice
+  lands, "+10 REP" / "-8 ENERGY" style badges fly up and fade, the same
+  language The Sims uses for need/mood changes.
+- **A mood face** (`lib/mood.ts`) next to the shift clock — 🙂 / 😬 / 😰 / 😴 /
+  😊 — that updates live from your current stress and energy, with a small
+  spring-in animation on change.
+- **A day/night ambient background** (`lib/dayCycle.ts`) — the whole screen's
+  background gradient shifts through dawn → day → golden hour → night as the
+  in-game clock advances through each career's scenes.
+- **Tension staging** — the signature 4-choice decision in every career gets
+  a slow pulsing amber glow, distinguishing "this one matters more" without
+  any text saying so.
+- **Ending flourishes** — a small on-brand confetti burst for the best
+  ending, a brief shake for the worst one, in `EndingReport.tsx`.
+
+Everything above respects `prefers-reduced-motion`: the typewriter reveals
+instantly and pop-up/spring animations collapse to near-zero duration for
+anyone with that OS setting on (see `globals.css`).
+
+### Fixing the compatibility score
+
+An earlier version of the "would you enjoy this career?" score used one
+continuous formula over your final stats. Testing it against every possible
+playthrough of the trauma-surgeon career (2,048 distinct paths) showed the
+score never actually dropped below the mid-50s, even on the most reckless
+path possible — the formula was technically working, but the *reachable*
+range of stats in these scene graphs never drove it low enough to feel
+meaningful. "Nothing I do changes this" is a real bug in a game, even though
+no exception was ever thrown.
+
+The fix (`compatibilityScore` in `simulationEngine.ts`) ties the score to a
+band determined by which **ending** you actually got — triumphant scores
+85-99, burned out scores 5-24, and so on — with your composure and
+reputation moving you within that band. This was verified the same way the
+bug was found: brute-forcing every reachable path in all 8 careers now shows
+genuine spread (roughly 30-99 depending on the career), and a bad run
+reliably produces a low number instead of a slightly-less-high one.
 
 ---
 
@@ -54,8 +93,8 @@ toward a graphical world is listed as a future direction in the roadmap.
   and there is no hand-written SQL anywhere in the app.
 - **Styling/animation:** Tailwind CSS, Framer Motion
 - **Validation:** Zod on every API input
-- **Optional AI:** OpenAI's Chat Completions API for one dynamic scene
-  (entirely optional — the app works with zero AI keys configured)
+- **Optional AI:** OpenAI's Chat Completions API for one dynamic scene per
+  career (entirely optional — the app works with zero AI keys configured)
 
 ---
 
@@ -77,7 +116,7 @@ npm install
    committed or exposed to client code (see `SECURITY.md`).
 
 ### 3. Set up the database
- 
+
 Local dev needs no setup — SQLite is the default:
 
 ```bash
@@ -139,29 +178,41 @@ auth-provider-agnostic and does not need to change.
 ```
 shiftwork/
 ├── prisma/
-│   └── schema.prisma             # User + SimulationRun models
+│   └── schema.prisma                  # User + SimulationRun models
 ├── src/
-│   ├── proxy.ts                  # Clerk route protection (Next.js 16's renamed middleware.ts; runs before every request)
+│   ├── proxy.ts                       # Clerk route protection (Next.js 16's renamed middleware.ts; runs before every request)
 │   ├── app/
-│   │   ├── page.tsx              # Public landing page
-│   │   ├── careers/page.tsx      # Career picker (protected)
-│   │   ├── simulation/page.tsx   # The game itself (protected)
-│   │   ├── sign-in/, sign-up/    # Clerk-hosted auth pages
+│   │   ├── page.tsx                   # Public landing page
+│   │   ├── careers/page.tsx           # Career picker (protected) — generated from CAREER_GRAPHS
+│   │   ├── simulation/page.tsx        # Redirects /simulation -> /simulation/trauma_surgeon
+│   │   ├── simulation/[career]/page.tsx  # The game itself (protected, validates career id)
+│   │   ├── sign-in/, sign-up/         # Clerk-hosted auth pages
 │   │   └── api/
-│   │       ├── simulation/route.ts  # Save/list runs — auth + validation + server-side scoring
-│   │       └── narrate/route.ts     # Optional AI narration — auth + rate limit + safe fallback
+│   │       ├── simulation/route.ts    # Save/list runs — auth + validation + server-side scoring
+│   │       └── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
 │   ├── components/
-│   │   ├── VitalsMonitor.tsx     # The ECG signature element + stat readouts
-│   │   ├── SceneView.tsx         # Narration + choice buttons
+│   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + stat readouts
+│   │   ├── SceneView.tsx              # Typewriter narration + staggered, tension-staged choices
+│   │   ├── FloatingDeltas.tsx         # Sims-style floating "+10 REP" stat pop-ups
+│   │   ├── SimulationClient.tsx       # The game's client-side state machine, per career
 │   │   ├── CareerCard.tsx
-│   │   └── EndingReport.tsx
+│   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake flourish
 │   ├── lib/
-│   │   ├── simulationEngine.ts   # Pure functions: apply effects, replay decisions, pick an ending
-│   │   ├── validation.ts         # Zod schemas for every API input
+│   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay, ending, score
+│   │   ├── dayCycle.ts                # Scene time -> hour-of-day -> ambient gradient
+│   │   ├── mood.ts                    # Stats -> mood face + label
+│   │   ├── validation.ts              # Zod schemas for every API input
 │   │   ├── rateLimit.ts
-│   │   └── db.ts                 # Prisma client singleton
-│   └── data/
-│       └── trauma-surgeon-scenes.json  # The entire story, as data
+│   │   └── db.ts                      # Prisma client singleton
+│   └── data/careers/
+│       ├── trauma-surgeon.json
+│       ├── astronaut.json
+│       ├── detective.json
+│       ├── chef.json
+│       ├── pilot.json
+│       ├── wildlife-photographer.json
+│       ├── investment-banker.json
+│       └── air-traffic-controller.json
 └── SECURITY.md
 ```
 
@@ -170,23 +221,95 @@ shiftwork/
 ## Adding a new career
 
 The whole point of the JSON-scene approach from the original design doc is
-that a new career is content, not code:
+that a new career is content, not code. As of this version, the engine is a
+proper registry — there is no per-career code to write:
 
-1. Create `src/data/<career-id>-scenes.json` following the shape of
-   `trauma-surgeon-scenes.json`: a `startScene` id, and a `scenes` map where
-   each scene has `time`, `text`, and 2+ `choices`, each choice pointing at a
-   `next` scene id (or `null` to end the shift) and an `effects` object
-   (`stress` / `energy` / `rep` / `money` / `patientsSaved` deltas).
-2. Point a new route (e.g. `src/app/simulation/astronaut/page.tsx`) or a
-   `career` route param at that JSON file, the same way
-   `src/app/simulation/page.tsx` does today.
-3. Add an unlocked `CareerCard` for it on `/careers`.
-4. Pick ending thresholds for `determineEnding()` in
-   `simulationEngine.ts` (or generalize that function to take the scene
-   graph's own threshold config if you're adding several careers at once).
+1. Create `src/data/careers/<career-id>.json` with this shape (see any
+   existing file for a full example):
+   ```jsonc
+   {
+     "id": "your_career_id",
+     "title": "A Day as a ...",
+     "emoji": "🧑‍🎨",
+     "tagline": "One line describing the day's core tension.",
+     "highlightLabel": "Something tracked", // e.g. "Cases solved"
+     "startScene": "wake_up",
+     "scenes": {
+       "wake_up": {
+         "time": "06:00 AM",
+         "text": "...",
+         "choices": [
+           { "id": "...", "text": "...", "next": "next_scene_id", "effects": { "stress": 5, "energy": -5, "rep": 5, "money": 0, "highlights": 0 } }
+         ]
+       }
+       // ... 14-18 scenes total reads well; include one scene with 4 choices
+       // for the "signature decision" moment and the tension-glow treatment
+     },
+     "endings": {
+       "triumphant": { "title": "...", "blurb": "..." },
+       "steady_hand": { "title": "...", "blurb": "..." },
+       "ordinary_day": { "title": "...", "blurb": "..." },
+       "burned_out": { "title": "...", "blurb": "..." },
+       "written_up": { "title": "...", "blurb": "..." }
+     }
+   }
+   ```
+2. Register it in `src/lib/simulationEngine.ts`: add one `import` line and
+   one line in the `CAREER_GRAPHS` object. That's the entire integration —
+   `/careers` picks it up automatically, `/simulation/<career-id>` becomes a
+   valid route, and the API route's Zod schema accepts it automatically
+   because `saveRunSchema` derives its enum from `CAREER_IDS`, which is
+   derived from `CAREER_GRAPHS`.
+3. Before shipping it, validate the graph structurally — no dangling `next`
+   references, no unreachable scenes, all 5 ending keys present. The
+   one-off Python validation script used while building this (checks
+   reachability, duplicate choice ids, dangling links) is worth keeping
+   as a `scripts/validate-careers.*` step if you add many more careers.
 
-No changes to the database schema, auth, or API routes are needed — the
-`career` field on `SimulationRun` already exists for this.
+No changes to the database schema, auth, API routes, or UI components are
+needed — `career` is already a free-text column validated against the
+registry at the API boundary, and every component that displays
+career-specific text (`highlightLabel`, endings) reads it from the graph
+rather than having it hardcoded.
+
+---
+
+## Future enhancements
+
+Roughly in the order they'd add the most value:
+
+- **More careers.** The original brainstorm doc also named air traffic
+  controller and investment banker (both now built) alongside ideas like
+  a firefighter, a teacher, a journalist, or a park ranger — all straightforward
+  additions under the registry pattern above.
+- **Genuinely random/chaos events**, not just the difficulty multiplier.
+  Right now "chaos mode" scales existing effect magnitudes; the original
+  design doc's Feature 4 envisioned occasional injected events (equipment
+  failure, a walk-in emergency) layered onto any scene, not just the
+  handful that are hardcoded per career today. This would need each scene
+  to optionally declare an event pool and a trigger chance, resolved
+  client-side before rendering choices.
+- **A real leaderboard.** `SimulationRun` already stores every run per
+  user; a `shared` leaderboard view (e.g. "top compatibility score this
+  week, by career") is mostly a read-only aggregation query away, not a
+  new subsystem.
+- **NPC conversations** (Feature: "Talk to your boss/patients/crewmates") —
+  a natural extension of the existing optional-AI-narration pattern in
+  `api/narrate/route.ts`, but as a back-and-forth exchange instead of a
+  single generated beat, gated the same way (works with zero AI keys,
+  degrades to scripted dialogue if none are configured).
+- **AI career recommendations** after several completed runs — "you
+  consistently stay calm under pressure, you might like: Pilot, Surgeon" —
+  straightforward once there's enough `SimulationRun` history per user to
+  aggregate over.
+- **Voice narration, badges/achievements, multiplayer, a literal
+  graphical/3D world** — all named in the original brainstorm's "Future
+  Features" list. Each is a substantially larger project in its own right
+  (voice needs a TTS pipeline and per-scene audio direction; multiplayer
+  needs a real-time transport and a shared-state model; a graphical world
+  is closer to a second product than an extension of this one) — worth
+  scoping as separate efforts once the text-based version has real usage
+  data to justify them, rather than building speculatively now.
 
 ---
 

@@ -1,10 +1,13 @@
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import type { Stats } from '@/lib/simulationEngine';
+import { moodFor } from '@/lib/mood';
 
 interface VitalsMonitorProps {
   stats: Stats;
   time: string;
+  highlightLabel: string;
 }
 
 // One QRS-complex "blip" repeated 4 times across the viewBox, offset so it
@@ -32,23 +35,46 @@ function Stat({ label, value, suffix = '' }: { label: string; value: number | st
   return (
     <div className="flex flex-col gap-0.5">
       <span className="text-[10px] uppercase tracking-widest text-muted font-mono">{label}</span>
-      <span className="text-lg font-mono text-ivory">
+      <motion.span
+        key={value}
+        initial={{ opacity: 0.4, y: -2 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="text-lg font-mono text-ivory"
+      >
         {value}
         {suffix}
-      </span>
+      </motion.span>
     </div>
   );
 }
 
-export function VitalsMonitor({ stats, time }: VitalsMonitorProps) {
+export function VitalsMonitor({ stats, time, highlightLabel }: VitalsMonitorProps) {
   const stroke = colorFor(stats.stress);
   const duration = speedFor(stats.stress);
+  const mood = moodFor(stats);
 
   return (
     <div className="rounded-xl border border-line bg-panel p-4" role="group" aria-label="Vitals monitor">
       <div className="flex items-center justify-between mb-2">
         <span className="font-mono text-xs text-muted tracking-widest">SHIFT CLOCK</span>
-        <span className="font-mono text-sm text-ivory">{time}</span>
+        <div className="flex items-center gap-2">
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={mood.label}
+              initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+              className="text-base"
+              title={mood.label}
+              aria-label={`Current mood: ${mood.label}`}
+            >
+              {mood.emoji}
+            </motion.span>
+          </AnimatePresence>
+          <span className="font-mono text-sm text-ivory">{time}</span>
+        </div>
       </div>
 
       <svg
@@ -74,7 +100,7 @@ export function VitalsMonitor({ stats, time }: VitalsMonitorProps) {
         <Stat label="Stress" value={stats.stress} />
         <Stat label="Energy" value={stats.energy} />
         <Stat label="Reputation" value={stats.rep} />
-        <Stat label="Patients" value={stats.patientsSaved} />
+        <Stat label={highlightLabel} value={stats.highlights} />
         <Stat label="Pay" value={stats.money} suffix="$" />
       </div>
     </div>

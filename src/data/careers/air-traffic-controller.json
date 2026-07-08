@@ -1,0 +1,335 @@
+{
+  "id": "air_traffic_controller",
+  "title": "Every Second Has a Plane In It",
+  "emoji": "🎧",
+  "tagline": "A crowded sector, a converging pair of aircraft, and eleven seconds to make the right call.",
+  "highlightLabel": "Safe separations kept",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:20 AM",
+      "text": "Third day of a rotating shift schedule that never quite lets your body settle. Today's sector briefing mentions a weather system moving in by afternoon.",
+      "choices": [
+        {
+          "id": "full_rest_routine",
+          "text": "Take the time for your full pre-shift rest routine",
+          "next": "shift_briefing",
+          "effects": {
+            "energy": 10,
+            "stress": -4
+          }
+        },
+        {
+          "id": "rush_in_early",
+          "text": "Skip it and get to the tower early instead",
+          "next": "shift_briefing",
+          "effects": {
+            "rep": 4,
+            "energy": -4
+          }
+        }
+      ]
+    },
+    "shift_briefing": {
+      "time": "06:00 AM",
+      "text": "Shift briefing: a busy sector today, a runway closure elsewhere in the region pushing extra traffic your way, and that weather system to track.",
+      "choices": [
+        {
+          "id": "review_full_traffic_plan",
+          "text": "Review the full projected traffic plan in detail",
+          "next": "radar_handoff",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "get_straight_to_position",
+          "text": "Get straight to position and adapt as it comes",
+          "next": "radar_handoff",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ]
+    },
+    "radar_handoff": {
+      "time": "06:30 AM",
+      "text": "The night controller hands off the sector: six aircraft currently in your airspace, three more inbound in the next ten minutes.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Take the handoff",
+          "next": "morning_rush",
+          "effects": {}
+        }
+      ]
+    },
+    "morning_rush": {
+      "time": "07:15 AM",
+      "text": "Traffic builds fast. Headsets on, eyes on the scope, the rhythm of call signs and headings that becomes automatic after enough years — until it isn't.",
+      "choices": [
+        {
+          "id": "space_traffic_conservatively",
+          "text": "Space incoming traffic with extra conservative margins",
+          "next": "converging_aircraft",
+          "effects": {
+            "stress": -4,
+            "rep": 6,
+            "money": -10
+          }
+        },
+        {
+          "id": "run_tighter_spacing",
+          "text": "Run tighter spacing to keep the flow efficient",
+          "next": "converging_aircraft",
+          "effects": {
+            "rep": 4,
+            "stress": 6
+          }
+        }
+      ]
+    },
+    "converging_aircraft": {
+      "time": "08:05 AM",
+      "text": "Two aircraft on converging headings, closer than the plan called for — a pilot read back a heading wrong ninety seconds ago and nobody caught it until now. The scope shows maybe eleven seconds before separation matters.",
+      "choices": [
+        {
+          "id": "immediate_turn",
+          "text": "Issue an immediate turn command to the nearer aircraft",
+          "next": "converge_outcome_turn",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "altitude_change",
+          "text": "Issue an immediate altitude change instead of a turn",
+          "next": "converge_outcome_altitude",
+          "effects": {
+            "stress": 10,
+            "rep": 8
+          }
+        },
+        {
+          "id": "hold_and_verify",
+          "text": "Hold both aircraft's course one more second to verify the read before acting",
+          "next": "converge_outcome_hold",
+          "effects": {
+            "stress": 18,
+            "rep": -10
+          }
+        },
+        {
+          "id": "call_supervisor",
+          "text": "Call your supervisor over immediately to confirm the call",
+          "next": "converge_outcome_supervisor",
+          "effects": {
+            "stress": -2,
+            "rep": -6
+          }
+        }
+      ]
+    },
+    "converge_outcome_turn": {
+      "time": "08:06 AM",
+      "text": "The pilot reads back and turns instantly. Separation holds with room to spare. Your voice never changed pitch the entire time — that's the part that matters most.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Log the event and keep working the sector",
+          "next": "weather_reroute",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "converge_outcome_altitude": {
+      "time": "08:06 AM",
+      "text": "The climb clears the conflict cleanly, and both aircraft continue with separation intact. A clean, correct call under real time pressure.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Log the event and keep working the sector",
+          "next": "weather_reroute",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "converge_outcome_hold": {
+      "time": "08:06 AM",
+      "text": "The extra second confirms your read was right — and costs precious margin doing it. The turn command that follows still resolves it, but with far less room than it should have had.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Log the event and keep working the sector",
+          "next": "weather_reroute",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "converge_outcome_supervisor": {
+      "time": "08:07 AM",
+      "text": "Your supervisor confirms the call a beat later than you needed. Separation holds, barely, and the after-action conversation is going to ask why you didn't act on your own read.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Log the event and keep working the sector",
+          "next": "weather_reroute",
+          "effects": {}
+        }
+      ]
+    },
+    "weather_reroute": {
+      "time": "10:30 AM",
+      "text": "The forecast weather system arrives early, cutting through the middle of your sector. Half a dozen aircraft need new routing around it.",
+      "choices": [
+        {
+          "id": "reroute_everyone_early",
+          "text": "Start rerouting traffic well ahead of the weather",
+          "next": "medical_emergency",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "energy": -5
+          }
+        },
+        {
+          "id": "wait_and_see",
+          "text": "Wait to see how the weather actually develops before rerouting",
+          "next": "medical_emergency",
+          "effects": {
+            "stress": 8,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "medical_emergency": {
+      "time": "12:15 PM",
+      "text": "A pilot keys up: \"Declaring a medical emergency, passenger unresponsive, requesting priority handling.\" Every other aircraft in your sector needs to move to let them through.",
+      "choices": [
+        {
+          "id": "clear_immediate_priority",
+          "text": "Clear immediate priority handling for the emergency aircraft",
+          "next": "runway_incursion",
+          "effects": {
+            "rep": 12,
+            "stress": 6
+          }
+        },
+        {
+          "id": "sequence_normally",
+          "text": "Work them into the normal sequence with minor priority",
+          "next": "runway_incursion",
+          "effects": {
+            "rep": -8,
+            "stress": -3
+          }
+        }
+      ]
+    },
+    "runway_incursion": {
+      "time": "02:00 PM",
+      "text": "A ground vehicle crosses onto an active runway just as an aircraft is cleared for takeoff roll. You have seconds to stop it or let it continue.",
+      "choices": [
+        {
+          "id": "abort_takeoff",
+          "text": "Immediately abort the takeoff clearance",
+          "next": "shift_wind_down",
+          "effects": {
+            "stress": 12,
+            "rep": 14,
+            "money": -20
+          }
+        },
+        {
+          "id": "trust_clearance_margin",
+          "text": "Trust the timing margin and let the takeoff continue",
+          "next": "shift_wind_down",
+          "effects": {
+            "stress": -6,
+            "rep": -14
+          }
+        }
+      ]
+    },
+    "shift_wind_down": {
+      "time": "04:00 PM",
+      "text": "Traffic thins as the afternoon push clears out. The last hour of a shift like this always feels strangely quiet by comparison.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Ease toward the handoff",
+          "next": "handoff_next_shift",
+          "effects": {}
+        }
+      ]
+    },
+    "handoff_next_shift": {
+      "time": "06:00 PM",
+      "text": "The evening controller arrives for handoff. Today's sector log has more in it than most.",
+      "choices": [
+        {
+          "id": "thorough_handoff",
+          "text": "Walk through every notable event in detail",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -5
+          }
+        },
+        {
+          "id": "quick_handoff",
+          "text": "Give the short version and let the log speak for itself",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "06:15 PM",
+      "text": "Headset off. Every aircraft that entered your sector today left it exactly where it was supposed to go.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Nothing Got Past You",
+      "blurb": "Every call was clean, every separation held with room to spare. This is the shift the tower talks about at the next shift-change briefing."
+    },
+    "steady_hand": {
+      "title": "Solid Sector",
+      "blurb": "A busy day worked cleanly. Nobody outside the tower will ever know how much happened up there today — which is exactly the job."
+    },
+    "ordinary_day": {
+      "title": "Routine Traffic",
+      "blurb": "Busy, uneventful, forgettable in the best way. Tomorrow's sector looks about the same."
+    },
+    "burned_out": {
+      "title": "Redlined",
+      "blurb": "You got every aircraft down safely, but you're running on fumes. Fatigue in this job is its own kind of hazard — log it, and rest."
+    },
+    "written_up": {
+      "title": "Incident Review",
+      "blurb": "A few of today's calls are heading into a formal review. Everyone landed safely. The facility still wants to understand the margins."
+    }
+  }
+}

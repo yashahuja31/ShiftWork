@@ -12,25 +12,14 @@ const nextConfig = {
   poweredByHeader: false, // don't advertise "X-Powered-By: Next.js" to attackers
 
   async headers() {
-    const scriptSrc = [
-      "'self'",
-      "'unsafe-inline'",
-      process.env.NODE_ENV !== 'production' ? "'unsafe-eval'" : null,
-      'https://*.clerk.accounts.dev',
-      'https://clerk.shiftwork.app',
-      'https://challenges.cloudflare.com',
-    ]
-      .filter(Boolean)
-      .join(' ');
-
     const csp = [
       "default-src 'self'",
-      `script-src ${scriptSrc}`,
-      "worker-src 'self' blob: https://*.clerk.accounts.dev https://clerk.shiftwork.app https://challenges.cloudflare.com",
+      // Clerk needs to load its own scripts/frames for auth UI + bot protection
+      "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://clerk.shiftwork.app https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://img.clerk.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.dev https://clerk-telemetry.com",
+      "connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.dev",
       "frame-src 'self' https://*.clerk.accounts.dev https://challenges.cloudflare.com",
       "object-src 'none'",
       "base-uri 'self'",

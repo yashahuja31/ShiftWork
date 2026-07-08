@@ -1,0 +1,374 @@
+{
+  "id": "pilot",
+  "title": "Pre-Flight to Touchdown",
+  "emoji": "🧑‍✈️",
+  "tagline": "One hundred and eighty passengers, a warning light at cruise, and a decision that can't wait for a committee.",
+  "highlightLabel": "Calls handled",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "04:30 AM",
+      "text": "Hotel wake-up call, same as always the night before an early departure. Today's route: six hours, a full aircraft, weather that looks marginal over the second half.",
+      "choices": [
+        {
+          "id": "full_briefing_read",
+          "text": "Read the full dispatch package before breakfast",
+          "next": "weather_check",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "skim_it",
+          "text": "Skim it and review the rest at the airport",
+          "next": "weather_check",
+          "effects": {
+            "energy": 4,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "weather_check": {
+      "time": "05:15 AM",
+      "text": "The weather brief shows a line of storms building along the back half of the route, timing uncertain. Dispatch has a plan; you'll need to trust it or push back on it.",
+      "choices": [
+        {
+          "id": "add_extra_fuel",
+          "text": "Request extra fuel for weather contingencies",
+          "next": "walkaround",
+          "effects": {
+            "money": -15,
+            "rep": 8,
+            "stress": -4
+          }
+        },
+        {
+          "id": "accept_plan",
+          "text": "Accept dispatch's fuel plan as filed",
+          "next": "walkaround",
+          "effects": {
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "walkaround": {
+      "time": "05:45 AM",
+      "text": "Pre-flight walkaround, rain starting to spit. A small scuff near the left engine cowling catches your eye — probably nothing, definitely worth a second look.",
+      "choices": [
+        {
+          "id": "thorough_inspection",
+          "text": "Get maintenance to inspect it properly before boarding",
+          "next": "boarding",
+          "effects": {
+            "energy": -3,
+            "rep": 10,
+            "stress": 3
+          }
+        },
+        {
+          "id": "quick_call",
+          "text": "Make the call yourself and keep the schedule",
+          "next": "boarding",
+          "effects": {
+            "rep": -5
+          }
+        }
+      ]
+    },
+    "boarding": {
+      "time": "06:30 AM",
+      "text": "One hundred and eighty-two passengers file on. A father with a nervous toddler, a business traveler already asleep, a full flight in every sense.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Complete the final checks",
+          "next": "taxi",
+          "effects": {}
+        }
+      ]
+    },
+    "taxi": {
+      "time": "07:00 AM",
+      "text": "Pushback, taxi, a short line for the runway. Everything nominal. Then, rolling toward the threshold, a caution light flickers on the engine display — on, then off.",
+      "choices": [
+        {
+          "id": "abort_inspect",
+          "text": "Return to the gate and have it inspected before takeoff",
+          "next": "takeoff_decision",
+          "effects": {
+            "stress": -6,
+            "rep": 10,
+            "money": -40
+          }
+        },
+        {
+          "id": "continue_confident",
+          "text": "It cleared itself — continue toward takeoff",
+          "next": "takeoff_decision",
+          "effects": {
+            "stress": 6,
+            "rep": -6
+          }
+        }
+      ]
+    },
+    "takeoff_decision": {
+      "time": "07:20 AM",
+      "text": "Whatever you decided, you're airborne now, climbing out clean through the overcast into clear morning light above the clouds.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Settle into the climb",
+          "next": "cruise_climb",
+          "effects": {}
+        }
+      ]
+    },
+    "cruise_climb": {
+      "time": "08:30 AM",
+      "text": "Cruise altitude, autopilot engaged, the cabin settling into the low hum of a normal flight. It stays that way for exactly ninety more minutes.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue cruise",
+          "next": "engine_warning",
+          "effects": {}
+        }
+      ]
+    },
+    "engine_warning": {
+      "time": "10:05 AM",
+      "text": "The right engine's oil pressure indicator dips, steadies, dips again. Not a failure — not yet — but not nothing either, and you're ninety minutes from the nearest suitable airport in either direction.",
+      "choices": [
+        {
+          "id": "declare_emergency",
+          "text": "Declare an emergency and divert to the nearest airport now",
+          "next": "engine_outcome_divert",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "money": -60
+          }
+        },
+        {
+          "id": "monitor_continue",
+          "text": "Monitor closely and continue toward the original destination",
+          "next": "engine_outcome_monitor",
+          "effects": {
+            "stress": 16,
+            "rep": -8
+          }
+        },
+        {
+          "id": "consult_copilot",
+          "text": "Work through it together with your first officer before deciding",
+          "next": "engine_outcome_consult",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "reduce_power",
+          "text": "Reduce power on that engine and proceed cautiously",
+          "next": "engine_outcome_reduce",
+          "effects": {
+            "stress": 10,
+            "rep": 4
+          }
+        }
+      ]
+    },
+    "engine_outcome_divert": {
+      "time": "10:25 AM",
+      "text": "You're on the ground twenty-five minutes later, well within limits, maintenance already waiting at the gate. A connecting flight gets arranged for the passengers. Nobody remembers this flight by tomorrow, which is exactly the point.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Handle the passenger notifications",
+          "next": "passenger_medical",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "engine_outcome_monitor": {
+      "time": "11:15 AM",
+      "text": "The indicator holds steady for the rest of the flight, technically within limits the whole way. It also means ninety minutes of quiet tension in the cockpit that didn't need to happen.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward destination",
+          "next": "passenger_medical",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "engine_outcome_consult": {
+      "time": "10:40 AM",
+      "text": "Between the two of you, the numbers get a second read and a clear call: safe to continue, closely watched, contingency airport identified along the route just in case.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue with the plan",
+          "next": "passenger_medical",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "engine_outcome_reduce": {
+      "time": "10:35 AM",
+      "text": "Reduced power holds the indicator steady. It costs you some time on the flight plan, but the numbers stay exactly where you want them the rest of the way.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward destination",
+          "next": "passenger_medical",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "passenger_medical": {
+      "time": "12:00 PM",
+      "text": "A flight attendant's voice comes over the interphone: a passenger in the back is having chest pains. There's a doctor on board who's offered to help.",
+      "choices": [
+        {
+          "id": "divert_for_medical",
+          "text": "Divert to the nearest airport for the passenger",
+          "next": "turbulence_ahead",
+          "effects": {
+            "rep": 12,
+            "money": -50,
+            "stress": 4
+          }
+        },
+        {
+          "id": "continue_with_doctor",
+          "text": "Continue with the onboard doctor monitoring",
+          "next": "turbulence_ahead",
+          "effects": {
+            "rep": -6,
+            "stress": 6
+          }
+        }
+      ]
+    },
+    "turbulence_ahead": {
+      "time": "01:00 PM",
+      "text": "The storm line dispatch flagged this morning is exactly where they said it'd be. The radar shows a path through, but it's tighter than you'd like.",
+      "choices": [
+        {
+          "id": "request_reroute",
+          "text": "Request a longer reroute around the worst of it",
+          "next": "descent_prep",
+          "effects": {
+            "stress": -6,
+            "rep": 8,
+            "money": -20
+          }
+        },
+        {
+          "id": "thread_the_gap",
+          "text": "Thread the gap the radar shows",
+          "next": "descent_prep",
+          "effects": {
+            "stress": 10,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "descent_prep": {
+      "time": "01:45 PM",
+      "text": "Descent checklist, approach briefing, the cabin secured. Six hours almost done, one runway left between here and a finished flight.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin the approach",
+          "next": "landing",
+          "effects": {}
+        }
+      ]
+    },
+    "landing": {
+      "time": "02:10 PM",
+      "text": "Crosswind on final, gusty but within limits. The wheels touch down exactly where you aimed them.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Taxi to the gate",
+          "next": "debrief",
+          "effects": {}
+        }
+      ]
+    },
+    "debrief": {
+      "time": "02:45 PM",
+      "text": "Post-flight paperwork, and a maintenance write-up for anything that came up along the way.",
+      "choices": [
+        {
+          "id": "full_writeup",
+          "text": "Write up every detail from the engine indication onward",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -5
+          }
+        },
+        {
+          "id": "brief_writeup",
+          "text": "Note the essentials and get to the hotel van",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "03:00 PM",
+      "text": "One hundred and eighty-two passengers, on the ground, on time or close to it. Tomorrow's a different route, a different airplane, and the same checklist.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head to the crew van",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Textbook Flight",
+      "blurb": "Every call was the right one, and it showed. This is the flight your first officer tells other crews about."
+    },
+    "steady_hand": {
+      "title": "Safe and Solid",
+      "blurb": "Nothing dramatic, nothing missed. A hundred and eighty-two people got exactly what they were owed: a boring, uneventful flight."
+    },
+    "ordinary_day": {
+      "title": "Routine Sector",
+      "blurb": "A normal flight with a couple of interesting moments in the logbook. Tomorrow's sector looks about the same."
+    },
+    "burned_out": {
+      "title": "Redlined",
+      "blurb": "You got the aircraft down safely, but you're running on fumes. Fatigue is its own kind of hazard — log it, and rest."
+    },
+    "written_up": {
+      "title": "Report Filed",
+      "blurb": "A few of today's calls are going into a formal review. Everyone's safe. The company still wants to understand the decisions."
+    }
+  }
+}

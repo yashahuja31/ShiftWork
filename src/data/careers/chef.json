@@ -1,0 +1,385 @@
+{
+  "id": "chef",
+  "title": "Service Starts at 5pm Sharp",
+  "emoji": "🧑‍🍳",
+  "tagline": "One kitchen, one critic possibly at table twelve, and a service that doesn't forgive mistakes.",
+  "highlightLabel": "Perfect dishes",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:00 AM",
+      "text": "The market opens in an hour and the good fish sells fast. Today's tasting menu depends on what's actually good this morning, not what the printed menu says.",
+      "choices": [
+        {
+          "id": "go_yourself",
+          "text": "Go to the market yourself, like always",
+          "next": "mise_en_place",
+          "effects": {
+            "energy": -6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "send_sous_chef",
+          "text": "Send your sous chef and get a head start on prep",
+          "next": "mise_en_place",
+          "effects": {
+            "energy": 4,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "mise_en_place": {
+      "time": "09:00 AM",
+      "text": "The walk-in is organized, the stocks are reducing, and for one quiet hour the kitchen is just you and the prep list. It won't last.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get to work",
+          "next": "staff_issue",
+          "effects": {}
+        }
+      ]
+    },
+    "staff_issue": {
+      "time": "11:30 AM",
+      "text": "Your line cook on the fish station calls in sick — the same station handling tonight's signature dish. Service is in five and a half hours.",
+      "choices": [
+        {
+          "id": "cover_yourself",
+          "text": "Cover the station yourself tonight, on top of expo",
+          "next": "inventory_problem",
+          "effects": {
+            "energy": -10,
+            "rep": 8,
+            "stress": 10
+          }
+        },
+        {
+          "id": "call_favor",
+          "text": "Call in a favor from a chef friend down the street",
+          "next": "inventory_problem",
+          "effects": {
+            "money": -20,
+            "stress": -4,
+            "rep": 2
+          }
+        }
+      ]
+    },
+    "inventory_problem": {
+      "time": "01:00 PM",
+      "text": "The delivery arrives short on the langoustines the tasting menu is built around. Twenty tables are booked tonight expecting that dish.",
+      "choices": [
+        {
+          "id": "substitute",
+          "text": "Rework the dish around what actually arrived",
+          "next": "pre_service_briefing",
+          "effects": {
+            "stress": 8,
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "86_it",
+          "text": "86 the dish and simplify the menu for tonight",
+          "next": "pre_service_briefing",
+          "effects": {
+            "stress": -6,
+            "rep": -6
+          }
+        }
+      ]
+    },
+    "pre_service_briefing": {
+      "time": "04:00 PM",
+      "text": "The whole team lines up for the pre-service briefing. Reservations sheet shows twenty-two tables, one flagged \"VIP\" with no further detail.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Brief the team and open the pass",
+          "next": "service_start",
+          "effects": {}
+        }
+      ]
+    },
+    "service_start": {
+      "time": "05:00 PM",
+      "text": "The first tickets print. The pass gets loud in the good way — for now. Table twelve orders the tasting menu, all nine courses.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get the first course moving",
+          "next": "critic_table",
+          "effects": {}
+        }
+      ]
+    },
+    "critic_table": {
+      "time": "06:45 PM",
+      "text": "The server comes back from table twelve, plate in hand, barely touched. \"They said the sauce is broken.\" A quiet word in the dining room confirms your worst guess: that's the food critic everyone's been whispering about.",
+      "choices": [
+        {
+          "id": "remake_scratch",
+          "text": "Remake the dish completely from scratch",
+          "next": "critic_outcome_remake",
+          "effects": {
+            "stress": 16,
+            "energy": -10,
+            "rep": 10
+          }
+        },
+        {
+          "id": "adjust_resend",
+          "text": "Fix the sauce quickly and resend the same plate",
+          "next": "critic_outcome_adjust",
+          "effects": {
+            "stress": 8,
+            "rep": -4
+          }
+        },
+        {
+          "id": "go_out_personally",
+          "text": "Go out to the table yourself, apologize, and comp the course",
+          "next": "critic_outcome_personal",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "push_through",
+          "text": "Send the next course and let this one go",
+          "next": "critic_outcome_ignore",
+          "effects": {
+            "stress": -4,
+            "rep": -12
+          }
+        }
+      ]
+    },
+    "critic_outcome_remake": {
+      "time": "07:05 PM",
+      "text": "Twelve minutes, a completely new plate, sent out with a short apology on the ticket. It's the best version of the dish you've made all week.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get back to the rest of the pass",
+          "next": "equipment_failure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "critic_outcome_adjust": {
+      "time": "06:52 PM",
+      "text": "The fixed sauce goes out fast. It's good, not great — but it's back on the table before the rest of the course falls behind.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get back to the rest of the pass",
+          "next": "equipment_failure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "critic_outcome_personal": {
+      "time": "06:58 PM",
+      "text": "You wipe your hands, walk out of the kitchen, and own it face to face. Whatever they write tomorrow, tonight they saw the chef care.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get back to the rest of the pass",
+          "next": "equipment_failure",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "critic_outcome_ignore": {
+      "time": "06:50 PM",
+      "text": "The kitchen keeps moving. It's the pragmatic call on a night this busy — but the plate that went out is exactly what got sent back.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get back to the rest of the pass",
+          "next": "equipment_failure",
+          "effects": {}
+        }
+      ]
+    },
+    "equipment_failure": {
+      "time": "08:00 PM",
+      "text": "The reach-in cooler on the pastry station starts alarming mid-rush. Whatever's in there needs to move, now, or it's lost.",
+      "choices": [
+        {
+          "id": "rescue_it",
+          "text": "Stop everything and move the contents yourself",
+          "next": "vip_walkin",
+          "effects": {
+            "stress": 10,
+            "rep": 10,
+            "energy": -8
+          }
+        },
+        {
+          "id": "delegate_it",
+          "text": "Delegate it and stay focused on the pass",
+          "next": "vip_walkin",
+          "effects": {
+            "stress": -4,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "vip_walkin": {
+      "time": "09:00 PM",
+      "text": "Table twelve's server confirms it — a well-known food writer, and they've asked to meet the chef after the meal.",
+      "choices": [
+        {
+          "id": "go_meet_them",
+          "text": "Step out and meet them personally",
+          "next": "dessert_course",
+          "effects": {
+            "rep": 8,
+            "energy": -4
+          }
+        },
+        {
+          "id": "stay_in_kitchen",
+          "text": "Send your compliments and stay on the pass",
+          "next": "dessert_course",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ]
+    },
+    "dessert_course": {
+      "time": "09:45 PM",
+      "text": "Last course of the night going out. The kitchen's exhausted in the specific way that only a good, hard service produces.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Send it",
+          "next": "closing_kitchen",
+          "effects": {}
+        }
+      ]
+    },
+    "closing_kitchen": {
+      "time": "11:00 PM",
+      "text": "Last ticket's in. The pass goes quiet. Someone starts breaking down stations before you've even said the word.",
+      "choices": [
+        {
+          "id": "thorough_breakdown",
+          "text": "Supervise a full, proper breakdown and clean",
+          "next": "staff_meal",
+          "effects": {
+            "rep": 8,
+            "energy": -8
+          }
+        },
+        {
+          "id": "quick_breakdown",
+          "text": "Let the team handle it and start the books",
+          "next": "staff_meal",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "staff_meal": {
+      "time": "11:30 PM",
+      "text": "The whole team eats together at the end of the night, the one meal nobody's plating for a customer.",
+      "choices": [
+        {
+          "id": "eat_with_team",
+          "text": "Sit down and eat with everyone",
+          "next": "post_service_review",
+          "effects": {
+            "stress": -8,
+            "energy": 6
+          }
+        },
+        {
+          "id": "finish_paperwork",
+          "text": "Skip it and finish tomorrow's ordering",
+          "next": "post_service_review",
+          "effects": {
+            "rep": 3,
+            "stress": 4
+          }
+        }
+      ]
+    },
+    "post_service_review": {
+      "time": "12:15 AM",
+      "text": "Before anyone leaves, a quick word on how tonight went — what worked, what nearly didn't.",
+      "choices": [
+        {
+          "id": "honest_debrief",
+          "text": "Be honest about the rough moments, not just the wins",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "keep_it_positive",
+          "text": "Keep it upbeat and send everyone home",
+          "next": "end_shift",
+          "effects": {
+            "rep": -4,
+            "energy": 3
+          }
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "12:30 AM",
+      "text": "The lights go off on an empty dining room. Table twelve's review, whatever it says, posts sometime tomorrow.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Lock up and go home",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Service to Remember",
+      "blurb": "Every table left happy, the critic included. This is the night the kitchen tells stories about for years."
+    },
+    "steady_hand": {
+      "title": "Clean Service",
+      "blurb": "No disasters, no fireworks. Just a well-run kitchen doing exactly what it's supposed to."
+    },
+    "ordinary_day": {
+      "title": "Just Tuesday",
+      "blurb": "A full house, a few hiccups, nothing that'll make the review either way. Tomorrow, the market again at five."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it to close, but you're not sure you could plate another dish tonight if the building was on fire. It nearly was."
+    },
+    "written_up": {
+      "title": "Rough Notice",
+      "blurb": "Word is already getting around about tonight's service, and not the good kind. Table twelve's review is going to sting."
+    }
+  }
+}

@@ -47,14 +47,26 @@ That's a more useful promise than "unhackable," and it's the honest one.
 
 ### Don't trust the client with *scoring*, either
 - This is a game, so "don't trust the client" also applies to the score
-  itself. The client sends the server the raw list of choice ids the player
-  made — nothing else. `src/app/api/simulation/route.ts` replays those
-  choices through the same scene graph server-side
-  (`src/lib/simulationEngine.ts`) and computes the final stats and ending
-  itself. A modified client could lie about which button it thinks the
-  player pressed, but it cannot inject an arbitrary "I scored 100%" result —
-  the server checks every choice id against what was actually valid at that
-  point in the story and rejects anything that doesn't match.
+  itself. The client sends the server the career id, the difficulty, and the
+  raw list of choice ids the player made — nothing else. Both `career` and
+  `difficulty` are validated against a fixed enum (`z.enum(CAREER_IDS)` /
+  `z.enum(difficulties)` in `src/lib/validation.ts`) derived directly from
+  the engine's own career registry, so an unrecognized or malformed career
+  id is rejected before it ever reaches the database or the replay logic —
+  it can't be used to probe for a career that doesn't exist or smuggle in an
+  arbitrary string.
+- `src/app/api/simulation/route.ts` then replays those choices through that
+  specific career's scene graph server-side (`src/lib/simulationEngine.ts`)
+  and computes the final stats and ending itself. A modified client could
+  lie about which button it thinks the player pressed, but it cannot inject
+  an arbitrary "I scored 100%" result — the server checks every choice id
+  against what was actually valid at that point in that career's story and
+  rejects anything that doesn't match.
+- This also means adding a new career (see README.md > "Adding a new
+  career") never requires touching the validation or API layer — the
+  allowed-career list, and therefore what the API will accept, is generated
+  from the same registry the game itself reads from, so there's no separate
+  allowlist that could drift out of sync.
 
 ### Input validation
 - Every API route parses its input through a **Zod schema**

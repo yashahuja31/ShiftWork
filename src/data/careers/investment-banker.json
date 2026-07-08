@@ -1,0 +1,364 @@
+{
+  "id": "investment_banker",
+  "title": "The Deal Doesn't Sleep",
+  "emoji": "💼",
+  "tagline": "A nine-figure deal three days from signing, and a competitor who just found out about it.",
+  "highlightLabel": "Deals closed",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:15 AM",
+      "text": "Your phone has fourteen unread messages before your alarm even goes off. One of them, from your MD, just says: \"Call me the second you're up.\"",
+      "choices": [
+        {
+          "id": "call_immediately",
+          "text": "Call the MD back before you're even out of bed",
+          "next": "market_open",
+          "effects": {
+            "stress": 6,
+            "rep": 8,
+            "energy": -4
+          }
+        },
+        {
+          "id": "shower_first",
+          "text": "Shower and gather yourself for two minutes first",
+          "next": "market_open",
+          "effects": {
+            "energy": 6,
+            "stress": -4,
+            "rep": -3
+          }
+        }
+      ]
+    },
+    "market_open": {
+      "time": "06:30 AM",
+      "text": "Markets open in an hour. The deal team's group chat is already lighting up — a competing firm has apparently gotten wind of your client's acquisition target.",
+      "choices": [
+        {
+          "id": "read_every_message",
+          "text": "Read the entire thread before responding to anyone",
+          "next": "deal_room_prep",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "triage_fast",
+          "text": "Skim for the one thing that actually matters and move",
+          "next": "deal_room_prep",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ]
+    },
+    "deal_room_prep": {
+      "time": "07:30 AM",
+      "text": "The deal room fills up. Your analyst hands you an updated model — the numbers still work, barely, if nothing changes in the next seventy-two hours.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Start the morning call",
+          "next": "competing_bid",
+          "effects": {}
+        }
+      ]
+    },
+    "competing_bid": {
+      "time": "08:15 AM",
+      "text": "Mid-call, your phone buzzes: a rival firm has put in a competing bid on your client's target, ten percent above your agreed price. The client is on the line, waiting for your read.",
+      "choices": [
+        {
+          "id": "match_aggressively",
+          "text": "Advise matching the bid aggressively, right now",
+          "next": "bid_outcome_match",
+          "effects": {
+            "stress": 16,
+            "rep": 6,
+            "money": -30
+          }
+        },
+        {
+          "id": "advise_walk_away",
+          "text": "Advise walking away rather than overpaying",
+          "next": "bid_outcome_walk",
+          "effects": {
+            "stress": -6,
+            "rep": -8
+          }
+        },
+        {
+          "id": "renegotiate_terms",
+          "text": "Propose renegotiating structure instead of just raising price",
+          "next": "bid_outcome_renegotiate",
+          "effects": {
+            "stress": 8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "call_senior_partner",
+          "text": "Loop in the senior partner before advising anything",
+          "next": "bid_outcome_senior",
+          "effects": {
+            "stress": -4,
+            "rep": -6,
+            "energy": -3
+          }
+        }
+      ]
+    },
+    "bid_outcome_match": {
+      "time": "08:45 AM",
+      "text": "The client matches the bid within the hour. It's expensive, and it's decisive — the rival firm backs off by lunchtime.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get back to closing details",
+          "next": "compliance_flag",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "bid_outcome_walk": {
+      "time": "08:50 AM",
+      "text": "The client, to your relief, agrees the price got ahead of the fundamentals. The deal quietly dies. Somewhere, that's the right long-term call — today it just feels like a loss.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Debrief with the team",
+          "next": "compliance_flag",
+          "effects": {}
+        }
+      ]
+    },
+    "bid_outcome_renegotiate": {
+      "time": "09:10 AM",
+      "text": "A restructured earn-out clause satisfies both the seller's price expectations and your client's budget. It takes an extra hour of calls, and it holds.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finalize the new terms",
+          "next": "compliance_flag",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "bid_outcome_senior": {
+      "time": "09:00 AM",
+      "text": "The senior partner backs a middle-ground counter. It works, but the client noticed the hesitation before the answer came, and says so.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Move forward with the counter",
+          "next": "compliance_flag",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ]
+    },
+    "compliance_flag": {
+      "time": "11:00 AM",
+      "text": "Compliance flags a disclosure timing question on the deal — probably nothing, but it needs a real answer before the next filing.",
+      "choices": [
+        {
+          "id": "resolve_properly",
+          "text": "Stop and resolve it properly with compliance before continuing",
+          "next": "junior_analyst",
+          "effects": {
+            "energy": -6,
+            "rep": 10,
+            "stress": 5
+          }
+        },
+        {
+          "id": "note_and_continue",
+          "text": "Note it for later and keep the deal moving",
+          "next": "junior_analyst",
+          "effects": {
+            "rep": -8,
+            "stress": -3
+          }
+        }
+      ]
+    },
+    "junior_analyst": {
+      "time": "01:00 PM",
+      "text": "Your junior analyst hasn't left the building in two days and just made a modeling error that could have gone unnoticed until the signing.",
+      "choices": [
+        {
+          "id": "mentor_through_it",
+          "text": "Sit with them and walk through the fix together",
+          "next": "client_dinner",
+          "effects": {
+            "energy": -6,
+            "rep": 10,
+            "stress": 4
+          }
+        },
+        {
+          "id": "fix_it_yourself",
+          "text": "Just fix it yourself and move on",
+          "next": "client_dinner",
+          "effects": {
+            "energy": -4,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "client_dinner": {
+      "time": "07:00 PM",
+      "text": "A client dinner that was scheduled weeks ago, now landing in the middle of the most stressful three days of the deal.",
+      "choices": [
+        {
+          "id": "attend_fully_present",
+          "text": "Attend and actually be present, phone away",
+          "next": "diligence_redflag",
+          "effects": {
+            "stress": -6,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "attend_distracted",
+          "text": "Attend but keep working the deal from your phone under the table",
+          "next": "diligence_redflag",
+          "effects": {
+            "rep": -6,
+            "stress": 6
+          }
+        }
+      ]
+    },
+    "diligence_redflag": {
+      "time": "09:30 PM",
+      "text": "Late diligence turns up an undisclosed liability on the target company's books — small, but the kind of thing that needs to go in front of the client before signing, not after.",
+      "choices": [
+        {
+          "id": "disclose_immediately",
+          "text": "Call the client tonight and disclose it immediately",
+          "next": "all_nighter",
+          "effects": {
+            "rep": 12,
+            "stress": 8
+          }
+        },
+        {
+          "id": "quietly_manage",
+          "text": "Handle it quietly and mention it in tomorrow's briefing",
+          "next": "all_nighter",
+          "effects": {
+            "rep": -10,
+            "stress": -4
+          }
+        }
+      ]
+    },
+    "all_nighter": {
+      "time": "11:00 PM",
+      "text": "Signing is scheduled for tomorrow morning. The documents need one more pass, and there's a real question of whether that happens tonight or at 5 AM.",
+      "choices": [
+        {
+          "id": "push_through_tonight",
+          "text": "Push through and finish it tonight",
+          "next": "board_call",
+          "effects": {
+            "energy": -14,
+            "rep": 8,
+            "stress": 10
+          }
+        },
+        {
+          "id": "sleep_and_early_start",
+          "text": "Get a few hours of sleep and start early instead",
+          "next": "board_call",
+          "effects": {
+            "energy": 10,
+            "rep": -4
+          }
+        }
+      ]
+    },
+    "board_call": {
+      "time": "07:00 AM",
+      "text": "A last board call before signing. One board member has late questions about the deal structure.",
+      "choices": [
+        {
+          "id": "answer_thoroughly",
+          "text": "Take the time to answer every question thoroughly",
+          "next": "closing_night",
+          "effects": {
+            "rep": 10,
+            "energy": -5
+          }
+        },
+        {
+          "id": "reassure_and_move",
+          "text": "Reassure them briefly and keep to the signing schedule",
+          "next": "closing_night",
+          "effects": {
+            "rep": -5,
+            "energy": 3
+          }
+        }
+      ]
+    },
+    "closing_night": {
+      "time": "05:00 PM",
+      "text": "Signatures go on paper. Champagne appears in the deal room, the way it always does, whether the deal deserves it or not.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to the closing dinner",
+          "next": "end_shift",
+          "effects": {}
+        }
+      ]
+    },
+    "end_shift": {
+      "time": "08:00 PM",
+      "text": "The deal is done, filed, and someone else's problem now. Tomorrow's calendar already has the next one on it.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Go home and sleep properly, for once",
+          "next": null,
+          "effects": {}
+        }
+      ]
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Deal of the Quarter",
+      "blurb": "Clean structure, fully disclosed, client thrilled. This is the deal that gets cited in your next promotion conversation."
+    },
+    "steady_hand": {
+      "title": "Solid Close",
+      "blurb": "No fireworks, no scandals — just a well-run deal that closed exactly the way it was supposed to."
+    },
+    "ordinary_day": {
+      "title": "Another One Signed",
+      "blurb": "The deal closed. Nobody's writing a case study about it, and that's fine. Tomorrow's deal is already staffed."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You closed it, but you can't remember the last full night's sleep. This pace has a cost, and the invoice is coming."
+    },
+    "written_up": {
+      "title": "Compliance Review",
+      "blurb": "Something about how a disclosure was handled is now in front of compliance. The deal closed. Whether it should have, the way it did, is an open question."
+    }
+  }
+}

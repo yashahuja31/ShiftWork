@@ -6,9 +6,11 @@ export default function SignUpPage() {
       <SignUp
         appearance={{
           variables: {
-            colorPrimary: "#7c3aed",
-            colorForeground: "#ffffff",
-            colorMutedForeground: "#94a3b8",
+            colorPrimary: '#3ECF8E',
+            colorBackground: '#121A2B',
+            colorForeground: '#E8ECF1',
+            colorMutedForeground: '#7C8AA5',
+            borderRadius: '0.75rem',
           },
         }}
       />
