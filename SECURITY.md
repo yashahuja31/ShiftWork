@@ -158,6 +158,33 @@ don't remove the page-level checks as "redundant" once proxy.ts looks like
 it's working, because "looks like it's working" is precisely how that bug
 manifested for other people.
 
+### A second real bug: the CSP blocked React's own dev mode
+
+The Content-Security-Policy in `next.config.js` originally had one
+`script-src` for every environment, with no `'unsafe-eval'`. That's the
+right call for production — React never calls `eval()` in a production
+build, so leaving `unsafe-eval` out entirely is a real hardening win against
+script-injection attacks that rely on it. It broke local development,
+though: React's Fast Refresh and its dev-mode debugging tooling (rebuilding
+component stacks) do call `eval()`, and a strict CSP with no exception for
+it produces exactly the browser console error a real person hit while
+testing this locally ("eval() is not supported... make sure `unsafe-eval` is
+included").
+
+The fix makes the policy environment-aware rather than picking one setting
+for both cases: `'unsafe-eval'` and the local Turbopack HMR websocket
+(`ws://localhost:*`) are added to the CSP **only** when
+`NODE_ENV === 'development'`, and `Strict-Transport-Security` /
+`upgrade-insecure-requests` (which only make sense once real HTTPS exists)
+are now skipped in dev too, since forcing an HTTPS upgrade against a plain
+`http://localhost` dev server is a self-inflicted footgun. Production keeps
+the original, stricter policy untouched. This is a useful pattern in
+general: **"secure" isn't one fixed configuration** — a policy that's
+correct in production can be actively wrong in development, and the
+solution is to make the difference explicit and intentional (see the
+`isDev` branches in `next.config.js`), not to loosen the policy everywhere
+just to make local testing quiet.
+
 ---
 
 ## What is *not* handled for you, and needs your attention
