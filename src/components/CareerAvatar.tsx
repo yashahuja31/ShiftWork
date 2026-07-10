@@ -190,15 +190,23 @@ export function CareerAvatar({ careerId, mood, tense, ending, size = 128 }: Care
         )}
 
         <motion.g animate={{ rotate: pose.headTilt }} style={{ transformOrigin: '80px 95px' }} transition={{ duration: 0.6 }}>
-          {/* Arms (drawn first so the torso overlaps their shoulder joins cleanly) */}
+          {/* Arms (drawn first so the torso overlaps their shoulder joins cleanly).
+              `initial` is required here even though it matches `animate` on
+              first mount — x2/y2 are raw SVG geometry attributes with no
+              framer-motion-known default (unlike transform props like
+              rotate/y, which default to 0), so without an explicit starting
+              value the very first render tries to animate from "undefined"
+              and throws exactly the console warning this fixes. */}
           <motion.line
             x1="58" y1="112"
+            initial={{ x2: pose.leftHand.x, y2: pose.leftHand.y }}
             animate={{ x2: pose.leftHand.x, y2: pose.leftHand.y }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             stroke="#182238" strokeWidth="11" strokeLinecap="round"
           />
           <motion.line
             x1="102" y1="112"
+            initial={{ x2: pose.rightHand.x, y2: pose.rightHand.y }}
             animate={{ x2: pose.rightHand.x, y2: pose.rightHand.y }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             stroke="#182238" strokeWidth="11" strokeLinecap="round"
@@ -211,7 +219,8 @@ export function CareerAvatar({ careerId, mood, tense, ending, size = 128 }: Care
           <rect x="70" y="86" width="20" height="16" fill="#E8ECF1" />
           <circle cx="80" cy="55" r="38" fill="#E8ECF1" />
 
-          {/* Eyebrows */}
+          {/* Eyebrows — rotate is a transform prop with a built-in 0 default,
+              so no initial value is needed here the way it is for x2/y2/ry. */}
           <motion.line
             x1="58" y1="42" x2="70" y2="42"
             animate={{ rotate: pose.browAngle }}
@@ -225,15 +234,17 @@ export function CareerAvatar({ careerId, mood, tense, ending, size = 128 }: Care
             stroke="#0B1220" strokeWidth="3" strokeLinecap="round"
           />
 
-          {/* Eyes */}
+          {/* Eyes — same "needs an initial" reasoning as the arms above. */}
           <motion.ellipse
             cx="65" cy="52" rx="4.5"
+            initial={{ ry: 4.5 * pose.eyeScale }}
             animate={{ ry: blinking ? 0.5 : 4.5 * pose.eyeScale }}
             transition={{ duration: 0.12 }}
             fill="#0B1220"
           />
           <motion.ellipse
             cx="95" cy="52" rx="4.5"
+            initial={{ ry: 4.5 * pose.eyeScale }}
             animate={{ ry: blinking ? 0.5 : 4.5 * pose.eyeScale }}
             transition={{ duration: 0.12 }}
             fill="#0B1220"
@@ -241,6 +252,7 @@ export function CareerAvatar({ careerId, mood, tense, ending, size = 128 }: Care
 
           {/* Mouth */}
           <motion.path
+            initial={{ d: pose.mouth }}
             animate={{ d: pose.mouth }}
             transition={{ duration: 0.4 }}
             fill="none"

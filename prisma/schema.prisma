@@ -28,9 +28,13 @@ model User {
 }
 
 // One completed (or in-progress-and-abandoned) playthrough.
-// `decisions` stores the ordered list of choice ids the player made, so a
-// run can be replayed/audited without trusting anything the client sends
-// back later.
+// `decisions` stores the ordered list of choice ids the player made (as a
+// JSON-stringified array, not Prisma's `Json` type — SQLite's connector
+// doesn't support `Json` at all, and validating the schema against it fails
+// with P1012. A plain String column that the app JSON.stringify()s on write
+// and JSON.parse()s on read works identically across SQLite, Postgres, and
+// MySQL, so there's nothing to change here even when you flip the
+// datasource provider for production. See src/app/api/simulation/route.ts.
 model SimulationRun {
   id            String   @id @default(cuid())
   userId        String
@@ -43,7 +47,7 @@ model SimulationRun {
   finalRep      Int
   finalMoney    Int
   highlights    Int // generic "career milestone" counter; label shown in UI comes from each career's own JSON (highlightLabel)
-  decisions     Json
+  decisions     String // JSON.stringify(string[]) -- see comment above
   createdAt     DateTime @default(now())
 
   @@index([userId])

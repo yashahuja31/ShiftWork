@@ -187,6 +187,16 @@ npx prisma migrate dev --name init
 This creates `prisma/dev.db` (already git-ignored) and generates the Prisma
 client.
 
+> **Why `decisions` is a `String`, not Prisma's `Json` type:** SQLite's
+> Prisma connector doesn't support `Json` at all — an earlier version of
+> this schema used it and failed schema validation immediately (`P1012`)
+> the first time someone actually ran the migration. `decisions` is stored
+> as a JSON-stringified string instead (`JSON.stringify`/`JSON.parse` in
+> `src/app/api/simulation/route.ts`), which works identically on SQLite,
+> Postgres, and MySQL. If you add your own `Json`-shaped column later, keep
+> this pattern rather than reaching for Prisma's `Json` type, unless you've
+> already committed to Postgres/MySQL for local dev too.
+
 For production, switch `provider` in `prisma/schema.prisma` from `sqlite` to
 `postgresql`, point `DATABASE_URL` at your instance, and re-run
 `prisma migrate dev` (or `prisma migrate deploy` in CI/CD). No other code

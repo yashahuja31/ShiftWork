@@ -5,6 +5,49 @@ import { rateLimit } from '@/lib/rateLimit';
 import { saveRunSchema } from '@/lib/validation';
 import { replay, InvalidDecisionError } from '@/lib/simulationEngine';
 
+// Mirrors the Prisma-generated SimulationRun model shape. Annotated
+// explicitly here (rather than relying on inference from `db.simulationRun`)
+// so this compiles the same way regardless of exactly how the generated
+// client's types come through in a given environment.
+interface SimulationRunRow {
+  id: string;
+  userId: string;
+  career: string;
+  difficulty: string;
+  endingKey: string;
+  finalStress: number;
+  finalEnergy: number;
+  finalRep: number;
+  finalMoney: number;
+  highlights: number;
+  decisions: string;
+  createdAt: Date;
+}
+
+// Prisma throws a known-request error with a `.code` of "P2021" when a
+// table referenced in a query doesn't exist yet — almost always meaning
+// `npx prisma migrate dev --name init` was never run against this database.
+// This checks the `.code` property directly (duck-typed) rather than
+// `instanceof Prisma.PrismaClientKnownRequestError`: both work, but this
+// version doesn't require importing the `Prisma` namespace just to catch
+// one error code, and every Prisma error object carries `.code` regardless
+// of exactly how the error classes are exported in a given client version.
+function isMissingTableError(err: unknown): boolean {
+  return typeof err === 'object' && err !== null && 'code' in err && (err as { code?: unknown }).code === 'P2021';
+}
+
+const MISSING_TABLE_MESSAGE =
+  'Database tables not found. Run `npx prisma migrate dev --name init` in the project root, then try again. See README.md > "Set up the database".';
+
+function handleMissingTable(err: unknown): NextResponse | null {
+  if (!isMissingTableError(err)) return null;
+  // Deliberately loud: this is where a developer running `npm run dev` is
+  // actually watching, and the raw Prisma stack trace alone doesn't say
+  // what to run to fix it.
+  console.error(`\n[shiftwork] ${MISSING_TABLE_MESSAGE}\n`);
+  return NextResponse.json({ error: MISSING_TABLE_MESSAGE }, { status: 500 });
+}
+
 export async function POST(req: NextRequest) {
   // 1. AuthN — never trust a userId from the request body. The only
   //    identity that matters is the one Clerk verified from the session
@@ -47,29 +90,35 @@ export async function POST(req: NextRequest) {
   }
 
   // 5. Ensure the local User row exists (first run for this account).
-  const user = await currentUser();
-  await db.user.upsert({
-    where: { id: userId },
-    update: {},
-    create: { id: userId, email: user?.primaryEmailAddress?.emailAddress ?? `${userId}@unknown.local` },
-  });
+  try {
+    const user = await currentUser();
+    await db.user.upsert({
+      where: { id: userId },
+      update: {},
+      create: { id: userId, email: user?.primaryEmailAddress?.emailAddress ?? `${userId}@unknown.local` },
+    });
 
-  const run = await db.simulationRun.create({
-    data: {
-      userId,
-      career: parsed.data.career,
-      difficulty: parsed.data.difficulty,
-      endingKey: result.endingKey,
-      finalStress: result.finalStats.stress,
-      finalEnergy: result.finalStats.energy,
-      finalRep: result.finalStats.rep,
-      finalMoney: result.finalStats.money,
-      highlights: result.finalStats.highlights,
-      decisions: parsed.data.decisions,
-    },
-  });
+    const run = await db.simulationRun.create({
+      data: {
+        userId,
+        career: parsed.data.career,
+        difficulty: parsed.data.difficulty,
+        endingKey: result.endingKey,
+        finalStress: result.finalStats.stress,
+        finalEnergy: result.finalStats.energy,
+        finalRep: result.finalStats.rep,
+        finalMoney: result.finalStats.money,
+        highlights: result.finalStats.highlights,
+        decisions: JSON.stringify(parsed.data.decisions),
+      },
+    });
 
-  return NextResponse.json({ id: run.id, endingKey: result.endingKey, finalStats: result.finalStats });
+    return NextResponse.json({ id: run.id, endingKey: result.endingKey, finalStats: result.finalStats });
+  } catch (err) {
+    const missingTableResponse = handleMissingTable(err);
+    if (missingTableResponse) return missingTableResponse;
+    throw err;
+  }
 }
 
 export async function GET() {
@@ -80,11 +129,23 @@ export async function GET() {
 
   // Scoped strictly to the caller's own runs — never accept a userId query
   // param here, or one signed-in user could read another's history.
-  const runs = await db.simulationRun.findMany({
-    where: { userId },
-    orderBy: { createdAt: 'desc' },
-    take: 20,
-  });
-
-  return NextResponse.json({ runs });
+  try {
+    const runs = await db.simulationRun.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 20,
+    });
+    // Stored as a JSON string (see schema.prisma for why) -- parse it back
+    // to an array so this endpoint's actual response shape doesn't leak
+    // that storage detail to whatever ends up consuming it.
+    const parsedRuns = runs.map((run: SimulationRunRow) => ({
+      ...run,
+      decisions: JSON.parse(run.decisions) as string[],
+    }));
+    return NextResponse.json({ runs: parsedRuns });
+  } catch (err) {
+    const missingTableResponse = handleMissingTable(err);
+    if (missingTableResponse) return missingTableResponse;
+    throw err;
+  }
 }
