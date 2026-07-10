@@ -30,7 +30,8 @@
             "rep": 4
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "late_start": {
       "time": "05:20 AM",
@@ -42,7 +43,8 @@
           "next": "commute",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "commute": {
       "time": "05:40 AM",
@@ -67,7 +69,8 @@
             "energy": -3
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "arrive_hospital": {
       "time": "06:00 AM",
@@ -92,7 +95,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "morning_rounds": {
       "time": "06:45 AM",
@@ -116,7 +120,8 @@
             "energy": 2
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "or_prep": {
       "time": "08:15 AM",
@@ -125,10 +130,11 @@
         {
           "id": "begin",
           "text": "Begin the procedure",
-          "next": "surgery_start",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "surgery_start": {
       "time": "09:15 AM",
@@ -172,7 +178,8 @@
             "energy": -4
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "surgery_outcome_continue": {
       "time": "09:40 AM",
@@ -186,7 +193,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "surgery_outcome_stabilize": {
       "time": "09:50 AM",
@@ -200,7 +208,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "surgery_outcome_team": {
       "time": "09:45 AM",
@@ -214,7 +223,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "surgery_outcome_senior": {
       "time": "10:05 AM",
@@ -228,7 +238,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "lunch_break": {
       "time": "01:00 PM",
@@ -254,7 +265,8 @@
             "stress": 8
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "afternoon_call": {
       "time": "02:30 PM",
@@ -280,7 +292,8 @@
             "energy": -3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "equipment_failure": {
       "time": "04:00 PM",
@@ -305,7 +318,8 @@
             "rep": -9
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "family_conversation": {
       "time": "05:30 PM",
@@ -329,7 +343,8 @@
             "rep": 2
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "evening_rounds": {
       "time": "07:00 PM",
@@ -341,7 +356,8 @@
           "next": "handoff_night_shift",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "handoff_night_shift": {
       "time": "08:00 PM",
@@ -365,7 +381,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "end_shift": {
       "time": "08:15 PM",
@@ -377,7 +394,40 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "rest"
+    },
+    "random_moment": {
+      "time": "08:20 AM",
+      "text": "While the room finishes prepping, the little in-between moments happen the way they always do — never quite the same twice.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "resident_joke",
+          "text": "Your resident cracks a joke that breaks the tension",
+          "next": "surgery_start",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "monitor_glitch",
+          "text": "A monitor briefly glitches — false alarm",
+          "next": "surgery_start",
+          "effects": {
+            "stress": 3
+          }
+        },
+        {
+          "id": "quiet_focus",
+          "text": "The room stays quiet, everyone already focused",
+          "next": "surgery_start",
+          "effects": {
+            "energy": -2
+          }
+        }
+      ],
+      "environment": "alert"
     }
   },
   "endings": {
@@ -401,5 +451,18 @@
       "title": "Under Review",
       "blurb": "A few calls today are going to come up in tomorrow's case review. Nobody was hurt — but questions are coming."
     }
+  },
+  "calibration": {
+    "p1": 59.2,
+    "p5": 63.3,
+    "p10": 65.8,
+    "p25": 69.6,
+    "p35": 71.5,
+    "p50": 74.3,
+    "p65": 77.0,
+    "p75": 79.3,
+    "p90": 83.2,
+    "p95": 85.4,
+    "p99": 88.3
   }
 }

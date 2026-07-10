@@ -28,7 +28,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "mise_en_place": {
       "time": "09:00 AM",
@@ -37,10 +38,11 @@
         {
           "id": "continue",
           "text": "Get to work",
-          "next": "staff_issue",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "staff_issue": {
       "time": "11:30 AM",
@@ -66,7 +68,8 @@
             "rep": 2
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "inventory_problem": {
       "time": "01:00 PM",
@@ -91,7 +94,8 @@
             "rep": -6
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "pre_service_briefing": {
       "time": "04:00 PM",
@@ -103,7 +107,8 @@
           "next": "service_start",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "service_start": {
       "time": "05:00 PM",
@@ -115,7 +120,8 @@
           "next": "critic_table",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "critic_table": {
       "time": "06:45 PM",
@@ -158,7 +164,8 @@
             "rep": -12
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "critic_outcome_remake": {
       "time": "07:05 PM",
@@ -172,7 +179,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "critic_outcome_adjust": {
       "time": "06:52 PM",
@@ -186,7 +194,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "critic_outcome_personal": {
       "time": "06:58 PM",
@@ -200,7 +209,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "critic_outcome_ignore": {
       "time": "06:50 PM",
@@ -212,7 +222,8 @@
           "next": "equipment_failure",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "equipment_failure": {
       "time": "08:00 PM",
@@ -237,7 +248,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "vip_walkin": {
       "time": "09:00 PM",
@@ -261,7 +273,8 @@
             "energy": 3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "dessert_course": {
       "time": "09:45 PM",
@@ -273,7 +286,8 @@
           "next": "closing_kitchen",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "closing_kitchen": {
       "time": "11:00 PM",
@@ -297,7 +311,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "staff_meal": {
       "time": "11:30 PM",
@@ -321,7 +336,8 @@
             "stress": 4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "post_service_review": {
       "time": "12:15 AM",
@@ -345,7 +361,8 @@
             "energy": 3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "end_shift": {
       "time": "12:30 AM",
@@ -357,7 +374,41 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "rest"
+    },
+    "random_moment": {
+      "time": "10:00 AM",
+      "text": "Prep continues, and the kitchen fills with the small, unrepeatable moments that make up most of any given morning.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "delivery_early",
+          "text": "The produce delivery arrives early and pristine",
+          "next": "staff_issue",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "knife_slip",
+          "text": "A minor knife slip — quickly bandaged, nothing serious",
+          "next": "staff_issue",
+          "effects": {
+            "stress": 5,
+            "energy": -2
+          }
+        },
+        {
+          "id": "playlist_moment",
+          "text": "Someone puts on the kitchen's favorite playlist",
+          "next": "staff_issue",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
     }
   },
   "endings": {
@@ -381,5 +432,18 @@
       "title": "Rough Notice",
       "blurb": "Word is already getting around about tonight's service, and not the good kind. Table twelve's review is going to sting."
     }
+  },
+  "calibration": {
+    "p1": 61.1,
+    "p5": 64.5,
+    "p10": 66.6,
+    "p25": 69.9,
+    "p35": 71.4,
+    "p50": 73.5,
+    "p65": 75.6,
+    "p75": 77.2,
+    "p90": 80.4,
+    "p95": 82.3,
+    "p99": 85.5
   }
 }

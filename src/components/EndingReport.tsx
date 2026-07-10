@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { compatibilityScore, getEnding, type EndingKey, type Stats } from '@/lib/simulationEngine';
+import { compatibilityScore, getEnding, getGraph, type EndingKey, type Stats } from '@/lib/simulationEngine';
+import { moodFor } from '@/lib/mood';
+import { CareerAvatar } from '@/components/CareerAvatar';
 
 interface EndingReportProps {
   careerId: string;
@@ -64,8 +66,9 @@ function Confetti() {
 }
 
 export function EndingReport({ careerId, stats, endingKey, saving, highlightLabel }: EndingReportProps) {
+  const graph = getGraph(careerId);
   const ending = getEnding(careerId, endingKey);
-  const score = compatibilityScore(stats, endingKey);
+  const score = compatibilityScore(stats, graph.calibration);
 
   return (
     <motion.div
@@ -85,6 +88,10 @@ export function EndingReport({ careerId, stats, endingKey, saving, highlightLabe
       className="relative max-w-xl mx-auto flex flex-col gap-6"
     >
       {endingKey === 'triumphant' && <Confetti />}
+
+      <div className="flex justify-center">
+        <CareerAvatar careerId={careerId} mood={moodFor(stats)} ending={endingKey} size={140} />
+      </div>
 
       <div>
         <p className="font-mono text-xs uppercase tracking-widest text-vital mb-2">Shift complete</p>
@@ -117,10 +124,11 @@ export function EndingReport({ careerId, stats, endingKey, saving, highlightLabe
         transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 18 }}
         className="rounded-xl border border-vital/40 bg-vital/5 p-6 text-center"
       >
-        <p className="text-[10px] uppercase tracking-widest text-muted font-mono mb-1">
-          Would you enjoy this career?
-        </p>
+        <p className="text-[10px] uppercase tracking-widest text-muted font-mono mb-1">Career compatibility</p>
         <p className="font-display text-5xl text-vital">{score}%</p>
+        <p className="text-xs text-muted mt-1">
+          Better than {score}% of people who&apos;ve tried this shift
+        </p>
       </motion.div>
 
       <p className="text-xs font-mono text-muted text-center">

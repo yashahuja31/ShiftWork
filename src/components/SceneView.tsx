@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import type { Choice, Scene } from '@/lib/simulationEngine';
+import { pickRandomChoice, type Choice, type Scene } from '@/lib/simulationEngine';
+import { SceneBackdrop } from '@/components/SceneBackdrop';
 
 interface SceneViewProps {
   sceneId: string;
@@ -45,6 +46,20 @@ function useTypewriter(text: string, speed = 16): { shown: string; done: boolean
 function SceneViewInner({ sceneId, scene, onChoose, disabled }: SceneViewProps) {
   const { shown, done } = useTypewriter(scene.text);
   const isBigDecision = scene.choices.length >= 4;
+  const isRandomized = scene.randomized === true;
+
+  // Randomized scenes aren't a player decision — once the text finishes
+  // typing, auto-advance on a short beat instead of waiting for a click.
+  // This is what keeps two playthroughs of the same career from feeling
+  // identical: which branch fires here varies run to run. The pick is still
+  // routed through the normal onChoose path, so it's recorded and replayed
+  // exactly like a click would be — see pickRandomChoice in
+  // simulationEngine.ts.
+  useEffect(() => {
+    if (!isRandomized || !done || disabled) return;
+    const timer = setTimeout(() => onChoose(pickRandomChoice(scene)), 950);
+    return () => clearTimeout(timer);
+  }, [isRandomized, done, disabled, scene, onChoose]);
 
   return (
     <motion.div
@@ -55,7 +70,10 @@ function SceneViewInner({ sceneId, scene, onChoose, disabled }: SceneViewProps) 
       transition={{ duration: 0.25 }}
       className="flex flex-col gap-6"
     >
-      <p className="font-mono text-xs uppercase tracking-widest text-vital">{scene.time}</p>
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-xs uppercase tracking-widest text-vital">{scene.time}</p>
+        <SceneBackdrop environment={scene.environment} />
+      </div>
 
       <motion.div
         animate={
@@ -72,29 +90,41 @@ function SceneViewInner({ sceneId, scene, onChoose, disabled }: SceneViewProps) 
         </p>
       </motion.div>
 
-      <motion.div
-        initial={false}
-        animate={{ opacity: done ? 1 : 0, pointerEvents: done ? 'auto' : 'none' }}
-        transition={{ duration: 0.35 }}
-        className="flex flex-col gap-3 mt-2"
-      >
-        {scene.choices.map((choice, i) => (
-          <motion.button
-            key={choice.id}
-            type="button"
-            disabled={disabled || !done}
-            onClick={() => onChoose(choice)}
-            initial={{ opacity: 0, y: 8 }}
-            animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.3, delay: done ? i * 0.06 : 0 }}
-            whileTap={{ scale: 0.98 }}
-            whileHover={done ? { scale: 1.01 } : undefined}
-            className="text-left rounded-lg border border-line bg-panel2 px-5 py-4 text-ivory hover:border-vital hover:bg-panel disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {choice.text}
-          </motion.button>
-        ))}
-      </motion.div>
+      {isRandomized ? (
+        <motion.div
+          initial={false}
+          animate={{ opacity: done ? 1 : 0 }}
+          transition={{ duration: 0.35 }}
+          className="flex items-center gap-2 text-muted font-mono text-xs uppercase tracking-widest"
+        >
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-vital animate-pulse" />
+          Events unfolding
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={false}
+          animate={{ opacity: done ? 1 : 0, pointerEvents: done ? 'auto' : 'none' }}
+          transition={{ duration: 0.35 }}
+          className="flex flex-col gap-3 mt-2"
+        >
+          {scene.choices.map((choice, i) => (
+            <motion.button
+              key={choice.id}
+              type="button"
+              disabled={disabled || !done}
+              onClick={() => onChoose(choice)}
+              initial={{ opacity: 0, y: 8 }}
+              animate={done ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+              transition={{ duration: 0.3, delay: done ? i * 0.06 : 0 }}
+              whileTap={{ scale: 0.98 }}
+              whileHover={done ? { scale: 1.01 } : undefined}
+              className="text-left rounded-lg border border-line bg-panel2 px-5 py-4 text-ivory hover:border-vital hover:bg-panel disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {choice.text}
+            </motion.button>
+          ))}
+        </motion.div>
+      )}
     </motion.div>
   );
 }

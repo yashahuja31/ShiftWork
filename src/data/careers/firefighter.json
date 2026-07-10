@@ -1,0 +1,394 @@
+{
+  "id": "firefighter",
+  "title": "The Alarm Never Waits",
+  "emoji": "🚒",
+  "tagline": "A structure fire, a possible occupant inside, and a commander who needs an answer in seconds.",
+  "highlightLabel": "Lives protected",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "Twenty-four on, forty-eight off — today's the first of three. The station's quiet for now, coffee going, gear checked and re-checked out of habit more than need.",
+      "choices": [
+        {
+          "id": "full_gear_check",
+          "text": "Do a full, unhurried check of your gear before anything else",
+          "next": "morning_drill",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_check",
+          "text": "Quick check — you know it's fine",
+          "next": "morning_drill",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_drill": {
+      "time": "07:30 AM",
+      "text": "Morning drill: ladder throws and hose deployment, the same reps that make everything else automatic when it counts.",
+      "choices": [
+        {
+          "id": "push_hard",
+          "text": "Push the drill harder than usual",
+          "next": "random_moment",
+          "effects": {
+            "energy": -6,
+            "rep": 6,
+            "stress": 3
+          }
+        },
+        {
+          "id": "standard_pace",
+          "text": "Run it at the standard pace",
+          "next": "random_moment",
+          "effects": {
+            "energy": -2
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:15 AM",
+      "text": "The rest of the morning settles into the ordinary rhythm of station life — the small, different things that fill the space between calls.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "rookie_question",
+          "text": "A rookie asks a good question you enjoy answering",
+          "next": "first_call",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "equipment_hiccup",
+          "text": "A minor equipment hiccup during inspection, quickly fixed",
+          "next": "first_call",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_breakfast",
+          "text": "Someone actually cooks a real breakfast for the crew",
+          "next": "first_call",
+          "effects": {
+            "stress": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "first_call": {
+      "time": "09:40 AM",
+      "text": "First tone of the day: a car fire, contained, no injuries. Routine, but nothing about pulling gear on ever feels fully routine.",
+      "choices": [
+        {
+          "id": "thorough_scene_check",
+          "text": "Do a thorough check of the surrounding area before clearing",
+          "next": "structure_fire_dispatch",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_clear",
+          "text": "Clear the scene quickly once the fire's out",
+          "next": "structure_fire_dispatch",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "structure_fire_dispatch": {
+      "time": "12:15 PM",
+      "text": "Tones drop again, different this time — structure fire, residential, smoke showing on the initial report. Your crew is first due.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Roll out",
+          "next": "on_scene_size_up",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "on_scene_size_up": {
+      "time": "12:22 PM",
+      "text": "Heavy smoke from the second floor, no visible flame from the street yet. A neighbor is shouting that someone might still be inside.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Report the size-up to command",
+          "next": "search_decision",
+          "effects": {}
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "search_decision": {
+      "time": "12:23 PM",
+      "text": "Command needs a call, now: the neighbor's report is unconfirmed, the smoke is thickening, and every second changes the odds inside.",
+      "choices": [
+        {
+          "id": "search_immediately",
+          "text": "Go in for a primary search immediately",
+          "next": "search_outcome_immediate",
+          "effects": {
+            "stress": 16,
+            "rep": 10
+          }
+        },
+        {
+          "id": "wait_for_backup",
+          "text": "Wait the ninety seconds for the second engine before entering",
+          "next": "search_outcome_wait",
+          "effects": {
+            "stress": -6,
+            "rep": -8
+          }
+        },
+        {
+          "id": "ventilate_first",
+          "text": "Ventilate the roof first to improve conditions before entry",
+          "next": "search_outcome_ventilate",
+          "effects": {
+            "stress": 8,
+            "rep": 8
+          }
+        },
+        {
+          "id": "defensive_pullback",
+          "text": "Call for a defensive attack from outside — structural risk is too high",
+          "next": "search_outcome_defensive",
+          "effects": {
+            "stress": -10,
+            "rep": -12
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "search_outcome_immediate": {
+      "time": "12:30 PM",
+      "text": "Low and fast through the smoke, you find the bedroom and the person inside, disoriented but alive. Out the window and down the ladder in under two minutes.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get them to EMS and go back to work",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "search_outcome_wait": {
+      "time": "12:32 PM",
+      "text": "The second engine arrives and the search goes in as a two-team operation, exactly by protocol. It works, and it takes the extra ninety seconds it was always going to take.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the operation",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "search_outcome_ventilate": {
+      "time": "12:31 PM",
+      "text": "The roof cut clears the smoke layer fast, and the search that follows is faster and safer for it. A little more time up front bought a lot more visibility.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the operation",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "search_outcome_defensive": {
+      "time": "12:30 PM",
+      "text": "The call goes defensive. The structure is fully involved within minutes of your pullback — a call that, on the numbers, was almost certainly the right one, and still doesn't feel clean.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the operation",
+          "next": "afternoon_lull",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_lull": {
+      "time": "15:00 PM",
+      "text": "Back at the station, gear cleaned, air bottles refilled. The afternoon stretches out with nothing on the board — for now.",
+      "choices": [
+        {
+          "id": "rest_properly",
+          "text": "Actually rest while you can",
+          "next": "medical_call",
+          "effects": {
+            "energy": 12,
+            "stress": -6
+          }
+        },
+        {
+          "id": "stay_ready",
+          "text": "Stay geared up and alert instead of fully resting",
+          "next": "medical_call",
+          "effects": {
+            "rep": 4,
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "medical_call": {
+      "time": "17:30 PM",
+      "text": "A medical call: elderly resident, difficulty breathing. Your crew arrives before the ambulance.",
+      "choices": [
+        {
+          "id": "take_charge_medical",
+          "text": "Take charge of initial care until EMS arrives",
+          "next": "training_moment",
+          "effects": {
+            "rep": 10,
+            "stress": 5
+          }
+        },
+        {
+          "id": "stabilize_and_wait",
+          "text": "Stabilize the basics and wait for EMS to take over",
+          "next": "training_moment",
+          "effects": {
+            "rep": -4,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "training_moment": {
+      "time": "19:00 PM",
+      "text": "Evening training block: today it's a new rookie's first real run-through of extraction techniques, and they're nervous about it.",
+      "choices": [
+        {
+          "id": "patient_mentoring",
+          "text": "Take the extra time to mentor them through it properly",
+          "next": "night_call",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "brief_correction",
+          "text": "Give brief corrections and move the group along",
+          "next": "night_call",
+          "effects": {
+            "energy": 4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "night_call": {
+      "time": "22:30 PM",
+      "text": "A late call: a kitchen fire, small, out by the time you arrive, but the family is badly shaken.",
+      "choices": [
+        {
+          "id": "reassure_family",
+          "text": "Take the extra few minutes to reassure the family properly",
+          "next": "end_shift",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "energy": -3
+          }
+        },
+        {
+          "id": "wrap_quickly",
+          "text": "Wrap up quickly — it's late and you're due back at 6",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "end_shift": {
+      "time": "23:15 PM",
+      "text": "Back at the station, gear hung, ready for whatever the rest of the night brings — or doesn't.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Try to get some sleep before the next tone",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "rest"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Save",
+      "blurb": "Every call held, and one of them will be talked about at the station for years. This is the shift that reminds everyone why they signed up."
+    },
+    "steady_hand": {
+      "title": "Solid Shift",
+      "blurb": "No headlines, no hesitation. Just careful, competent work on every call that came in."
+    },
+    "ordinary_day": {
+      "title": "Another Twenty-Four",
+      "blurb": "A normal shift by the job's own strange standard — a structure fire, a medical call, and everyone went home the same way they came in."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You made it to shift change, but you're not sure how. This pace, call after call, has a real cost — rest before the next one."
+    },
+    "written_up": {
+      "title": "After-Action Review",
+      "blurb": "A few of today's calls are heading into a formal after-action review. Everyone's safe. The department still wants to understand the decisions."
+    }
+  },
+  "calibration": {
+    "p1": 65.5,
+    "p5": 69.2,
+    "p10": 71.4,
+    "p25": 75.4,
+    "p35": 77.1,
+    "p50": 79.5,
+    "p65": 81.7,
+    "p75": 83.3,
+    "p90": 86.2,
+    "p95": 87.9,
+    "p99": 90.5
+  }
+}

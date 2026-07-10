@@ -1,0 +1,402 @@
+{
+  "id": "software_engineer",
+  "title": "Ship It Before Midnight",
+  "emoji": "💻",
+  "tagline": "A production outage, a release everyone's watching, and a rollback button that isn't a free action.",
+  "highlightLabel": "Bugs prevented",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "07:30 AM",
+      "text": "Today's the day the quarter's biggest feature ships. Slack already has forty messages in the release channel before you've had coffee.",
+      "choices": [
+        {
+          "id": "read_everything",
+          "text": "Read through the entire release thread before responding to anything",
+          "next": "standup",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "skim_and_move",
+          "text": "Skim for anything urgent and get moving",
+          "next": "standup",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "standup": {
+      "time": "09:00 AM",
+      "text": "Standup: the release is scheduled for 2 PM. QA flagged one edge case yesterday that got marked \"won't fix for this release.\"",
+      "choices": [
+        {
+          "id": "push_on_edge_case",
+          "text": "Push back and ask the team to reconsider the edge case",
+          "next": "code_review",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "accept_the_call",
+          "text": "Accept the team's call and move forward",
+          "next": "code_review",
+          "effects": {
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "code_review": {
+      "time": "10:00 AM",
+      "text": "A teammate's pull request needs review before the release branch can be cut. The diff is large.",
+      "choices": [
+        {
+          "id": "thorough_review",
+          "text": "Do a genuinely thorough review, line by line",
+          "next": "random_moment",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "quick_approve",
+          "text": "Skim it and approve — you trust them",
+          "next": "random_moment",
+          "effects": {
+            "rep": -5,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "10:45 AM",
+      "text": "The morning fills in around the review, the way any office morning does — a little differently every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "good_coffee_run",
+          "text": "A teammate does a coffee run for the whole floor",
+          "next": "deploy_prep",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "slack_outage",
+          "text": "Slack goes down for twenty minutes at the worst time",
+          "next": "deploy_prep",
+          "effects": {
+            "stress": 5
+          }
+        },
+        {
+          "id": "nice_playlist",
+          "text": "Someone puts on a genuinely great office playlist",
+          "next": "deploy_prep",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "deploy_prep": {
+      "time": "12:00 PM",
+      "text": "Pre-deploy checklist: migrations staged, feature flags configured, rollback plan documented — in theory.",
+      "choices": [
+        {
+          "id": "dry_run_rollback",
+          "text": "Actually dry-run the rollback plan before deploying",
+          "next": "lunch_break",
+          "effects": {
+            "energy": -5,
+            "rep": 10
+          }
+        },
+        {
+          "id": "trust_the_doc",
+          "text": "Trust the documented plan without testing it",
+          "next": "lunch_break",
+          "effects": {
+            "rep": -6
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "lunch_break": {
+      "time": "12:45 PM",
+      "text": "An hour until the scheduled deploy window. Half the team is already glued to their screens instead of eating.",
+      "choices": [
+        {
+          "id": "eat_properly",
+          "text": "Actually step away and eat",
+          "next": "deploy_start",
+          "effects": {
+            "energy": 12,
+            "stress": -6
+          }
+        },
+        {
+          "id": "eat_at_desk",
+          "text": "Eat at your desk while double-checking the release notes",
+          "next": "deploy_start",
+          "effects": {
+            "rep": 4,
+            "stress": 4
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "deploy_start": {
+      "time": "14:00 PM",
+      "text": "The deploy kicks off. Dashboards up on every screen, the whole team watching error rates tick across in real time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Monitor the rollout",
+          "next": "production_outage",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "production_outage": {
+      "time": "14:12 PM",
+      "text": "Twelve minutes in, error rates spike hard — the edge case from yesterday's standup, live in production, taking checkout down for a slice of users and climbing.",
+      "choices": [
+        {
+          "id": "rollback_immediately",
+          "text": "Roll back the deploy immediately",
+          "next": "outage_outcome_rollback",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "money": -30
+          }
+        },
+        {
+          "id": "hotfix_forward",
+          "text": "Push a hotfix forward instead of rolling back",
+          "next": "outage_outcome_hotfix",
+          "effects": {
+            "stress": 16,
+            "rep": 10
+          }
+        },
+        {
+          "id": "page_everyone",
+          "text": "Page the whole on-call rotation before deciding anything",
+          "next": "outage_outcome_page",
+          "effects": {
+            "stress": -2,
+            "rep": -4
+          }
+        },
+        {
+          "id": "monitor_and_wait",
+          "text": "Monitor closely and wait to see if it's self-limiting",
+          "next": "outage_outcome_wait",
+          "effects": {
+            "stress": 12,
+            "rep": -10,
+            "money": -20
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "outage_outcome_rollback": {
+      "time": "14:18 PM",
+      "text": "The rollback executes clean, exactly as dry-run tested it this morning. Error rates flatten within ninety seconds. The dry run this morning just paid for itself.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Start the retro on what happened",
+          "next": "postmortem",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "outage_outcome_hotfix": {
+      "time": "14:25 PM",
+      "text": "Under real pressure, the fix goes out fast and it's correct — a genuinely impressive read of the problem under a ticking clock. It's also a risk that could have gone the other way.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Start the retro on what happened",
+          "next": "postmortem",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "outage_outcome_page": {
+      "time": "14:22 PM",
+      "text": "Half the engineering org is now staring at the same dashboard. The rollback happens a few minutes later than it needed to, with several more opinions in the room than the decision required.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Start the retro on what happened",
+          "next": "postmortem",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "outage_outcome_wait": {
+      "time": "14:30 PM",
+      "text": "It wasn't self-limiting. Eighteen minutes of degraded checkout before the rollback finally goes out — eighteen minutes that didn't need to happen.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Start the retro on what happened",
+          "next": "postmortem",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "postmortem": {
+      "time": "16:00 PM",
+      "text": "A blameless postmortem doc needs writing while everything's still fresh — the temptation to soften the timeline is real.",
+      "choices": [
+        {
+          "id": "write_honest_timeline",
+          "text": "Write the full, honest timeline, including your own calls",
+          "next": "afternoon_recovery",
+          "effects": {
+            "rep": 12,
+            "energy": -5
+          }
+        },
+        {
+          "id": "soften_it",
+          "text": "Soften the rougher parts of the timeline",
+          "next": "afternoon_recovery",
+          "effects": {
+            "rep": -10
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_recovery": {
+      "time": "17:00 PM",
+      "text": "The rest of the team is rattled. Someone needs to decide what happens with the release for tomorrow.",
+      "choices": [
+        {
+          "id": "support_team_first",
+          "text": "Check in with the team before touching the release plan",
+          "next": "evening_fix",
+          "effects": {
+            "stress": -6,
+            "rep": 8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "replan_immediately",
+          "text": "Get straight into replanning tomorrow's release",
+          "next": "evening_fix",
+          "effects": {
+            "rep": -4,
+            "stress": 4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "evening_fix": {
+      "time": "19:00 PM",
+      "text": "The actual fix for the edge case needs writing properly now, not as a rushed hotfix — tests included this time.",
+      "choices": [
+        {
+          "id": "write_tests_first",
+          "text": "Write the tests first, then the fix",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "fix_then_test",
+          "text": "Ship the fix and backfill tests tomorrow",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -5
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "21:00 PM",
+      "text": "The dashboards are green again. Tomorrow's release will carry the weight of today whether anyone says so out loud or not.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Close the laptop",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Incident Commander",
+      "blurb": "The outage was real, and the response was clean — fast, calm, honestly documented. This is the incident people cite when they explain why they trust you on-call."
+    },
+    "steady_hand": {
+      "title": "Solid Response",
+      "blurb": "No heroics, no panic. Just careful engineering under real pressure, start to finish."
+    },
+    "ordinary_day": {
+      "title": "Shipped, Eventually",
+      "blurb": "A release day with a real bump in it, handled, closed out. Tomorrow's release is already on the calendar."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "The dashboards are green, but you're not sure you are. This pace, incident after incident, has a real cost."
+    },
+    "written_up": {
+      "title": "Postmortem Follow-Up",
+      "blurb": "Something about today's incident response is going in front of engineering leadership. The outage is resolved. The process still needs answers."
+    }
+  },
+  "calibration": {
+    "p1": 53.2,
+    "p5": 59.4,
+    "p10": 63.1,
+    "p25": 69.5,
+    "p35": 72.7,
+    "p50": 76.5,
+    "p65": 80.2,
+    "p75": 82.5,
+    "p90": 87.0,
+    "p95": 89.0,
+    "p99": 92.6
+  }
+}

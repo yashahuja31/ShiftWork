@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   applyEffects,
@@ -13,10 +13,12 @@ import {
   type Stats,
 } from '@/lib/simulationEngine';
 import { gradientForTime } from '@/lib/dayCycle';
+import { moodFor } from '@/lib/mood';
 import { SceneView } from '@/components/SceneView';
 import { VitalsMonitor } from '@/components/VitalsMonitor';
 import { EndingReport } from '@/components/EndingReport';
 import { FloatingDeltas, type DeltaBadge } from '@/components/FloatingDeltas';
+import { CareerAvatar } from '@/components/CareerAvatar';
 
 type Difficulty = 'normal' | 'realistic' | 'chaos';
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
@@ -47,53 +49,65 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
   const scene = useMemo(() => getScene(graph, sceneId), [graph, sceneId]);
   const gradient = useMemo(() => gradientForTime(scene.time), [scene.time]);
 
-  async function persistRun(finalDecisions: string[], finalDifficulty: Difficulty) {
-    setSaving('saving');
-    try {
-      const res = await fetch('/api/simulation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ career: careerId, difficulty: finalDifficulty, decisions: finalDecisions }),
-      });
-      if (!res.ok) throw new Error('save failed');
-      setSaving('saved');
-    } catch {
-      setSaving('error');
-    }
-  }
+  const persistRun = useCallback(
+    async (finalDecisions: string[], finalDifficulty: Difficulty) => {
+      setSaving('saving');
+      try {
+        const res = await fetch('/api/simulation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ career: careerId, difficulty: finalDifficulty, decisions: finalDecisions }),
+        });
+        if (!res.ok) throw new Error('save failed');
+        setSaving('saved');
+      } catch {
+        setSaving('error');
+      }
+    },
+    [careerId],
+  );
 
-  function showDeltaBadges(effects: Choice['effects']) {
-    const stamp = Date.now();
-    const next: DeltaBadge[] = Object.entries(effects)
-      .filter(([, value]) => typeof value === 'number' && value !== 0)
-      .map(([key, value]) => ({
-        id: `${stamp}-${key}`,
-        label: key === 'highlights' ? graph.highlightLabel.toUpperCase() : EFFECT_LABELS[key] ?? key.toUpperCase(),
-        value: value as number,
-        isMoney: key === 'money',
-      }));
-    setBadges(next);
-    // Clear after the fly-up animation finishes so they don't linger as
-    // static text once framer-motion's exit transition completes.
-    setTimeout(() => setBadges([]), 1700);
-  }
+  const showDeltaBadges = useCallback(
+    (effects: Choice['effects']) => {
+      const stamp = Date.now();
+      const next: DeltaBadge[] = Object.entries(effects)
+        .filter(([, value]) => typeof value === 'number' && value !== 0)
+        .map(([key, value]) => ({
+          id: `${stamp}-${key}`,
+          label: key === 'highlights' ? graph.highlightLabel.toUpperCase() : (EFFECT_LABELS[key] ?? key.toUpperCase()),
+          value: value as number,
+          isMoney: key === 'money',
+        }));
+      setBadges(next);
+      // Clear after the fly-up animation finishes so they don't linger as
+      // static text once framer-motion's exit transition completes.
+      setTimeout(() => setBadges([]), 1700);
+    },
+    [graph.highlightLabel],
+  );
 
-  function handleChoose(choice: Choice) {
-    if (!difficulty) return;
-    showDeltaBadges(choice.effects);
-    const nextStats = applyEffects(stats, choice.effects, difficulty);
-    const nextDecisions = [...decisions, choice.id];
-    setStats(nextStats);
-    setDecisions(nextDecisions);
+  // Stable across re-renders that don't change its own dependencies, so
+  // SceneView's randomized-scene auto-advance effect (which depends on this
+  // function identity) doesn't reset its timer on every unrelated re-render.
+  const handleChoose = useCallback(
+    (choice: Choice) => {
+      if (!difficulty) return;
+      showDeltaBadges(choice.effects);
+      const nextStats = applyEffects(stats, choice.effects, difficulty);
+      const nextDecisions = [...decisions, choice.id];
+      setStats(nextStats);
+      setDecisions(nextDecisions);
 
-    if (!choice.next) {
-      const finalEnding = determineEnding(nextStats);
-      setEnding(finalEnding);
-      void persistRun(nextDecisions, difficulty);
-      return;
-    }
-    setSceneId(choice.next);
-  }
+      if (!choice.next) {
+        const finalEnding = determineEnding(nextStats, graph.calibration);
+        setEnding(finalEnding);
+        void persistRun(nextDecisions, difficulty);
+        return;
+      }
+      setSceneId(choice.next);
+    },
+    [difficulty, stats, decisions, graph.calibration, persistRun, showDeltaBadges],
+  );
 
   if (!difficulty) {
     return (
@@ -142,9 +156,12 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
       }}
     >
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
-        <div className="relative">
-          <FloatingDeltas badges={badges} />
-          <VitalsMonitor stats={stats} time={scene.time} highlightLabel={graph.highlightLabel} />
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+          <CareerAvatar careerId={careerId} mood={moodFor(stats)} tense={scene.choices.length >= 4} size={104} />
+          <div className="flex-1 w-full relative">
+            <FloatingDeltas badges={badges} />
+            <VitalsMonitor stats={stats} time={scene.time} highlightLabel={graph.highlightLabel} />
+          </div>
         </div>
         <SceneView sceneId={sceneId} scene={scene} onChoose={handleChoose} />
       </div>

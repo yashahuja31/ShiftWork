@@ -28,7 +28,8 @@
             "energy": -4
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "shift_briefing": {
       "time": "06:00 AM",
@@ -52,7 +53,8 @@
             "energy": 3
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "radar_handoff": {
       "time": "06:30 AM",
@@ -61,10 +63,11 @@
         {
           "id": "continue",
           "text": "Take the handoff",
-          "next": "morning_rush",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "morning_rush": {
       "time": "07:15 AM",
@@ -89,7 +92,8 @@
             "stress": 6
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "converging_aircraft": {
       "time": "08:05 AM",
@@ -131,7 +135,8 @@
             "rep": -6
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "converge_outcome_turn": {
       "time": "08:06 AM",
@@ -145,7 +150,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "converge_outcome_altitude": {
       "time": "08:06 AM",
@@ -159,7 +165,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "converge_outcome_hold": {
       "time": "08:06 AM",
@@ -173,7 +180,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "converge_outcome_supervisor": {
       "time": "08:07 AM",
@@ -185,7 +193,8 @@
           "next": "weather_reroute",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "social"
     },
     "weather_reroute": {
       "time": "10:30 AM",
@@ -210,7 +219,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "medical_emergency": {
       "time": "12:15 PM",
@@ -234,7 +244,8 @@
             "stress": -3
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "runway_incursion": {
       "time": "02:00 PM",
@@ -259,7 +270,8 @@
             "rep": -14
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "shift_wind_down": {
       "time": "04:00 PM",
@@ -271,7 +283,8 @@
           "next": "handoff_next_shift",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "handoff_next_shift": {
       "time": "06:00 PM",
@@ -295,7 +308,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "end_shift": {
       "time": "06:15 PM",
@@ -307,7 +321,40 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "06:40 AM",
+      "text": "The sector settles in after handoff — the first few minutes of any shift always play out a little differently.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "thorough_note",
+          "text": "The night controller left an unusually thorough handoff note",
+          "next": "morning_rush",
+          "effects": {
+            "rep": 3
+          }
+        },
+        {
+          "id": "phone_rings",
+          "text": "A personal phone call almost gets through before you silence it",
+          "next": "morning_rush",
+          "effects": {
+            "stress": 3
+          }
+        },
+        {
+          "id": "quiet_coffee",
+          "text": "A rare quiet minute for coffee before traffic builds",
+          "next": "morning_rush",
+          "effects": {
+            "stress": -4
+          }
+        }
+      ],
+      "environment": "commute"
     }
   },
   "endings": {
@@ -331,5 +378,18 @@
       "title": "Incident Review",
       "blurb": "A few of today's calls are heading into a formal review. Everyone landed safely. The facility still wants to understand the margins."
     }
+  },
+  "calibration": {
+    "p1": 51.5,
+    "p5": 58.2,
+    "p10": 61.7,
+    "p25": 67.7,
+    "p35": 70.8,
+    "p50": 74.4,
+    "p65": 77.3,
+    "p75": 79.2,
+    "p90": 82.7,
+    "p95": 84.5,
+    "p99": 87.3
   }
 }

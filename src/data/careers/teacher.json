@@ -1,0 +1,392 @@
+{
+  "id": "teacher",
+  "title": "Thirty Kids, One Bell Schedule",
+  "emoji": "🍎",
+  "tagline": "Six periods, one kid who's clearly not okay, and a bell that doesn't care either way.",
+  "highlightLabel": "Breakthroughs sparked",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:45 AM",
+      "text": "Lesson plans for the day are mostly ready — mostly. There's still the matter of forty ungraded quizzes waiting from yesterday.",
+      "choices": [
+        {
+          "id": "finish_grading",
+          "text": "Finish grading before school instead of eating breakfast",
+          "next": "morning_prep",
+          "effects": {
+            "energy": -8,
+            "rep": 8
+          }
+        },
+        {
+          "id": "eat_breakfast",
+          "text": "Eat breakfast and grade at lunch instead",
+          "next": "morning_prep",
+          "effects": {
+            "energy": 6,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "morning_prep": {
+      "time": "07:00 AM",
+      "text": "Classroom set up, first period's worksheets copied, the whiteboard still smells like yesterday's marker.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to the door to greet first period",
+          "next": "first_period",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "first_period": {
+      "time": "08:00 AM",
+      "text": "First period drags in half-asleep. One student is already asking to use the bathroom before the bell even finishes ringing.",
+      "choices": [
+        {
+          "id": "warm_greeting",
+          "text": "Greet every student individually at the door",
+          "next": "random_moment",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "get_straight_to_it",
+          "text": "Get straight into the lesson to use every minute",
+          "next": "random_moment",
+          "effects": {
+            "rep": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:45 AM",
+      "text": "The lesson moves along, and the small, unpredictable texture of a classroom fills in around it, a little differently every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "great_question",
+          "text": "A student asks a genuinely great question that derails things productively",
+          "next": "second_period",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "fire_drill",
+          "text": "An unscheduled fire drill eats fifteen minutes",
+          "next": "second_period",
+          "effects": {
+            "stress": 5
+          }
+        },
+        {
+          "id": "shared_laugh",
+          "text": "The whole class shares a genuine laugh about something small",
+          "next": "second_period",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "second_period": {
+      "time": "09:15 AM",
+      "text": "A parent email arrives mid-period: a complaint about last week's homework load, cc'ing the department head.",
+      "choices": [
+        {
+          "id": "reply_thoughtfully",
+          "text": "Draft a thoughtful reply during your prep period",
+          "next": "prep_period",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "reply_later",
+          "text": "Let it sit until after school",
+          "next": "prep_period",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "prep_period": {
+      "time": "10:15 AM",
+      "text": "Your one prep period of the day — forty-five minutes that could go toward grading, lesson planning, or catching your breath.",
+      "choices": [
+        {
+          "id": "grade_papers",
+          "text": "Use it to grade the backlog of quizzes",
+          "next": "cafeteria_duty",
+          "effects": {
+            "rep": 6,
+            "energy": -4
+          }
+        },
+        {
+          "id": "actually_rest",
+          "text": "Actually sit down and rest for a few minutes",
+          "next": "cafeteria_duty",
+          "effects": {
+            "energy": 8,
+            "stress": -6
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "cafeteria_duty": {
+      "time": "11:30 AM",
+      "text": "Lunch duty — a hundred and fifty kids, one cafeteria, and a noise level that makes your ears ring by the end of every shift.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get through it",
+          "next": "afternoon_crisis",
+          "effects": {
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_crisis": {
+      "time": "12:45 PM",
+      "text": "Fifth period, mid-lesson: a student who's normally quiet suddenly puts their head down and won't respond, shoulders shaking. The rest of the class has noticed.",
+      "choices": [
+        {
+          "id": "address_immediately",
+          "text": "Stop the lesson and quietly check in with them right now",
+          "next": "crisis_outcome_immediate",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "continue_lesson",
+          "text": "Keep the lesson going and check in privately after class",
+          "next": "crisis_outcome_continue",
+          "effects": {
+            "stress": -4,
+            "rep": -8
+          }
+        },
+        {
+          "id": "send_to_counselor",
+          "text": "Quietly send them to the counselor's office right away",
+          "next": "crisis_outcome_counselor",
+          "effects": {
+            "stress": 4,
+            "rep": 6
+          }
+        },
+        {
+          "id": "call_home",
+          "text": "Message the front office to call home immediately",
+          "next": "crisis_outcome_call",
+          "effects": {
+            "stress": -2,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "crisis_outcome_immediate": {
+      "time": "12:50 PM",
+      "text": "A quiet word, one on one, while the class works independently for a few minutes. It turns out to be exactly what was needed — the student opens up, just a little, and it matters.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Follow up after class and loop in the counselor",
+          "next": "sixth_period",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "crisis_outcome_continue": {
+      "time": "13:35 PM",
+      "text": "The lesson continues, and the follow-up after class happens forty-five minutes later than it maybe should have. The student is still there, at least, waiting.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Have the delayed conversation",
+          "next": "sixth_period",
+          "effects": {}
+        }
+      ],
+      "environment": "social"
+    },
+    "crisis_outcome_counselor": {
+      "time": "12:52 PM",
+      "text": "The counselor meets the student in the hallway within minutes — trained for exactly this, with more time and resources than a classroom mid-lesson allows.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the lesson for everyone else",
+          "next": "sixth_period",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "crisis_outcome_call": {
+      "time": "13:10 PM",
+      "text": "The front office calls home. It takes the rest of the period to hear back, and the student sits through all of it without anyone actually talking to them directly.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the day",
+          "next": "sixth_period",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "sixth_period": {
+      "time": "14:00 PM",
+      "text": "Last period of the day, the one where everyone — you included — is running on fumes.",
+      "choices": [
+        {
+          "id": "push_through_material",
+          "text": "Push through the planned material anyway",
+          "next": "after_school",
+          "effects": {
+            "rep": 5,
+            "energy": -6
+          }
+        },
+        {
+          "id": "lighter_activity",
+          "text": "Switch to a lighter review activity instead",
+          "next": "after_school",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "after_school": {
+      "time": "15:15 PM",
+      "text": "The bell rings. A student lingers at your desk, clearly wanting to talk about something but not quite starting.",
+      "choices": [
+        {
+          "id": "stay_and_listen",
+          "text": "Stay and give them the time, whatever else is waiting",
+          "next": "grading_evening",
+          "effects": {
+            "stress": 4,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "gently_redirect",
+          "text": "Gently redirect them to tomorrow — you have a staff meeting",
+          "next": "grading_evening",
+          "effects": {
+            "rep": -6
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "grading_evening": {
+      "time": "18:00 PM",
+      "text": "Home, dinner, and the same stack of ungraded quizzes waiting on the kitchen table that's been waiting all week.",
+      "choices": [
+        {
+          "id": "grade_thoroughly",
+          "text": "Grade thoroughly with real feedback on each one",
+          "next": "end_shift",
+          "effects": {
+            "energy": -8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "grade_quickly",
+          "text": "Grade quickly with minimal comments",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "20:30 PM",
+      "text": "Tomorrow's lesson plans are already half-formed in your head before tonight's are even finished being graded.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Close the laptop and go to bed",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "rest"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The One That Sticks",
+      "blurb": "Today had the kind of moment that's the entire reason people become teachers — the one a student will remember for years."
+    },
+    "steady_hand": {
+      "title": "A Good Day's Work",
+      "blurb": "Nothing dramatic, just consistent, caring teaching all day long. That adds up to more than it feels like in the moment."
+    },
+    "ordinary_day": {
+      "title": "Six Periods, Done",
+      "blurb": "A full day, taught, survived, mostly graded. Tomorrow's lesson plan is already half-written."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but there's nothing left for tonight's grading, let alone yourself. This pace isn't sustainable."
+    },
+    "written_up": {
+      "title": "A Conversation With the Principal",
+      "blurb": "Something about how today was handled is going to come up in a meeting. No one was harmed. Questions are still coming."
+    }
+  },
+  "calibration": {
+    "p1": 64.1,
+    "p5": 67.4,
+    "p10": 69.4,
+    "p25": 72.6,
+    "p35": 74.3,
+    "p50": 76.4,
+    "p65": 78.5,
+    "p75": 79.9,
+    "p90": 82.5,
+    "p95": 83.8,
+    "p99": 86.0
+  }
+}

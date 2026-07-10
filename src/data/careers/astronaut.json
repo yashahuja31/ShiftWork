@@ -28,7 +28,8 @@
             "energy": -4
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "system_check": {
       "time": "05:50 ship time",
@@ -52,7 +53,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "morning_briefing": {
       "time": "06:30 ship time",
@@ -61,10 +63,11 @@
         {
           "id": "continue",
           "text": "Copy that",
-          "next": "exercise_block",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "exercise_block": {
       "time": "07:00 ship time",
@@ -89,7 +92,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "eva_prep": {
       "time": "08:30 ship time",
@@ -114,7 +118,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "eva_start": {
       "time": "09:15 ship time",
@@ -126,7 +131,8 @@
           "next": "eva_alarm",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "eva_alarm": {
       "time": "10:05 ship time",
@@ -170,7 +176,8 @@
             "energy": -4
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "eva_outcome_finish": {
       "time": "10:20 ship time",
@@ -184,7 +191,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "eva_outcome_backup": {
       "time": "10:25 ship time",
@@ -198,7 +206,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "eva_outcome_radio": {
       "time": "10:30 ship time",
@@ -212,7 +221,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "eva_outcome_abort": {
       "time": "10:35 ship time",
@@ -224,7 +234,8 @@
           "next": "post_eva",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "post_eva": {
       "time": "11:30 ship time",
@@ -248,7 +259,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "experiment_time": {
       "time": "13:00 ship time",
@@ -272,7 +284,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "comms_window": {
       "time": "15:30 ship time",
@@ -296,7 +309,8 @@
             "stress": 3
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "equipment_glitch": {
       "time": "17:00 ship time",
@@ -321,7 +335,8 @@
             "rep": -8
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "dinner_prep": {
       "time": "19:00 ship time",
@@ -345,7 +360,8 @@
             "stress": 4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "sleep_prep": {
       "time": "21:00 ship time",
@@ -369,7 +385,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "end_shift": {
       "time": "21:30 ship time",
@@ -381,7 +398,41 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "rest"
+    },
+    "random_moment": {
+      "time": "06:40 ship time",
+      "text": "Between the briefing and the day's first real task, a few minutes pass the way they always do up here — never quite the same twice.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "shared_snack",
+          "text": "A crewmate shares a rare fresh snack from the last resupply",
+          "next": "exercise_block",
+          "effects": {
+            "stress": -5
+          }
+        },
+        {
+          "id": "alarm_blip",
+          "text": "A minor system alarm blips and clears itself",
+          "next": "exercise_block",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_view",
+          "text": "The sunrise from the cupola is unusually striking today",
+          "next": "exercise_block",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "alert"
     }
   },
   "endings": {
@@ -405,5 +456,18 @@
       "title": "Debrief Pending",
       "blurb": "A few calls today are going into tomorrow's mission review. Nobody was hurt — but ground wants a conversation."
     }
+  },
+  "calibration": {
+    "p1": 59.1,
+    "p5": 64.0,
+    "p10": 66.7,
+    "p25": 71.0,
+    "p35": 73.0,
+    "p50": 75.6,
+    "p65": 77.9,
+    "p75": 79.6,
+    "p90": 82.8,
+    "p95": 84.5,
+    "p99": 87.4
   }
 }

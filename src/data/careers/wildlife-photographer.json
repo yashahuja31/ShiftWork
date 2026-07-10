@@ -28,7 +28,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "rest"
     },
     "trek_to_hide": {
       "time": "05:00 AM",
@@ -53,7 +54,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "waiting_game": {
       "time": "06:00 AM",
@@ -78,7 +80,8 @@
             "rep": 3
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "gear_malfunction": {
       "time": "07:30 AM",
@@ -102,7 +105,8 @@
             "rep": 4
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "first_sighting": {
       "time": "08:00 AM",
@@ -111,10 +115,11 @@
         {
           "id": "continue",
           "text": "Listen to the report",
-          "next": "guide_warning",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "guide_warning": {
       "time": "09:15 AM",
@@ -138,7 +143,8 @@
             "stress": -3
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "rare_animal_appears": {
       "time": "10:40 AM",
@@ -180,7 +186,8 @@
             "rep": -10
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "photo_outcome_closer": {
       "time": "10:55 AM",
@@ -194,7 +201,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "photo_outcome_hidden": {
       "time": "10:50 AM",
@@ -208,7 +216,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "photo_outcome_drone": {
       "time": "10:58 AM",
@@ -222,7 +231,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "photo_outcome_withdraw": {
       "time": "10:45 AM",
@@ -234,7 +244,8 @@
           "next": "weather_turns",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "weather_turns": {
       "time": "12:30 PM",
@@ -259,7 +270,8 @@
             "rep": -2
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "injured_animal": {
       "time": "02:00 PM",
@@ -284,7 +296,8 @@
             "rep": 2
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "editing_photos": {
       "time": "04:00 PM",
@@ -308,7 +321,8 @@
             "stress": 3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "return_trek": {
       "time": "05:30 PM",
@@ -320,7 +334,8 @@
           "next": "submission_deadline",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "submission_deadline": {
       "time": "07:00 PM",
@@ -344,7 +359,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "rest"
     },
     "end_shift": {
       "time": "08:00 PM",
@@ -356,7 +372,41 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "rest"
+    },
+    "random_moment": {
+      "time": "08:20 AM",
+      "text": "The hide settles back into quiet waiting — the kind of stretch where something small and different always seems to happen.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "curious_bird",
+          "text": "A curious bird lands nearby, unbothered by the hide",
+          "next": "guide_warning",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "strap_snaps",
+          "text": "A gear strap snaps — a quick fix needed",
+          "next": "guide_warning",
+          "effects": {
+            "stress": 5,
+            "energy": -2
+          }
+        },
+        {
+          "id": "guide_story",
+          "text": "Your guide shares a story about this stretch of river",
+          "next": "guide_warning",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
     }
   },
   "endings": {
@@ -380,5 +430,18 @@
       "title": "A Hard Conversation",
       "blurb": "Something about today's choices in the field is going to need explaining to your guide, or your editor, or both."
     }
+  },
+  "calibration": {
+    "p1": 62.4,
+    "p5": 67.1,
+    "p10": 69.7,
+    "p25": 74.4,
+    "p35": 76.4,
+    "p50": 79.0,
+    "p65": 81.5,
+    "p75": 83.0,
+    "p90": 86.2,
+    "p95": 87.9,
+    "p99": 90.9
   }
 }

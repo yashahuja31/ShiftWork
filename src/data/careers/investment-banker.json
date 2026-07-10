@@ -30,7 +30,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "rest"
     },
     "market_open": {
       "time": "06:30 AM",
@@ -54,7 +55,8 @@
             "energy": 3
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "deal_room_prep": {
       "time": "07:30 AM",
@@ -63,10 +65,11 @@
         {
           "id": "continue",
           "text": "Start the morning call",
-          "next": "competing_bid",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "competing_bid": {
       "time": "08:15 AM",
@@ -110,7 +113,8 @@
             "energy": -3
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "bid_outcome_match": {
       "time": "08:45 AM",
@@ -124,7 +128,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "bid_outcome_walk": {
       "time": "08:50 AM",
@@ -136,7 +141,8 @@
           "next": "compliance_flag",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "bid_outcome_renegotiate": {
       "time": "09:10 AM",
@@ -150,7 +156,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "bid_outcome_senior": {
       "time": "09:00 AM",
@@ -164,7 +171,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "compliance_flag": {
       "time": "11:00 AM",
@@ -189,7 +197,8 @@
             "stress": -3
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "junior_analyst": {
       "time": "01:00 PM",
@@ -214,7 +223,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "client_dinner": {
       "time": "07:00 PM",
@@ -239,7 +249,8 @@
             "stress": 6
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "diligence_redflag": {
       "time": "09:30 PM",
@@ -263,7 +274,8 @@
             "stress": -4
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "all_nighter": {
       "time": "11:00 PM",
@@ -288,7 +300,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "rest"
     },
     "board_call": {
       "time": "07:00 AM",
@@ -312,7 +325,8 @@
             "energy": 3
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "closing_night": {
       "time": "05:00 PM",
@@ -324,7 +338,8 @@
           "next": "end_shift",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "end_shift": {
       "time": "08:00 PM",
@@ -336,7 +351,40 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "rest"
+    },
+    "random_moment": {
+      "time": "07:50 AM",
+      "text": "The deal room hums along for a few minutes before the next call — small things happen in the gaps, never quite the same way twice.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "market_dip",
+          "text": "A brief market dip rattles the room before steadying",
+          "next": "competing_bid",
+          "effects": {
+            "stress": 5
+          }
+        },
+        {
+          "id": "analyst_catch",
+          "text": "Your analyst catches a small error before it matters",
+          "next": "competing_bid",
+          "effects": {
+            "rep": 4
+          }
+        },
+        {
+          "id": "real_coffee",
+          "text": "Someone runs out for real coffee",
+          "next": "competing_bid",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "briefing"
     }
   },
   "endings": {
@@ -360,5 +408,18 @@
       "title": "Compliance Review",
       "blurb": "Something about how a disclosure was handled is now in front of compliance. The deal closed. Whether it should have, the way it did, is an open question."
     }
+  },
+  "calibration": {
+    "p1": 52.7,
+    "p5": 57.4,
+    "p10": 60.2,
+    "p25": 65.4,
+    "p35": 68.0,
+    "p50": 71.0,
+    "p65": 74.0,
+    "p75": 75.9,
+    "p90": 79.8,
+    "p95": 81.8,
+    "p99": 85.5
   }
 }

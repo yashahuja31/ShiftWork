@@ -28,7 +28,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "rest"
     },
     "weather_check": {
       "time": "05:15 AM",
@@ -52,7 +53,8 @@
             "rep": -3
           }
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "walkaround": {
       "time": "05:45 AM",
@@ -76,7 +78,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "boarding": {
       "time": "06:30 AM",
@@ -85,10 +88,11 @@
         {
           "id": "continue",
           "text": "Complete the final checks",
-          "next": "taxi",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "taxi": {
       "time": "07:00 AM",
@@ -113,7 +117,8 @@
             "rep": -6
           }
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "takeoff_decision": {
       "time": "07:20 AM",
@@ -125,7 +130,8 @@
           "next": "cruise_climb",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "cruise_climb": {
       "time": "08:30 AM",
@@ -137,7 +143,8 @@
           "next": "engine_warning",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "engine_warning": {
       "time": "10:05 AM",
@@ -180,7 +187,8 @@
             "rep": 4
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "engine_outcome_divert": {
       "time": "10:25 AM",
@@ -194,7 +202,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "engine_outcome_monitor": {
       "time": "11:15 AM",
@@ -208,7 +217,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "engine_outcome_consult": {
       "time": "10:40 AM",
@@ -222,7 +232,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "engine_outcome_reduce": {
       "time": "10:35 AM",
@@ -236,7 +247,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "passenger_medical": {
       "time": "12:00 PM",
@@ -261,7 +273,8 @@
             "stress": 6
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "turbulence_ahead": {
       "time": "01:00 PM",
@@ -286,7 +299,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "outdoors"
     },
     "descent_prep": {
       "time": "01:45 PM",
@@ -298,7 +312,8 @@
           "next": "landing",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "briefing"
     },
     "landing": {
       "time": "02:10 PM",
@@ -310,7 +325,8 @@
           "next": "debrief",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "commute"
     },
     "debrief": {
       "time": "02:45 PM",
@@ -334,7 +350,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "end_shift": {
       "time": "03:00 PM",
@@ -346,7 +363,41 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "06:45 AM",
+      "text": "Boarding wraps up the way it always does, more or less — a few small, different things happening at the margins today.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "kid_says_hi",
+          "text": "A kid visiting the cockpit says hi, wide-eyed",
+          "next": "taxi",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "catering_delay",
+          "text": "Catering runs a few minutes late",
+          "next": "taxi",
+          "effects": {
+            "stress": 3
+          }
+        },
+        {
+          "id": "smooth_boarding",
+          "text": "Boarding finishes early and clean",
+          "next": "taxi",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "work"
     }
   },
   "endings": {
@@ -370,5 +421,18 @@
       "title": "Report Filed",
       "blurb": "A few of today's calls are going into a formal review. Everyone's safe. The company still wants to understand the decisions."
     }
+  },
+  "calibration": {
+    "p1": 48.3,
+    "p5": 56.5,
+    "p10": 60.7,
+    "p25": 68.1,
+    "p35": 71.8,
+    "p50": 76.7,
+    "p65": 81.1,
+    "p75": 84.0,
+    "p90": 88.6,
+    "p95": 90.7,
+    "p99": 93.7
   }
 }

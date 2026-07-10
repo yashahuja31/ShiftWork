@@ -28,7 +28,8 @@
             "energy": -3
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "crime_scene": {
       "time": "05:50 AM",
@@ -53,7 +54,8 @@
             "rep": -4
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "witness_interview": {
       "time": "06:40 AM",
@@ -78,7 +80,8 @@
             "stress": 6
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "captain_pressure": {
       "time": "08:00 AM",
@@ -102,7 +105,8 @@
             "rep": -5
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "evidence_lab": {
       "time": "10:30 AM",
@@ -111,10 +115,11 @@
         {
           "id": "continue",
           "text": "Go talk to him",
-          "next": "chase_scene",
+          "next": "random_moment",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "social"
     },
     "chase_scene": {
       "time": "11:15 AM",
@@ -140,7 +145,8 @@
             "energy": -2
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "interrogation_setup": {
       "time": "12:30 PM",
@@ -152,7 +158,8 @@
           "next": "interrogation_room",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "interrogation_room": {
       "time": "12:45 PM",
@@ -194,7 +201,8 @@
             "rep": -12
           }
         }
-      ]
+      ],
+      "environment": "alert"
     },
     "interrogation_outcome_press": {
       "time": "01:10 PM",
@@ -208,7 +216,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "interrogation_outcome_deal": {
       "time": "01:15 PM",
@@ -222,7 +231,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "interrogation_outcome_lawyer": {
       "time": "01:40 PM",
@@ -236,7 +246,8 @@
             "highlights": 1
           }
         }
-      ]
+      ],
+      "environment": "work"
     },
     "interrogation_outcome_release": {
       "time": "01:20 PM",
@@ -248,7 +259,8 @@
           "next": "media_pressure",
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
     },
     "media_pressure": {
       "time": "03:00 PM",
@@ -272,7 +284,8 @@
             "stress": 5
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "captain_review": {
       "time": "04:30 PM",
@@ -296,7 +309,8 @@
             "energy": 4
           }
         }
-      ]
+      ],
+      "environment": "social"
     },
     "paperwork": {
       "time": "06:00 PM",
@@ -311,7 +325,8 @@
             "rep": 6
           }
         }
-      ]
+      ],
+      "environment": "paperwork"
     },
     "end_shift": {
       "time": "07:30 PM",
@@ -323,7 +338,40 @@
           "next": null,
           "effects": {}
         }
-      ]
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "10:50 AM",
+      "text": "Between the lab results and the next move, the morning does what mornings do — a few small things happen, different every time.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "coffee_run",
+          "text": "A uniform brings coffee for the team",
+          "next": "chase_scene",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "reporter_calls",
+          "text": "A reporter calls, fishing for details",
+          "next": "chase_scene",
+          "effects": {
+            "stress": 5
+          }
+        },
+        {
+          "id": "old_case_ref",
+          "text": "An old case file jogs a useful memory",
+          "next": "chase_scene",
+          "effects": {
+            "rep": 3
+          }
+        }
+      ],
+      "environment": "social"
     }
   },
   "endings": {
@@ -347,5 +395,18 @@
       "title": "Internal Review",
       "blurb": "Something about how this case was handled is going in front of a review board. The case might hold. Your process is in question."
     }
+  },
+  "calibration": {
+    "p1": 50.6,
+    "p5": 55.6,
+    "p10": 58.8,
+    "p25": 64.4,
+    "p35": 67.0,
+    "p50": 70.8,
+    "p65": 74.5,
+    "p75": 77.2,
+    "p90": 82.1,
+    "p95": 85.0,
+    "p99": 88.9
   }
 }

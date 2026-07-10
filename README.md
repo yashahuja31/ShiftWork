@@ -1,10 +1,10 @@
 # Shiftwork
 
 A branching, stat-driven day-in-the-life career simulator — Sims-style
-mechanics (tracked needs, floating stat pop-ups, a day that visibly moves
-from dawn to night) applied to the question "what does this job actually
-feel like, minute to minute?" Eight careers are fully playable end to end,
-sharing one engine.
+mechanics (tracked needs, a living animated character, a day that visibly
+moves from dawn to night) applied to the question "what does this job
+actually feel like, minute to minute?" **12 careers** are fully playable end
+to end, sharing one engine.
 
 > **Before you read further:** see [`SECURITY.md`](./SECURITY.md). It explains
 > what security measures are actually in place, and — just as important —
@@ -18,67 +18,125 @@ sharing one engine.
 | Feature | Status |
 |---|---|
 | Landing page, career picker, difficulty picker | ✅ |
-| **8 fully playable careers**, ~15-18 scenes each, each with a signature high-stakes 4-way decision and 5 possible endings: Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller | ✅ |
+| **12 fully playable careers** (~15-19 scenes each, a signature high-stakes 4-way decision, 5 possible endings, one randomized "life happens" beat for replay variety): Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller, Firefighter, Teacher, Paramedic, Software Engineer | ✅ |
 | Live stat tracking (stress / energy / reputation / pay / a career-specific highlight counter) | ✅ |
+| **An animated visual character** (`CareerAvatar.tsx`) — not text, an actual SVG figure with a career-specific prop icon, whose posture, expression, and pace change with mood and react to the big-decision moments — see below | ✅ |
+| **Per-scene animated backdrop** (`SceneBackdrop.tsx`) — every one of the ~200 scenes across all careers carries its own environment tag (commute, briefing, rest, alert, ...) driving a distinctly-animated icon, not just a different picture — see below | ✅ |
 | Signature UI: an animated ECG line whose speed and color react to your stress in real time | ✅ |
-| **Sims-style "living" animation layer** — see below | ✅ |
-| End-of-shift report with a "career compatibility" score that's actually tied to how the run went (see "Fixing the compatibility score") | ✅ |
+| Sims-style "living" text/UI animation layer (typewriter narration, floating stat pop-ups, day/night ambient background) — see below | ✅ |
+| **Replay variety** — each career has at least one randomized branch point so two playthroughs of the same career don't play out identically | ✅ |
+| End-of-shift report with a compatibility score that's an honest percentile against real random play, not a formula that quietly can't go below 50 (see "Fixing the compatibility score") | ✅ |
 | Accounts via Clerk (email + social login), session-gated routes | ✅ |
 | Server-side scoring — the server replays your decisions itself rather than trusting a client-submitted score | ✅ |
 | Run history persisted per user (Postgres/SQLite via Prisma) | ✅ |
 | Optional AI narration hook for one scene (OpenAI), with a static fallback so the game is fully playable with zero API keys | ✅ |
-| More careers, random/chaos events beyond difficulty scaling, NPC conversations, leaderboards, voice narration, multiplayer, a literal 3D/graphical world | 🔜 see "Future enhancements" below |
+| Every career in the world, NPC conversations, leaderboards, voice narration, multiplayer, a full 3D/graphical world | 🔜 see "Future enhancements" and "On 'every career in the world'" below |
 
-"Sims-like" here means the mechanic (a life simulated through tracked
-needs/stats, visible consequence, and a day that palpably passes) — a literal
-3D graphical world is a much larger undertaking and is listed as a future
-direction, not attempted here.
+### A distinct animation for every scene, not just mood
 
-### The Sims-style animation layer
+Beyond the character's own mood-driven animation, each individual scene now
+carries an `environment` tag (`commute`, `briefing`, `rest`, `alert`,
+`social`, `outdoors`, `paperwork`, `work`) that drives a small animated
+badge next to the scene text (`SceneBackdrop.tsx` / `lib/sceneEnvironments.tsx`).
+This isn't just a different icon per tag — each environment has its own
+*kind* of motion, so the animation itself communicates something: a commute
+scene's icon shifts side to side like movement, a rest scene drifts slowly
+and fades in and out, an alert scene pulses sharply and fast, paperwork
+gives a small back-and-forth "writing" rotation. All ~200 scenes across the
+12 careers were tagged (auto-classified from scene content, with every
+signature 4-choice decision forced to `alert` regardless of wording) and
+verified structurally sound the same way the rest of the content is (see
+`scripts/validate_careers.py`).
 
-This is the part that's meant to make a text-and-buttons game feel like a
-person is actually living through the day, not filling out a form:
+### The animated character (the actual game-style animation, not text)
+
+`CareerAvatar.tsx` is a hand-built SVG figure — not an image asset, not a
+GIF, an actual vector character animated with Framer Motion — that's meant
+to feel like a small game character rather than a UI decoration:
+
+- **Idle motion**: a continuous gentle bob and an occasional blink, so the
+  character reads as "alive" even when nothing's happening.
+- **Mood-driven posture**: arm position, head tilt, eyebrow angle, and mouth
+  shape all shift based on the current mood computed from your stats
+  (`lib/mood.ts`) — slumped and heavy-lidded when exhausted, tense and
+  wide-eyed when overwhelmed, upright with a soft green glow when things are
+  going well.
+- **Tension reaction**: during each career's signature 4-choice decision, a
+  pulsing amber ring appears around the character — the same visual language
+  as the tension glow around the scene text, now on the character too.
+- **A career-specific prop**: a small icon badge (stethoscope, rocket, chef's
+  hat, radar dish, and so on, via `lucide-react`) rendered on the character,
+  so the same base figure reads as a different job per career without
+  needing twelve hand-drawn illustrations.
+- **A final pose on the ending screen**: arms raised for the best ending,
+  slumped forward for burned out, arms drawn in for written up — the
+  character visibly reacts to how the day went, not just the text around it.
+
+### The text/UI animation layer
+
+This is the part that makes the surrounding screen feel like a day is
+passing, not a form being filled out:
 
 - **Typewriter narration** — scene text reveals a couple of characters at a
-  time instead of appearing all at once; choices fade in only once it's
-  finished, so a beat has to land before you can act on it.
-- **Floating stat pop-ups** (`FloatingDeltas.tsx`) — the moment a choice
-  lands, "+10 REP" / "-8 ENERGY" style badges fly up and fade, the same
-  language The Sims uses for need/mood changes.
-- **A mood face** (`lib/mood.ts`) next to the shift clock — 🙂 / 😬 / 😰 / 😴 /
-  😊 — that updates live from your current stress and energy, with a small
-  spring-in animation on change.
-- **A day/night ambient background** (`lib/dayCycle.ts`) — the whole screen's
+  time; choices fade in only once it's finished.
+- **Floating stat pop-ups** (`FloatingDeltas.tsx`) — "+10 REP" / "-8 ENERGY"
+  badges fly up and fade the moment a choice lands.
+- **A day/night ambient background** (`lib/dayCycle.ts`) — the screen's
   background gradient shifts through dawn → day → golden hour → night as the
-  in-game clock advances through each career's scenes.
-- **Tension staging** — the signature 4-choice decision in every career gets
-  a slow pulsing amber glow, distinguishing "this one matters more" without
-  any text saying so.
-- **Ending flourishes** — a small on-brand confetti burst for the best
-  ending, a brief shake for the worst one, in `EndingReport.tsx`.
+  in-game clock advances.
+- **Tension staging** — the signature decision in every career gets a slow
+  pulsing amber glow around the scene text as well as the character.
+- **Ending flourishes** — on-brand confetti for the best ending, a brief
+  shake for the worst, in `EndingReport.tsx`.
 
 Everything above respects `prefers-reduced-motion`: the typewriter reveals
-instantly and pop-up/spring animations collapse to near-zero duration for
-anyone with that OS setting on (see `globals.css`).
+instantly, the character's idle bob and blink stop, and spring/pop-up
+animations collapse to near-zero duration for anyone with that OS setting on.
 
-### Fixing the compatibility score
+### Replay variety — not always the same questions
 
-An earlier version of the "would you enjoy this career?" score used one
-continuous formula over your final stats. Testing it against every possible
-playthrough of the trauma-surgeon career (2,048 distinct paths) showed the
-score never actually dropped below the mid-50s, even on the most reckless
-path possible — the formula was technically working, but the *reachable*
-range of stats in these scene graphs never drove it low enough to feel
-meaningful. "Nothing I do changes this" is a real bug in a game, even though
-no exception was ever thrown.
+Every career has at least one scene marked `"randomized": true`
+(`src/data/careers/*.json`). Instead of showing choice buttons, the game
+auto-picks one of that scene's 2-3 minor outcomes at random and narrates it
+— a rookie's good question, a supply delivery running early, a radio
+crackling with static — small texture that means two playthroughs of the
+same career don't unfold identically. The random pick is recorded in the
+decisions list exactly like a click would be
+(`pickRandomChoice` in `simulationEngine.ts`), so server-side replay and
+scoring don't need to know or care that it wasn't a manual choice.
 
-The fix (`compatibilityScore` in `simulationEngine.ts`) ties the score to a
-band determined by which **ending** you actually got — triumphant scores
-85-99, burned out scores 5-24, and so on — with your composure and
-reputation moving you within that band. This was verified the same way the
-bug was found: brute-forcing every reachable path in all 8 careers now shows
-genuine spread (roughly 30-99 depending on the career), and a bad run
-reliably produces a low number instead of a slightly-less-high one.
+### Fixing the compatibility score (twice)
+
+**First attempt.** An early version of the score used one continuous formula
+over your final stats. Testing it against every possible playthrough of the
+trauma-surgeon career (2,048 distinct paths) showed it never dropped below
+the mid-50s even on the most reckless path — technically working, but
+meaningless in practice.
+
+**That fix wasn't enough either.** The next version tied the score to a band
+based on which of 5 endings you got. That solved the "never below 50" case
+for *deliberately, maximally bad* play — but random-sampling 10,000
+*ordinary* (randomly-chosen-choice) playthroughs showed 93% of them still
+landed in the top two tiers, with mean final reputation at 81/100 against a
+starting value of 60. In other words: is everyone compatible with this job?
+The numbers said yes, which was exactly the complaint — a system that can't
+tell an average attempt from a good one isn't measuring anything.
+
+**The actual fix** (`scripts/calibrate_careers.py` +
+`compatibilityScore`/`determineEnding` in `simulationEngine.ts`) replaces
+fixed thresholds with **per-career percentile calibration**: for each
+career, 20,000 simulated random playthroughs are run offline, a
+"performance index" (reputation-weighted, composure and energy contributing
+less) is computed for each, and the resulting percentile checkpoints are
+stored in that career's JSON under `"calibration"`. At runtime, your score
+*is* your percentile rank against that baseline — "better than N% of people
+who tried this shift" — and the ending tier is read off the same rank.
+
+This was verified the way the bug was found: simulating 20,000 random
+playthroughs against the finished system gives a mean and median score of
+**exactly 50.0**, with **50% of random players scoring below 50**, by
+construction. Optimal play scores 99; consistently poor play scores 1. The
+number now means what it says.
 
 ---
 
@@ -91,10 +149,13 @@ reliably produces a low number instead of a slightly-less-high one.
 - **Database:** PostgreSQL in production, SQLite for zero-setup local dev —
   both through [Prisma](https://prisma.io), so every query is parameterized
   and there is no hand-written SQL anywhere in the app.
-- **Styling/animation:** Tailwind CSS, Framer Motion
+- **Styling/animation:** Tailwind CSS, Framer Motion, `lucide-react` (career prop icons on the animated avatar)
 - **Validation:** Zod on every API input
 - **Optional AI:** OpenAI's Chat Completions API for one dynamic scene per
   career (entirely optional — the app works with zero AI keys configured)
+- **Career tooling:** `scripts/validate_careers.py` (structural checks) and
+  `scripts/calibrate_careers.py` (Monte Carlo scoring calibration) — run
+  both after adding or editing any career JSON
 
 ---
 
@@ -177,6 +238,9 @@ auth-provider-agnostic and does not need to change.
 
 ```
 shiftwork/
+├── scripts/
+│   ├── validate_careers.py            # Structural checks (run before shipping a career)
+│   └── calibrate_careers.py           # Monte Carlo scoring calibration (run after any edit)
 ├── prisma/
 │   └── schema.prisma                  # User + SimulationRun models
 ├── src/
@@ -191,20 +255,24 @@ shiftwork/
 │   │       ├── simulation/route.ts    # Save/list runs — auth + validation + server-side scoring
 │   │       └── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
 │   ├── components/
+│   │   ├── CareerAvatar.tsx           # The animated SVG character (mood, tension, ending poses)
+│   │   ├── SceneBackdrop.tsx          # Per-scene animated environment badge (commute/rest/alert/...)
 │   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + stat readouts
-│   │   ├── SceneView.tsx              # Typewriter narration + staggered, tension-staged choices
+│   │   ├── SceneView.tsx              # Typewriter narration + staggered, tension-staged choices, randomized-scene auto-advance
 │   │   ├── FloatingDeltas.tsx         # Sims-style floating "+10 REP" stat pop-ups
 │   │   ├── SimulationClient.tsx       # The game's client-side state machine, per career
 │   │   ├── CareerCard.tsx
-│   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake flourish
+│   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake flourish, final avatar pose
 │   ├── lib/
-│   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay, ending, score
+│   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay, ending, calibrated score
+│   │   ├── careerIcons.tsx            # Career id -> prop icon for the avatar
+│   │   ├── sceneEnvironments.tsx      # Scene environment tag -> icon + label for the backdrop
 │   │   ├── dayCycle.ts                # Scene time -> hour-of-day -> ambient gradient
-│   │   ├── mood.ts                    # Stats -> mood face + label
+│   │   ├── mood.ts                    # Stats -> mood + label (drives both the mood face and the avatar's posture)
 │   │   ├── validation.ts              # Zod schemas for every API input
 │   │   ├── rateLimit.ts
 │   │   └── db.ts                      # Prisma client singleton
-│   └── data/careers/
+│   └── data/careers/                  # One JSON per career — see "Adding a new career"
 │       ├── trauma-surgeon.json
 │       ├── astronaut.json
 │       ├── detective.json
@@ -212,7 +280,11 @@ shiftwork/
 │       ├── pilot.json
 │       ├── wildlife-photographer.json
 │       ├── investment-banker.json
-│       └── air-traffic-controller.json
+│       ├── air-traffic-controller.json
+│       ├── firefighter.json
+│       ├── teacher.json
+│       ├── paramedic.json
+│       └── software-engineer.json
 └── SECURITY.md
 ```
 
@@ -238,12 +310,21 @@ proper registry — there is no per-career code to write:
        "wake_up": {
          "time": "06:00 AM",
          "text": "...",
+         "environment": "rest", // optional: commute|briefing|rest|alert|social|outdoors|paperwork|work — drives the animated scene badge, defaults to "work" if omitted
          "choices": [
            { "id": "...", "text": "...", "next": "next_scene_id", "effects": { "stress": 5, "energy": -5, "rep": 5, "money": 0, "highlights": 0 } }
          ]
+       },
+       "a_random_beat": {
+         "time": "08:30 AM",
+         "text": "...",
+         "randomized": true, // optional: UI auto-picks one outcome instead of showing buttons
+         "choices": [ /* 2-3 minor, low-stakes outcomes — see "Replay variety" above */ ]
        }
        // ... 14-18 scenes total reads well; include one scene with 4 choices
        // for the "signature decision" moment and the tension-glow treatment
+       // (tag it "environment": "alert" too), and at least one randomized
+       // beat for replay variety
      },
      "endings": {
        "triumphant": { "title": "...", "blurb": "..." },
@@ -256,18 +337,29 @@ proper registry — there is no per-career code to write:
    ```
 2. Register it in `src/lib/simulationEngine.ts`: add one `import` line and
    one line in the `CAREER_GRAPHS` object. That's the entire integration —
-   `/careers` picks it up automatically, `/simulation/<career-id>` becomes a
+   `/careers` picks it up automatically (the career cards are generated from
+   this registry, not a hardcoded list), `/simulation/<career-id>` becomes a
    valid route, and the API route's Zod schema accepts it automatically
-   because `saveRunSchema` derives its enum from `CAREER_IDS`, which is
-   derived from `CAREER_GRAPHS`.
-3. Before shipping it, validate the graph structurally — no dangling `next`
-   references, no unreachable scenes, all 5 ending keys present. The
-   one-off Python validation script used while building this (checks
-   reachability, duplicate choice ids, dangling links) is worth keeping
-   as a `scripts/validate-careers.*` step if you add many more careers.
+   because `saveRunSchema` derives its enum from `CAREER_IDS`.
+3. Give it a prop icon: add one line to the `switch` in `src/lib/careerIcons.tsx`
+   (pick anything from [lucide.dev](https://lucide.dev/icons)) so the
+   animated avatar has something to hold for this career. It falls back to a
+   generic briefcase icon if you skip this step, so it's not blocking.
+4. Run the two scripts, in this order, from the project root:
+   ```bash
+   python3 scripts/validate_careers.py   # structural check: dangling links,
+                                          # unreachable scenes, duplicate
+                                          # choice ids, missing ending keys
+   python3 scripts/calibrate_careers.py  # writes this career's "calibration"
+                                          # block (see "Fixing the
+                                          # compatibility score" above) —
+                                          # without this, the new career's
+                                          # score will error at runtime
+   ```
+   Both need to pass/run clean before the career is playable end to end.
 
-No changes to the database schema, auth, API routes, or UI components are
-needed — `career` is already a free-text column validated against the
+No changes to the database schema, auth, API routes, or other UI components
+are needed — `career` is already a free-text column validated against the
 registry at the API boundary, and every component that displays
 career-specific text (`highlightLabel`, endings) reads it from the graph
 rather than having it hardcoded.
@@ -278,17 +370,17 @@ rather than having it hardcoded.
 
 Roughly in the order they'd add the most value:
 
-- **More careers.** The original brainstorm doc also named air traffic
-  controller and investment banker (both now built) alongside ideas like
-  a firefighter, a teacher, a journalist, or a park ranger — all straightforward
-  additions under the registry pattern above.
-- **Genuinely random/chaos events**, not just the difficulty multiplier.
-  Right now "chaos mode" scales existing effect magnitudes; the original
-  design doc's Feature 4 envisioned occasional injected events (equipment
-  failure, a walk-in emergency) layered onto any scene, not just the
-  handful that are hardcoded per career today. This would need each scene
-  to optionally declare an event pool and a trigger chance, resolved
-  client-side before rendering choices.
+- **More careers.** 12 are built now (the original brainstorm's own
+  examples — astronaut, trauma surgeon, investment banker, air traffic
+  controller — plus firefighter, teacher, paramedic, and software engineer).
+  See "On 'every career in the world'" below for the honest scope on this.
+- **Richer randomized events.** Right now each career has exactly one
+  randomized beat and "chaos mode" scales existing effect magnitudes. The
+  original design doc's Feature 4 envisioned a broader pool of injectable
+  events (equipment failure, a walk-in emergency) usable at more points in a
+  shift, not just one fixed beat per career. The data model already
+  supports adding more `"randomized": true` scenes anywhere in a graph — this
+  is more content work than engine work at this point.
 - **A real leaderboard.** `SimulationRun` already stores every run per
   user; a `shared` leaderboard view (e.g. "top compatibility score this
   week, by career") is mostly a read-only aggregation query away, not a
@@ -302,14 +394,37 @@ Roughly in the order they'd add the most value:
   consistently stay calm under pressure, you might like: Pilot, Surgeon" —
   straightforward once there's enough `SimulationRun` history per user to
   aggregate over.
-- **Voice narration, badges/achievements, multiplayer, a literal
-  graphical/3D world** — all named in the original brainstorm's "Future
-  Features" list. Each is a substantially larger project in its own right
-  (voice needs a TTS pipeline and per-scene audio direction; multiplayer
-  needs a real-time transport and a shared-state model; a graphical world
-  is closer to a second product than an extension of this one) — worth
-  scoping as separate efforts once the text-based version has real usage
-  data to justify them, rather than building speculatively now.
+- **A richer character.** `CareerAvatar.tsx` is deliberately a simple,
+  abstract figure (see "The animated character" above) so it scales to any
+  number of careers without needing bespoke art. A fuller version — walking
+  between locations, more than one pose per mood, actual per-career outfits
+  instead of a single prop icon — is a natural next step once there's a
+  reason to invest in more elaborate art direction for a specific career.
+- **Voice narration, badges/achievements, multiplayer, a full 3D/graphical
+  world** — all named in the original brainstorm's "Future Features" list.
+  Each is a substantially larger project in its own right (voice needs a TTS
+  pipeline and per-scene audio direction; multiplayer needs a real-time
+  transport and a shared-state model; a 3D world is closer to a second
+  product than an extension of this one) — worth scoping separately once the
+  current version has real usage data to justify them.
+
+### On "every career in the world"
+
+Worth being direct about this rather than overselling it: there is no
+version of "every career in the world" that gets hand-authored in a chat
+session, or realistically by any small team — O\*NET alone lists roughly a
+thousand distinct occupations, and this project's bar for a career (15+
+scenes, a real signature decision, calibrated scoring, a distinct voice) is
+intentionally higher than a one-line description would need. What *is* true
+now: adding one is a bounded, mechanical, well-documented process — write
+one JSON file, run two scripts, done (see "Adding a new career") — rather
+than something that requires touching the engine, the database, or the UI.
+That's the honest version of "scales to any career": the infrastructure to
+add the 13th, the 50th, or the 200th career is now fully in place and
+doesn't get harder as the library grows; actually writing that many is a
+content project, not a software one, and would reasonably be its own
+multi-session effort (or a good candidate for a contribution process if
+this were opened up beyond one person).
 
 ---
 

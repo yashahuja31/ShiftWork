@@ -1,0 +1,433 @@
+{
+  "id": "paramedic",
+  "title": "Every Call Is the Only Call That Matters",
+  "emoji": "🚑",
+  "tagline": "A patient crashing mid-transport, twelve minutes from the hospital, and a decision that can't wait for the ER.",
+  "highlightLabel": "Patients stabilized",
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "Twelve-hour shift, ambulance already checked over by the night crew. Your partner hands you a coffee before you've even asked.",
+      "choices": [
+        {
+          "id": "recheck_rig",
+          "text": "Do your own full check of the rig anyway",
+          "next": "shift_briefing",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_handoff",
+          "text": "Trust the night crew's handoff and get moving",
+          "next": "shift_briefing",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "shift_briefing": {
+      "time": "06:20 AM",
+      "text": "Dispatch briefing: a busy day expected, a marathon downtown adding road closures to account for on every call.",
+      "choices": [
+        {
+          "id": "study_reroutes",
+          "text": "Study the road closure map in detail before rolling out",
+          "next": "first_call",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "wing_it",
+          "text": "Figure out routes as you go",
+          "next": "first_call",
+          "effects": {
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "first_call": {
+      "time": "07:15 AM",
+      "text": "First call: an elderly fall, minor injuries, mostly frightened. Routine, but never quite nothing.",
+      "choices": [
+        {
+          "id": "unhurried_care",
+          "text": "Take the extra time to reassure her properly",
+          "next": "random_moment",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "efficient_transport",
+          "text": "Keep it efficient — there's a full board today",
+          "next": "random_moment",
+          "effects": {
+            "rep": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:30 AM",
+      "text": "Between calls, the morning fills in with the small, unscripted moments that make up most of any shift.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "grateful_family",
+          "text": "A grateful family from yesterday's call flags you down to say thanks",
+          "next": "second_call",
+          "effects": {
+            "stress": -5
+          }
+        },
+        {
+          "id": "radio_static",
+          "text": "Dispatch radio cuts out with static for a tense minute",
+          "next": "second_call",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_parking",
+          "text": "You catch an easy parking spot on a call that's usually a nightmare for access",
+          "next": "second_call",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "second_call": {
+      "time": "09:45 AM",
+      "text": "A chest pain call, moderate risk. The patient is anxious and talking fast, which is making his vitals worse by the minute.",
+      "choices": [
+        {
+          "id": "calm_the_patient",
+          "text": "Spend the extra minute calming him down before moving",
+          "next": "transport_start",
+          "effects": {
+            "stress": 6,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "load_and_go",
+          "text": "Load and go — time to the hospital matters more right now",
+          "next": "transport_start",
+          "effects": {
+            "stress": -3,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "transport_start": {
+      "time": "10:00 AM",
+      "text": "Transport underway, twelve minutes to the hospital under normal traffic. His vitals are holding, for now.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Monitor closely en route",
+          "next": "patient_crashes",
+          "effects": {}
+        }
+      ],
+      "environment": "commute"
+    },
+    "patient_crashes": {
+      "time": "10:06 AM",
+      "text": "Six minutes in, his heart rhythm changes fast — he's crashing, right now, in the back of a moving ambulance, and the hospital is still eight minutes out at best.",
+      "choices": [
+        {
+          "id": "intervene_now",
+          "text": "Perform the intervention yourself, right now, in the moving rig",
+          "next": "crash_outcome_intervene",
+          "effects": {
+            "stress": 18,
+            "rep": 10
+          }
+        },
+        {
+          "id": "divert_closer",
+          "text": "Have your partner divert to the closer, smaller hospital instead",
+          "next": "crash_outcome_divert",
+          "effects": {
+            "stress": 8,
+            "rep": 6
+          }
+        },
+        {
+          "id": "call_medical_direction",
+          "text": "Call medical direction for real-time guidance before acting",
+          "next": "crash_outcome_direction",
+          "effects": {
+            "stress": 4,
+            "rep": 6
+          }
+        },
+        {
+          "id": "continue_as_planned",
+          "text": "Continue to the original hospital as planned, stabilizing en route",
+          "next": "crash_outcome_continue",
+          "effects": {
+            "stress": -4,
+            "rep": -10
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "crash_outcome_intervene": {
+      "time": "10:08 AM",
+      "text": "Hands steady despite the moving rig, the intervention works. By the time you reach the ER, he's stable enough that the trauma team barely has to rush.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hand off to the ER team",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "crash_outcome_divert": {
+      "time": "10:10 AM",
+      "text": "The smaller hospital isn't the destination you planned, but it's four minutes closer, and four minutes turns out to be exactly the margin that mattered.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hand off to the ER team",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "crash_outcome_direction": {
+      "time": "10:09 AM",
+      "text": "Medical direction walks you through it over the radio, calm and precise. It costs a few seconds getting the call connected — seconds that, this time, you had.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hand off to the ER team",
+          "next": "afternoon_lull",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "crash_outcome_continue": {
+      "time": "10:14 AM",
+      "text": "He holds on for the full eight minutes to the original hospital, barely, and the ER team is waiting at the door when you arrive — but it was closer than anyone in the back of that rig would like to admit.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hand off to the ER team",
+          "next": "afternoon_lull",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_lull": {
+      "time": "13:00 PM",
+      "text": "A rare quiet stretch. The rig's restocked, the paperwork from this morning is caught up, mostly.",
+      "choices": [
+        {
+          "id": "actually_eat",
+          "text": "Actually sit down and eat lunch",
+          "next": "afternoon_call",
+          "effects": {
+            "energy": 12,
+            "stress": -6
+          }
+        },
+        {
+          "id": "catch_up_paperwork",
+          "text": "Catch up on documentation instead",
+          "next": "afternoon_call",
+          "effects": {
+            "rep": 5,
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "afternoon_call": {
+      "time": "15:00 PM",
+      "text": "A call near the marathon route — a runner down, heat exhaustion, in a crowd that's making access difficult.",
+      "choices": [
+        {
+          "id": "push_through_crowd",
+          "text": "Push directly through the crowd to reach them fastest",
+          "next": "difficult_family",
+          "effects": {
+            "stress": 8,
+            "rep": 8
+          }
+        },
+        {
+          "id": "request_crowd_control",
+          "text": "Request police crowd control before moving in",
+          "next": "difficult_family",
+          "effects": {
+            "stress": -4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "difficult_family": {
+      "time": "17:00 PM",
+      "text": "A call to a home where a family member is combative and frightened, making it hard to actually help the patient.",
+      "choices": [
+        {
+          "id": "de_escalate_first",
+          "text": "Take the time to de-escalate the situation before treating",
+          "next": "evening_call",
+          "effects": {
+            "stress": 8,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "treat_regardless",
+          "text": "Focus on the patient and work around the tension",
+          "next": "evening_call",
+          "effects": {
+            "stress": 4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "evening_call": {
+      "time": "20:00 PM",
+      "text": "A pediatric call — always the hardest kind, no matter how many years you've done this.",
+      "choices": [
+        {
+          "id": "steady_and_present",
+          "text": "Stay steady and fully present, however hard it is",
+          "next": "end_of_shift_paperwork",
+          "effects": {
+            "stress": 10,
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "efficient_clinical",
+          "text": "Keep it efficient and clinical to get through it",
+          "next": "end_of_shift_paperwork",
+          "effects": {
+            "stress": -4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_of_shift_paperwork": {
+      "time": "22:30 PM",
+      "text": "Documentation for the day's calls, the part of the job nobody puts in the recruiting brochure.",
+      "choices": [
+        {
+          "id": "thorough_notes",
+          "text": "Write thorough, careful notes on every call",
+          "next": "end_shift",
+          "effects": {
+            "rep": 8,
+            "energy": -5
+          }
+        },
+        {
+          "id": "quick_notes",
+          "text": "Keep the notes brief and get home",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "end_shift": {
+      "time": "23:00 PM",
+      "text": "Rig restocked for the next crew. Whatever tonight brings for someone else, it isn't yours anymore.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Call You'll Remember",
+      "blurb": "Every decision today landed right, including the one that mattered most. This is the shift that reminds you why you do this."
+    },
+    "steady_hand": {
+      "title": "Solid Shift",
+      "blurb": "No headlines, no hesitation — just careful, competent care on every single call, all day long."
+    },
+    "ordinary_day": {
+      "title": "A Full Board",
+      "blurb": "A busy, unremarkable shift by the job's strange standard. Everyone you touched today is better off for it."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You made it to the end of the shift, but you're not sure how. Call after call, this pace has a real cost."
+    },
+    "written_up": {
+      "title": "Quality Review",
+      "blurb": "A few of today's calls are heading into a formal quality review. Everyone's safe. The service still wants to understand the choices."
+    }
+  },
+  "calibration": {
+    "p1": 64.0,
+    "p5": 67.9,
+    "p10": 70.2,
+    "p25": 73.6,
+    "p35": 75.2,
+    "p50": 77.3,
+    "p65": 79.2,
+    "p75": 80.5,
+    "p90": 83.2,
+    "p95": 84.7,
+    "p99": 87.4
+  }
+}
