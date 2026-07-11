@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { pickRandomChoice, type Choice, type Scene } from '@/lib/simulationEngine';
-import { SceneBackdrop } from '@/components/SceneBackdrop';
+import { SceneStage } from '@/components/SceneStage';
 
 interface SceneViewProps {
   sceneId: string;
@@ -70,10 +70,9 @@ function SceneViewInner({ sceneId, scene, onChoose, disabled }: SceneViewProps) 
       transition={{ duration: 0.25 }}
       className="flex flex-col gap-6"
     >
-      <div className="flex items-center justify-between">
-        <p className="font-mono text-xs uppercase tracking-widest text-vital">{scene.time}</p>
-        <SceneBackdrop environment={scene.environment} />
-      </div>
+      <p className="font-mono text-xs uppercase tracking-widest text-vital">{scene.time}</p>
+
+      <SceneStage environment={scene.environment} />
 
       <motion.div
         animate={

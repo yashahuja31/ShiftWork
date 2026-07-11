@@ -21,7 +21,7 @@ to end, sharing one engine.
 | **12 fully playable careers** (~15-19 scenes each, a signature high-stakes 4-way decision, 5 possible endings, one randomized "life happens" beat for replay variety): Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller, Firefighter, Teacher, Paramedic, Software Engineer | ✅ |
 | Live stat tracking (stress / energy / reputation / pay / a career-specific highlight counter) | ✅ |
 | **An animated visual character** (`CareerAvatar.tsx`) — not text, an actual SVG figure with a career-specific prop icon, whose posture, expression, and pace change with mood and react to the big-decision moments — see below | ✅ |
-| **Per-scene animated backdrop** (`SceneBackdrop.tsx`) — every one of the ~200 scenes across all careers carries its own environment tag (commute, briefing, rest, alert, ...) driving a distinctly-animated icon, not just a different picture — see below | ✅ |
+| **A full animated scene vignette for every scene** (`SceneStage.tsx`) — not an icon, a small multi-element illustrated scene (moving car, twinkling stars, a pulsing ECG line, a rotating gear...) matched to each scene's environment tag — see below | ✅ |
 | Signature UI: an animated ECG line whose speed and color react to your stress in real time | ✅ |
 | Sims-style "living" text/UI animation layer (typewriter narration, floating stat pop-ups, day/night ambient background) — see below | ✅ |
 | **Replay variety** — each career has at least one randomized branch point so two playthroughs of the same career don't play out identically | ✅ |
@@ -32,21 +32,34 @@ to end, sharing one engine.
 | Optional AI narration hook for one scene (OpenAI), with a static fallback so the game is fully playable with zero API keys | ✅ |
 | Every career in the world, NPC conversations, leaderboards, voice narration, multiplayer, a full 3D/graphical world | 🔜 see "Future enhancements" and "On 'every career in the world'" below |
 
-### A distinct animation for every scene, not just mood
+### A full animated vignette for every scene, not just an icon
 
-Beyond the character's own mood-driven animation, each individual scene now
-carries an `environment` tag (`commute`, `briefing`, `rest`, `alert`,
-`social`, `outdoors`, `paperwork`, `work`) that drives a small animated
-badge next to the scene text (`SceneBackdrop.tsx` / `lib/sceneEnvironments.tsx`).
-This isn't just a different icon per tag — each environment has its own
-*kind* of motion, so the animation itself communicates something: a commute
-scene's icon shifts side to side like movement, a rest scene drifts slowly
-and fades in and out, an alert scene pulses sharply and fast, paperwork
-gives a small back-and-forth "writing" rotation. All ~200 scenes across the
-12 careers were tagged (auto-classified from scene content, with every
-signature 4-choice decision forced to `alert` regardless of wording) and
-verified structurally sound the same way the rest of the content is (see
+Every scene carries an `environment` tag (`commute`, `briefing`, `rest`,
+`alert`, `social`, `outdoors`, `paperwork`, `work`), and `SceneStage.tsx`
+renders a small hand-built animated scene for it — several layered SVG
+shapes moving together, not a single bouncing icon: a car with wheels
+driving past sliding road markings, three silhouettes with a speech bubble
+rotating between them, a crescent moon under slowly twinkling stars, an ECG
+line sweeping under a pulsing warning triangle, two speech bubbles trading
+a back-and-forth bounce, a sun rotating over swaying trees, a pen "writing"
+across a clipboard with a checkmark landing, a turning gear throwing off
+sparks. Each environment's motion *means* something rather than just
+looking different — commute drifts sideways like movement, alert is sharp
+and fast, rest is slow and soft. All ~200 scenes across the 12 careers were
+tagged (auto-classified from scene content, with every signature 4-choice
+decision forced to `alert` regardless of wording) and verified structurally
+sound the same way the rest of the content is (see
 `scripts/validate_careers.py`).
+
+**Why this is original vector animation and not video/GIF clips**: sourcing
+real footage or GIFs for ~200 scenes runs straight into copyright licensing
+problems for anything actually worth using, there's no tool available here
+to generate real video, and baked-in video/GIF assets would be megabytes
+per scene instead of a few KB of SVG markup — for zero payoff, since a fixed
+clip can't react to game state the way vector animation already does
+elsewhere in this app (the character's mood, the ECG line's speed, the
+day/night background). Original animated illustration gets the "this feels
+alive" result the request was actually after, without any of those costs.
 
 ### The animated character (the actual game-style animation, not text)
 
@@ -266,7 +279,7 @@ shiftwork/
 │   │       └── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
 │   ├── components/
 │   │   ├── CareerAvatar.tsx           # The animated SVG character (mood, tension, ending poses)
-│   │   ├── SceneBackdrop.tsx          # Per-scene animated environment badge (commute/rest/alert/...)
+│   │   ├── SceneStage.tsx             # Full animated per-scene vignette (commute/rest/alert/...), not just an icon
 │   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + stat readouts
 │   │   ├── SceneView.tsx              # Typewriter narration + staggered, tension-staged choices, randomized-scene auto-advance
 │   │   ├── FloatingDeltas.tsx         # Sims-style floating "+10 REP" stat pop-ups

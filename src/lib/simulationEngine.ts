@@ -41,7 +41,7 @@ export interface Scene {
   randomized?: boolean;
   // A coarse category of what's physically happening in the scene (commute,
   // briefing, rest, alert, ...), used purely for the animated scene-backdrop
-  // icon (SceneBackdrop.tsx / lib/sceneEnvironments.tsx) — it has no effect
+  // icon (SceneStage.tsx / lib/sceneEnvironments.tsx) — it has no effect
   // on scoring or engine logic. Falls back to "work" if omitted.
   environment?: string;
 }
