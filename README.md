@@ -485,22 +485,127 @@ npm run audit              # npm audit, production deps only
 
 ---
 
-## Deploying
+## Verifying local storage works
 
-Vercel (frontend) + a managed Postgres instance (Railway, Neon, Supabase, or
-RDS) is the path of least resistance, matching the original brief's suggested
-stack. Whatever you choose:
+Before touching Neon or Vercel at all, confirm the local SQLite setup is
+actually persisting data:
 
-- Set every variable from `.env.example` in your host's environment variable
-  UI — never bake secrets into the Docker image or commit them.
-- Run `prisma migrate deploy` (not `migrate dev`) as part of your deploy step.
+1. `npx prisma migrate dev --name init` (if you haven't already).
+2. `npm run dev`, sign in, play one career through to an ending.
+3. In a second terminal: `npx prisma studio`. This opens a browser GUI
+   at `http://localhost:5555` for the local database directly — click
+   `SimulationRun` and you should see the row you just created, with your
+   real `endingKey`, stats, and a `decisions` column containing the
+   JSON-stringified choice list.
+
+If that row is there, local storage is confirmed working end to end —
+API route → Prisma → SQLite file → readable back out.
+
+---
+
+## Deploying to Vercel with Neon Postgres
+
+**Why you can't just deploy the SQLite setup as-is:** Vercel's serverless
+functions run on an ephemeral filesystem — there's no guarantee two
+requests even hit the same instance, so a SQLite file written by one
+request may simply not exist for the next one. SQLite is genuinely only
+for local dev here; production needs a real network-accessible database,
+which is exactly what Neon provides (managed Postgres, a real free tier,
+native Vercel integration).
+
+### 1. Create the Neon database
+
+1. In your [Vercel dashboard](https://vercel.com/dashboard), open (or
+   create) this project, go to the **Storage** tab, and choose
+   **Neon (Postgres)** from the marketplace — this provisions a Neon
+   project and automatically adds a `DATABASE_URL` environment variable to
+   your Vercel project for you. (Alternatively, create the database
+   directly at [neon.tech](https://neon.tech) and paste the connection
+   string into Vercel's environment variables yourself — same result.)
+2. Neon's free tier supports multiple **branches** (separate databases
+   under one project). It's worth creating a second branch — e.g. `dev` —
+   so your local machine and your deployed app aren't writing to the same
+   database while you're still testing. Copy that branch's connection
+   string too.
+
+### 2. Point the app at Postgres instead of SQLite
+
+Prisma's `provider` field (unlike `url`) can't be swapped at runtime via an
+environment variable — it's a static choice in `schema.prisma`. You have
+two reasonable options:
+
+- **Recommended: use Neon everywhere, including local dev.** Edit
+  `prisma/schema.prisma`, change `provider = "sqlite"` to
+  `provider = "postgresql"`, and put your Neon **dev branch** connection
+  string in `.env.local`'s `DATABASE_URL`. This is one less thing to get
+  wrong later (dev/prod now behave identically), at the cost of needing an
+  internet connection to run the app locally.
+- **Keep SQLite locally, switch only for the Vercel build.** Leave
+  `schema.prisma` as `sqlite` in your working copy, and don't commit a
+  change to it — instead, maintain the production version of that one line
+  as part of your deploy step (e.g. a small `sed` in your build command, or
+  just remember to flip it back after testing a deploy locally). More
+  fragile; only worth it if offline local dev genuinely matters to you.
+
+Either way, run `npx prisma migrate dev --name init` once against
+whichever Postgres URL you're using (dev branch locally, or temporarily
+against prod if you're not keeping SQLite at all) to create the actual
+migration files in `prisma/migrations/` — commit those to git, they're
+what `migrate deploy` replays in production.
+
+### 3. Push to GitHub and import into Vercel
+
+1. Push this project to a GitHub repo (Vercel deploys from git).
+2. In Vercel: **Add New → Project**, import that repo. Vercel auto-detects
+   Next.js — you don't need to change the build settings unless you're
+   doing something custom.
+3. Add every variable from `.env.example` under **Settings → Environment
+   Variables** (if you used the Neon marketplace integration in step 1,
+   `DATABASE_URL` is already there):
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`
+   - `DATABASE_URL` (your Neon connection string)
+   - `OPENAI_API_KEY` (optional)
+
+### 4. Run the production migration
+
+`npm run build` (which Vercel calls automatically) runs `prisma generate`
+but **not** `prisma migrate deploy` — running migrations automatically on
+every deploy is convenient but risky (a bad migration fails the whole
+deploy, and concurrent deploys can race). For a project this size, run it
+manually, once, from your own machine, pointed at the production database:
+
+```bash
+DATABASE_URL="<your Neon production connection string>" npx prisma migrate deploy
+```
+
+Re-run this same command any time you add a new migration later. If you'd
+rather have Vercel do it automatically on every deploy instead, change the
+Vercel project's **Build Command** to
+`prisma generate && prisma migrate deploy && next build` — reasonable once
+you trust the migration history, riskier while you're still iterating on
+the schema.
+
+### 5. Switch Clerk to a production instance
+
+You've likely seen this warning already: *"Clerk has been loaded with
+development keys... should not be used when deploying to production."*
+Development instances have low usage limits and aren't meant for a real
+public URL. In the [Clerk dashboard](https://dashboard.clerk.com), create
+a **Production** instance for this application (Clerk walks you through
+verifying your domain), grab its publishable/secret key pair, and set
+those as the `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` /
+`CLERK_SECRET_KEY` values in Vercel — separate from whatever dev keys you
+'re using locally in `.env.local`.
+
+### General deployment notes
+
+- Never bake secrets into the repo or a Docker image — everything above
+  goes in Vercel's environment variable UI, not committed files.
 - Your build environment needs outbound network access to
   `fonts.googleapis.com`/`fonts.gstatic.com` (for `next/font`) and
-  `binaries.prisma.sh` (for the Prisma engine) — both are fetched at build
-  time. Most hosted CI (Vercel, Railway, GitHub Actions) allows this by
-  default; a fully network-locked-down build sandbox will need those domains
-  allow-listed.
-- Turn on HTTPS-only / "always use HTTPS" at the host level — `next.config.js`
-  already sends `Strict-Transport-Security`, but that header only matters
-  once TLS is actually terminating in front of the app.
+  `binaries.prisma.sh` (for the Prisma engine) at build time. Vercel
+  allows this by default.
+- HTTPS is automatic on Vercel, which is what makes the
+  `Strict-Transport-Security` header in `next.config.js` actually
+  meaningful in production (see `SECURITY.md`).
 - See `SECURITY.md` for the full pre-launch checklist.

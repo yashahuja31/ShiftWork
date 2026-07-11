@@ -90,6 +90,12 @@ That's a more useful promise than "unhackable," and it's the honest one.
 Applied to every response:
 - **Content-Security-Policy** — restricts what scripts/frames/images are
   allowed to load, scoped to `'self'` plus Clerk's own domains.
+  **If you set up a custom Clerk domain for production** (e.g.
+  `clerk.yourdomain.com`, instead of the default `*.clerk.accounts.dev`),
+  add it to `script-src`/`connect-src`/`frame-src` in `next.config.js` —
+  the CSP will otherwise silently block Clerk's own scripts on that domain
+  and auth will break in a way that looks like a Clerk configuration
+  problem rather than a CSP one.
 - **X-Frame-Options: DENY** / `frame-ancestors 'none'` — prevents
   clickjacking (the app being embedded in a hidden iframe on someone else's
   malicious page).

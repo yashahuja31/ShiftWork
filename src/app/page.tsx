@@ -1,8 +1,14 @@
 import Link from 'next/link';
 import { currentUser } from '@clerk/nextjs/server';
+import { CAREER_GRAPHS } from '@/lib/simulationEngine';
 
 export default async function LandingPage() {
   const user = await currentUser();
+  // Pulled from the actual registry rather than hardcoded, so this page
+  // can't quietly go stale again the way it did the first time — it
+  // launched describing only the trauma surgeon MVP and never got updated
+  // when the other 11 careers were added.
+  const careers = Object.values(CAREER_GRAPHS);
 
   return (
     <main className="min-h-screen flex flex-col">
@@ -11,7 +17,7 @@ export default async function LandingPage() {
         <nav className="flex items-center gap-4 font-mono text-xs uppercase tracking-widest">
           {user ? (
             <Link href="/careers" className="text-vital hover:brightness-110">
-              Enter ward →
+              Choose your shift →
             </Link>
           ) : (
             <>
@@ -48,15 +54,15 @@ export default async function LandingPage() {
 
         <div className="max-w-xl flex flex-col gap-4">
           <p className="font-mono text-xs uppercase tracking-widest text-vital">
-            04:45 AM · pager already buzzing
+            {careers.length} careers · one decision at a time
           </p>
           <h1 className="font-display text-4xl sm:text-5xl text-ivory leading-tight">
-            Live a full trauma surgery shift, one decision at a time.
+            Live a full shift in someone else&apos;s career, before you commit to it.
           </h1>
           <p className="text-muted text-lg">
-            Sixteen hours. Three patients. Every choice you make — pause the surgery or push
-            through, call for backup or handle it alone — changes what happens next, and what
-            you&apos;re like by the time you clock out.
+            Trauma surgeon, astronaut, pilot, firefighter, and more — every shift is a real
+            branching day with a genuine high-stakes decision at its center. Every choice you
+            make changes what happens next, and what you&apos;re like by the time you clock out.
           </p>
         </div>
 
@@ -64,11 +70,23 @@ export default async function LandingPage() {
           href={user ? '/careers' : '/sign-up'}
           className="rounded-lg bg-vital text-ink font-medium px-8 py-3.5 hover:brightness-110 transition text-lg"
         >
-          {user ? 'Start your shift' : 'Create a free account'}
+          {user ? 'Choose your shift' : 'Create a free account'}
         </Link>
 
+        <div className="flex flex-wrap justify-center gap-3 max-w-lg" aria-hidden="true">
+          {careers.map((career) => (
+            <span
+              key={career.id}
+              className="text-2xl opacity-70"
+              title={career.title}
+            >
+              {career.emoji}
+            </span>
+          ))}
+        </div>
+
         <p className="text-xs text-muted font-mono">
-          One career live today — Trauma Surgeon. More on the way.
+          {careers.length} careers live now, from the OR to the cockpit.
         </p>
       </section>
     </main>
