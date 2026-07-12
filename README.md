@@ -184,10 +184,23 @@ npm install
 
 1. Create a free account at [clerk.com](https://clerk.com) and a new
    application.
-2. Copy `.env.example` to `.env.local`.
-3. Paste your **Publishable key** and **Secret key** into `.env.local`.
+2. Copy `.env.example` to `.env` (not `.env.local` — see the callout
+   below for why that distinction matters here).
+3. Paste your **Publishable key** and **Secret key** into `.env`.
    The publishable key is safe for the browser; the secret key must never be
    committed or exposed to client code (see `SECURITY.md`).
+
+> **Use `.env`, not `.env.local`, in this project.** Next.js happily reads
+> either one. The Prisma CLI does not: `prisma migrate dev`, `prisma
+> studio`, and every other direct `prisma` command load environment
+> variables via `dotenv`, which only auto-loads a file literally named
+> `.env` in the project root — it has no idea `.env.local` is a
+> Next.js convention. Putting `DATABASE_URL` in `.env.local` makes the app
+> itself work fine while every Prisma CLI command fails with
+> `Error: Environment variable not found: DATABASE_URL` (P1012), which is
+> exactly the confusing state to end up in if you split the difference.
+> Both files are already git-ignored, so there's no downside to just using
+> `.env` for everything here.
 
 ### 3. Set up the database
 
@@ -232,7 +245,7 @@ Visit `http://localhost:3000`.
 
 Leave `OPENAI_API_KEY` unset and the game runs fully offline with a static
 fallback line for the one AI-eligible scene. To turn on dynamic narration,
-add your key to `.env.local`. The key is read server-side only
+add your key to `.env`. The key is read server-side only
 (`src/app/api/narrate/route.ts`) and is never sent to the browser.
 
 ---
@@ -537,7 +550,7 @@ two reasonable options:
 - **Recommended: use Neon everywhere, including local dev.** Edit
   `prisma/schema.prisma`, change `provider = "sqlite"` to
   `provider = "postgresql"`, and put your Neon **dev branch** connection
-  string in `.env.local`'s `DATABASE_URL`. This is one less thing to get
+  string in `.env`'s `DATABASE_URL`. This is one less thing to get
   wrong later (dev/prod now behave identically), at the cost of needing an
   internet connection to run the app locally.
 - **Keep SQLite locally, switch only for the Vercel build.** Leave
@@ -594,8 +607,8 @@ public URL. In the [Clerk dashboard](https://dashboard.clerk.com), create
 a **Production** instance for this application (Clerk walks you through
 verifying your domain), grab its publishable/secret key pair, and set
 those as the `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` /
-`CLERK_SECRET_KEY` values in Vercel — separate from whatever dev keys you
-'re using locally in `.env.local`.
+`CLERK_SECRET_KEY` values in Vercel — separate from whatever dev keys
+you're using locally in `.env`.
 
 ### General deployment notes
 
