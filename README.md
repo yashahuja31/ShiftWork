@@ -17,7 +17,7 @@ to end, sharing one engine.
 
 | Feature | Status |
 |---|---|
-| Landing page, career picker, difficulty picker | ✅ |
+| Landing page (animated hero, rotating live career preview pulled from real content, entrance animations), career picker, difficulty picker | ✅ |
 | **12 fully playable careers** (~15-19 scenes each, a signature high-stakes 4-way decision, 5 possible endings, one randomized "life happens" beat for replay variety): Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller, Firefighter, Teacher, Paramedic, Software Engineer | ✅ |
 | Live stat tracking (stress / energy / reputation / pay / a career-specific highlight counter) | ✅ |
 | **An animated visual character** (`CareerAvatar.tsx`) — not text, an actual SVG figure with a career-specific prop icon, whose posture, expression, and pace change with mood and react to the big-decision moments — see below | ✅ |
@@ -26,9 +26,10 @@ to end, sharing one engine.
 | Sims-style "living" text/UI animation layer (typewriter narration, floating stat pop-ups, day/night ambient background) — see below | ✅ |
 | **Replay variety** — each career has at least one randomized branch point so two playthroughs of the same career don't play out identically | ✅ |
 | End-of-shift report with a compatibility score that's an honest percentile against real random play, not a formula that quietly can't go below 50 (see "Fixing the compatibility score") | ✅ |
+| **Shift history page** (`/history`) — every past run, with career, ending, date, and a recomputed compatibility score, linked from the careers page, the ending screen, and the landing page nav | ✅ |
 | Accounts via Clerk (email + social login), session-gated routes | ✅ |
 | Server-side scoring — the server replays your decisions itself rather than trusting a client-submitted score | ✅ |
-| Run history persisted per user (Postgres/SQLite via Prisma) | ✅ |
+| Run history persisted per user (Postgres/SQLite via Prisma) — see the `/history` page above | ✅ |
 | Optional AI narration hook for one scene (OpenAI), with a static fallback so the game is fully playable with zero API keys | ✅ |
 | Every career in the world, NPC conversations, leaderboards, voice narration, multiplayer, a full 3D/graphical world | 🔜 see "Future enhancements" and "On 'every career in the world'" below |
 
@@ -282,8 +283,9 @@ shiftwork/
 ├── src/
 │   ├── proxy.ts                       # Clerk route protection (Next.js 16's renamed middleware.ts; runs before every request)
 │   ├── app/
-│   │   ├── page.tsx                   # Public landing page
+│   │   ├── page.tsx                   # Public landing page (animated hero + rotating preview)
 │   │   ├── careers/page.tsx           # Career picker (protected) — generated from CAREER_GRAPHS
+│   │   ├── history/page.tsx           # Past runs, per user (protected)
 │   │   ├── simulation/page.tsx        # Redirects /simulation -> /simulation/trauma_surgeon
 │   │   ├── simulation/[career]/page.tsx  # The game itself (protected, validates career id)
 │   │   ├── sign-in/, sign-up/         # Clerk-hosted auth pages
@@ -291,6 +293,7 @@ shiftwork/
 │   │       ├── simulation/route.ts    # Save/list runs — auth + validation + server-side scoring
 │   │       └── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
 │   ├── components/
+│   │   ├── LandingHero.tsx            # Landing page's animated hero + rotating live career preview (client)
 │   │   ├── CareerAvatar.tsx           # The animated SVG character (mood, tension, ending poses)
 │   │   ├── SceneStage.tsx             # Full animated per-scene vignette (commute/rest/alert/...), not just an icon
 │   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + stat readouts
@@ -307,7 +310,7 @@ shiftwork/
 │   │   ├── mood.ts                    # Stats -> mood + label (drives both the mood face and the avatar's posture)
 │   │   ├── validation.ts              # Zod schemas for every API input
 │   │   ├── rateLimit.ts
-│   │   └── db.ts                      # Prisma client singleton
+│   │   └── db.ts                      # Prisma client singleton + shared SimulationRunRow type
 │   └── data/careers/                  # One JSON per career — see "Adding a new career"
 │       ├── trauma-surgeon.json
 │       ├── astronaut.json

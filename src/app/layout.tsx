@@ -23,9 +23,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Shiftwork — A Day as a Trauma Surgeon',
+  title: 'Shiftwork — Live a Day in 12 Different Careers',
   description:
-    'Live a full 16-hour trauma surgery shift, one decision at a time. A branching career simulation.',
+    'A branching career simulator. Surgeon, astronaut, pilot, firefighter, and more — live a full shift, one decision at a time, and find out what the job actually feels like.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

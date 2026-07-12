@@ -29,6 +29,7 @@ const nextConfig = {
       "'self'",
       'https://*.clerk.accounts.dev',
       'https://api.clerk.dev',
+      'https://challenges.cloudflare.com',
       isDev && 'ws://localhost:*',
       isDev && 'http://localhost:*',
     ]
@@ -50,6 +51,16 @@ const nextConfig = {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https://img.clerk.com",
       "font-src 'self' data:",
+      // Clerk's bot-protection challenge (Cloudflare Turnstile) runs inside a
+      // Web Worker loaded from a blob: URL. With no explicit worker-src, CSP
+      // falls back to script-src for that check, which doesn't allow blob: —
+      // so the challenge silently fails to complete on first load, and the
+      // sign-in/sign-up button appears to need several clicks before it
+      // works (each click re-triggers the challenge, which eventually
+      // succeeds by luck of timing/caching rather than actually being
+      // fixed). This is a documented Clerk/Turnstile CSP requirement, not
+      // a guess — see SECURITY.md.
+      "worker-src 'self' blob:",
       // Turbopack's dev server talks to the browser over a local HMR
       // websocket; production serves no such thing, so this only needs to be
       // open in dev.

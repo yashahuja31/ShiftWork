@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { UserButton } from '@clerk/nextjs';
 import { CareerCard } from '@/components/CareerCard';
@@ -25,7 +26,12 @@ export default async function CareersPage() {
           <p className="font-mono text-xs uppercase tracking-widest text-vital mb-1">Choose a shift</p>
           <h1 className="font-display text-3xl text-ivory">What&apos;s it actually like?</h1>
         </div>
-        <UserButton />
+        <div className="flex items-center gap-4">
+          <Link href="/history" className="text-xs font-mono uppercase tracking-widest text-muted hover:text-ivory">
+            History
+          </Link>
+          <UserButton />
+        </div>
       </header>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl">

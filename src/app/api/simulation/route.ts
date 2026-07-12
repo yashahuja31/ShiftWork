@@ -1,28 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth, currentUser } from '@clerk/nextjs/server';
-import { db } from '@/lib/db';
+import { db, type SimulationRunRow } from '@/lib/db';
 import { rateLimit } from '@/lib/rateLimit';
 import { saveRunSchema } from '@/lib/validation';
 import { replay, InvalidDecisionError } from '@/lib/simulationEngine';
-
-// Mirrors the Prisma-generated SimulationRun model shape. Annotated
-// explicitly here (rather than relying on inference from `db.simulationRun`)
-// so this compiles the same way regardless of exactly how the generated
-// client's types come through in a given environment.
-interface SimulationRunRow {
-  id: string;
-  userId: string;
-  career: string;
-  difficulty: string;
-  endingKey: string;
-  finalStress: number;
-  finalEnergy: number;
-  finalRep: number;
-  finalMoney: number;
-  highlights: number;
-  decisions: string;
-  createdAt: Date;
-}
 
 // Prisma throws a known-request error with a `.code` of "P2021" when a
 // table referenced in a query doesn't exist yet — almost always meaning

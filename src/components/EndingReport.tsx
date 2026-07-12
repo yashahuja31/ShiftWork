@@ -137,7 +137,7 @@ export function EndingReport({ careerId, stats, endingKey, saving, highlightLabe
         {saving === 'error' && "Couldn't save this run — you can still see your results above."}
       </p>
 
-      <div className="flex gap-3 justify-center">
+      <div className="flex gap-3 justify-center flex-wrap">
         <Link
           href={`/simulation/${careerId}`}
           className="rounded-lg bg-vital text-ink font-medium px-5 py-2.5 hover:brightness-110 transition"
@@ -149,6 +149,12 @@ export function EndingReport({ careerId, stats, endingKey, saving, highlightLabe
           className="rounded-lg border border-line text-ivory font-medium px-5 py-2.5 hover:border-vital transition"
         >
           Back to careers
+        </Link>
+        <Link
+          href="/history"
+          className="rounded-lg border border-line text-ivory font-medium px-5 py-2.5 hover:border-vital transition"
+        >
+          View history
         </Link>
       </div>
     </motion.div>

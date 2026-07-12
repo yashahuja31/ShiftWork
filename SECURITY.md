@@ -191,6 +191,32 @@ solution is to make the difference explicit and intentional (see the
 `isDev` branches in `next.config.js`), not to loosen the policy everywhere
 just to make local testing quiet.
 
+### A third real bug: sign-in needing multiple clicks to work
+
+A user reported having to click "sign in" repeatedly before it actually
+worked. The cause was the same category of problem as the two bugs above —
+a CSP directive that was too narrow — but harder to spot because it failed
+*intermittently* rather than outright. Clerk's bot-protection challenge
+(Cloudflare Turnstile) runs inside a Web Worker loaded from a `blob:` URL.
+CSP has no `worker-src` fallback to `'self'` the way some other directives
+do — with no `worker-src` specified at all, the spec has the browser fall
+back to `script-src` for worker loads, and this policy's `script-src` never
+allowed `blob:`. So the Turnstile challenge would silently fail to
+initialize on the first attempt; each retry had some chance of the browser
+having already cached or resolved enough of it to squeak through, which is
+exactly what "have to click it a few times" feels like from the outside —
+never a clean failure, just unreliable.
+
+The fix is a dedicated `worker-src 'self' blob:` directive, confirmed
+against Clerk's own published CSP requirements (`clerk.com/docs/guides/secure/best-practices/csp-headers`)
+rather than guessed at. It's a good example of why intermittent auth
+flakiness is worth treating as a CSP suspect early: a *complete* block
+shows up immediately and loudly (like the `eval()` bug above); a
+*partial* one — blocking a resource that's only sometimes on the critical
+path, like a bot-protection worker — produces exactly the "sometimes it
+works" pattern that's tempting to blame on the network or the browser
+instead.
+
 ---
 
 ## What is *not* handled for you, and needs your attention
