@@ -7,7 +7,14 @@
 // (never raw SQL), so there is nothing engine-specific to rewrite.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // "native" (the default) matches whatever OS runs `prisma generate`,
+  // which is correct when Vercel builds and runs your app on the same
+  // infrastructure — the common case for a standard Next.js deploy. Listed
+  // explicitly anyway so it keeps working if you ever build somewhere else
+  // (Docker, a different CI) and deploy to Vercel's Lambda runtime, which
+  // needs the rhel-openssl-3.0.x target specifically.
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

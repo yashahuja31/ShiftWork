@@ -251,14 +251,14 @@ Being honest about the edges of this is as important as the list above.
 
 ## Pre-launch checklist
 
-- [✔️] Real Clerk keys in your host's env vars (never in git)
-- [✔️ ] `DATABASE_URL` pointed at a real Postgres instance with a
+- [ ] Real Clerk keys in your host's env vars (never in git)
+- [ ] `DATABASE_URL` pointed at a real Postgres instance with a
       least-privilege app user
-- [ ✔️] `prisma migrate deploy` run against production
-- [ ✔️] HTTPS confirmed working (most hosts do this automatically — verify it)
-- [✔️ ] `npm run audit` clean, or accepted risk documented for anything that
+- [ ] `prisma migrate deploy` run against production
+- [ ] HTTPS confirmed working (most hosts do this automatically — verify it)
+- [ ] `npm run audit` clean, or accepted risk documented for anything that
       isn't
-- [ ✔️] Dependabot PRs enabled and someone assigned to actually review them
-- [ ✔️] If you add features that touch money, health records, or anything
+- [ ] Dependabot PRs enabled and someone assigned to actually review them
+- [ ] If you add features that touch money, health records, or anything
       regulated: get an actual security review before launch, not just this
       document
