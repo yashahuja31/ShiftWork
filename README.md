@@ -32,6 +32,7 @@ to end, sharing one engine.
 | **Replay variety** — each career has at least one randomized branch point so two playthroughs of the same career don't play out identically | ✅ |
 | End-of-shift report with a compatibility score that's an honest percentile against real random play, not a formula that quietly can't go below 50 (see "Fixing the compatibility score") | ✅ |
 | **Shift history page** (`/history`) — every past run, with career, ending, date, and a recomputed compatibility score, linked from the careers page, the ending screen, and the landing page nav | ✅ |
+| **Leaderboard** (`Leaderboard.tsx`, sidebar on `/careers`) — top 20 runs by score, with a smooth animated toggle between a global (all users) and personal (your own runs) view; no other player's identity is ever shown, only "· you" on your own global entries | ✅ |
 | Accounts via Clerk (email + social login), session-gated routes | ✅ |
 | Server-side scoring — the server replays your decisions itself rather than trusting a client-submitted score | ✅ |
 | Run history persisted per user (Postgres/SQLite via Prisma) — see the `/history` page above | ✅ |
@@ -306,9 +307,11 @@ shiftwork/
 │   │   ├── FloatingDeltas.tsx         # Sims-style floating "+10 REP" stat pop-ups
 │   │   ├── SimulationClient.tsx       # The game's client-side state machine, per career
 │   │   ├── CareerCard.tsx
+│   │   ├── Leaderboard.tsx            # Global/personal top-20 sidebar with a smooth animated toggle
 │   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake flourish, final avatar pose
 │   ├── lib/
 │   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay, ending, calibrated score
+│   │   ├── leaderboard.ts             # Turns raw runs into ranked, scored leaderboard entries
 │   │   ├── careerIcons.tsx            # Career id -> prop icon for the avatar
 │   │   ├── sceneEnvironments.tsx      # Scene environment tag -> icon + label for the backdrop
 │   │   ├── dayCycle.ts                # Scene time -> hour-of-day -> ambient gradient
