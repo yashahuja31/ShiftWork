@@ -126,6 +126,11 @@ deployment → **Redeploy**).
 > things here — the CSP in `next.config.js` stays in its looser dev-mode
 > policy (`'unsafe-eval'`, no HSTS), among other side effects. Copy the
 > table above, not the whole file.
+>
+> **Same goes for `DISABLE_CSP_FOR_DEBUGGING`** if you ever add it locally
+> to troubleshoot a blank sign-in page (see `SECURITY.md`) — it's a local
+> diagnostic-only flag that removes real security headers. Never let it
+> reach Vercel's environment variables.
 
 ---
 

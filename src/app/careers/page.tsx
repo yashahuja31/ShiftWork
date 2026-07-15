@@ -44,33 +44,35 @@ export default async function CareersPage() {
 
   return (
     <main className="min-h-screen px-6 sm:px-10 py-10">
-      <header className="flex items-center justify-between mb-10 max-w-5xl mx-auto lg:max-w-none">
-        <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-vital mb-1">Choose a shift</p>
-          <h1 className="font-display text-3xl text-ivory">What&apos;s it actually like?</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/history" className="text-xs font-mono uppercase tracking-widest text-muted hover:text-ivory">
-            History
-          </Link>
-          <UserButton />
-        </div>
-      </header>
+      <div className="max-w-7xl mx-auto">
+        <header className="flex items-center justify-between mb-10">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-vital mb-1">Choose a shift</p>
+            <h1 className="font-display text-3xl text-ivory">What&apos;s it actually like?</h1>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/history" className="text-xs font-mono uppercase tracking-widest text-muted hover:text-ivory">
+              History
+            </Link>
+            <UserButton />
+          </div>
+        </header>
 
-      <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5 max-w-5xl">
-          {careers.map((career) => (
-            <CareerCard
-              key={career.id}
-              emoji={career.emoji}
-              title={career.title}
-              tagline={career.tagline}
-              href={`/simulation/${career.id}`}
-            />
-          ))}
-        </div>
+        <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
+          <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            {careers.map((career) => (
+              <CareerCard
+                key={career.id}
+                emoji={career.emoji}
+                title={career.title}
+                tagline={career.tagline}
+                href={`/simulation/${career.id}`}
+              />
+            ))}
+          </div>
 
-        <Leaderboard globalEntries={globalEntries} personalEntries={personalEntries} currentUserId={userId} />
+          <Leaderboard globalEntries={globalEntries} personalEntries={personalEntries} currentUserId={userId} />
+        </div>
       </div>
     </main>
   );

@@ -217,6 +217,31 @@ path, like a bot-protection worker — produces exactly the "sometimes it
 works" pattern that's tempting to blame on the network or the browser
 instead.
 
+### A diagnostic escape hatch, added after repeated CSP whack-a-mole
+
+Three separate real bugs in a row traced back to the CSP being too narrow
+in some specific way (`eval()`, then `worker-src`, and CSP remains a
+plausible suspect for anything auth-related that renders incompletely).
+Patching one directive at a time based on guesses about what Clerk might
+need next is slow and, from the outside, indistinguishable from not
+actually knowing what's wrong. So `next.config.js` now has a
+`DISABLE_CSP_FOR_DEBUGGING` environment variable (documented, commented
+out by default, in `.env.example`) that skips every security header
+entirely when set. Setting it locally and reloading a broken page answers
+one question immediately: is the CSP even involved, yes or no? If the page
+starts working, turn the flag back off and check the browser console for
+the specific "Refused to ... violates the following Content Security
+Policy directive" message, which names the exact directive to fix — far
+faster than iterating blind. If the page is still broken with the CSP
+completely off, the cause is something else entirely (a JS error, a bad
+Clerk key, a stale build), and no further CSP changes will help.
+
+**This must never be set in Vercel or any real deployment** — it isn't a
+convenience setting, it removes clickjacking/XSS/injection protections
+outright. It exists purely so a broken-locally problem can be triaged in
+one step instead of several round trips of "try this directive, redeploy,
+check again."
+
 ---
 
 ## What is *not* handled for you, and needs your attention

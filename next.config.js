@@ -14,6 +14,31 @@ const nextConfig = {
   async headers() {
     const isDev = process.env.NODE_ENV === 'development';
 
+    // TEMPORARY DEBUGGING ESCAPE HATCH — not a permanent setting, and never
+    // set this in Vercel/production. If the sign-in/sign-up page is
+    // rendering blank or partially blank, the fastest way to find out
+    // whether the CSP is the cause (rather than something else entirely)
+    // is to rule it out completely for one test:
+    //   1. Add DISABLE_CSP_FOR_DEBUGGING=1 to your local .env
+    //   2. Stop the dev server, delete .next, run `npm run dev` again
+    //      (env changes and CSP changes both need a full restart, not
+    //      hot-reload, to take effect)
+    //   3. Reload the broken page
+    // If it renders correctly now: the CSP is confirmed as the cause, and
+    // the browser console (F12 -> Console, with this flag OFF again) will
+    // show a "Refused to ... because it violates the following Content
+    // Security Policy directive: ..." message that says exactly which
+    // directive is still too narrow — paste that exact line for a precise
+    // fix instead of another guess.
+    // If it still renders blank with CSP fully disabled: the CSP was never
+    // the problem, and the real cause is something else (a JS error, a bad
+    // Clerk key, a stale build) — check the Console tab for any red error
+    // regardless of this flag.
+    // Remove DISABLE_CSP_FOR_DEBUGGING from .env once you're done testing.
+    if (process.env.DISABLE_CSP_FOR_DEBUGGING) {
+      return [];
+    }
+
     const scriptSrc = [
       "'self'",
       "'unsafe-inline'",
