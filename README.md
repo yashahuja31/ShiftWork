@@ -421,6 +421,32 @@ Roughly in the order they'd add the most value:
   examples — astronaut, trauma surgeon, investment banker, air traffic
   controller — plus firefighter, teacher, paramedic, and software engineer).
   See "On 'every career in the world'" below for the honest scope on this.
+- **Leaderboard segmentation, and a fairness gap worth fixing first.**
+  The leaderboard (`Leaderboard.tsx`) currently mixes every difficulty
+  into one ranking, but `calibrate_careers.py`'s Monte Carlo baseline
+  doesn't apply the difficulty multiplier `applyEffects` uses at runtime
+  (see `simulationEngine.ts`) — meaning chaos mode is genuinely harder to
+  score well in than the calibration assumes, and normal-mode players have
+  an easier path to a high leaderboard score for the same quality of
+  decisions. Either calibrate each difficulty separately (three baselines
+  per career instead of one) or segment the leaderboard by difficulty —
+  worth doing before this leaderboard is treated as a serious ranking
+  rather than a fun extra. Per-career leaderboards ("best Trauma
+  Surgeons") are a smaller, purely additive follow-up once that's sorted.
+- **Achievements.** The history page already has every run per user;
+  badges ("completed all 12 careers," "5 triumphant endings," "survived
+  chaos mode without burning out") are a query over existing data, not a
+  new data model.
+- **Shareable result cards.** Rendering the ending screen (score, career,
+  avatar pose) as an image for social sharing is a classic, relatively
+  low-effort feature with real growth value — `CareerAvatar` and the
+  ending copy already exist, this is mostly an image-generation endpoint.
+- **Per-run analytics.** The original brainstorm's "Phase 6" wanted a
+  stress graph and decision timeline per playthrough. `decisions` is
+  already stored per run — replaying it scene-by-scene while capturing
+  intermediate stats (instead of just the final ones, like `replay()`
+  does now) would drive a "how your shift actually went" chart on the
+  history page.
 - **Richer randomized events.** Right now each career has exactly one
   randomized beat and "chaos mode" scales existing effect magnitudes. The
   original design doc's Feature 4 envisioned a broader pool of injectable
@@ -428,10 +454,6 @@ Roughly in the order they'd add the most value:
   shift, not just one fixed beat per career. The data model already
   supports adding more `"randomized": true` scenes anywhere in a graph — this
   is more content work than engine work at this point.
-- **A real leaderboard.** `SimulationRun` already stores every run per
-  user; a `shared` leaderboard view (e.g. "top compatibility score this
-  week, by career") is mostly a read-only aggregation query away, not a
-  new subsystem.
 - **NPC conversations** (Feature: "Talk to your boss/patients/crewmates") —
   a natural extension of the existing optional-AI-narration pattern in
   `api/narrate/route.ts`, but as a back-and-forth exchange instead of a
@@ -439,8 +461,13 @@ Roughly in the order they'd add the most value:
   degrades to scripted dialogue if none are configured).
 - **AI career recommendations** after several completed runs — "you
   consistently stay calm under pressure, you might like: Pilot, Surgeon" —
-  straightforward once there's enough `SimulationRun` history per user to
-  aggregate over.
+  more achievable now than when this was first written, since there's
+  real `SimulationRun` history per user to aggregate over via the same
+  Prisma queries the history page and leaderboard already use.
+- **Sound design.** Distinct from voice narration below — ambient audio
+  per `SceneStage` environment tag (a low hum for `work`, something
+  softer for `rest`) and small SFX on stat changes/endings. The
+  environment tagging this would hook into already exists.
 - **A richer character.** `CareerAvatar.tsx` is deliberately a simple,
   abstract figure (see "The animated character" above) so it scales to any
   number of careers without needing bespoke art. A fuller version — walking
