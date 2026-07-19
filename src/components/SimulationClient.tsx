@@ -14,6 +14,7 @@ import {
 } from '@/lib/simulationEngine';
 import { gradientForTime } from '@/lib/dayCycle';
 import { moodFor } from '@/lib/mood';
+import { playPositive, playNegative } from '@/lib/sound';
 import { SceneView } from '@/components/SceneView';
 import { VitalsMonitor } from '@/components/VitalsMonitor';
 import { EndingReport } from '@/components/EndingReport';
@@ -44,6 +45,7 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
   const [decisions, setDecisions] = useState<string[]>([]);
   const [ending, setEnding] = useState<EndingKey | null>(null);
   const [saving, setSaving] = useState<SaveState>('idle');
+  const [runId, setRunId] = useState<string | null>(null);
   const [badges, setBadges] = useState<DeltaBadge[]>([]);
 
   const scene = useMemo(() => getScene(graph, sceneId), [graph, sceneId]);
@@ -59,6 +61,8 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
           body: JSON.stringify({ career: careerId, difficulty: finalDifficulty, decisions: finalDecisions }),
         });
         if (!res.ok) throw new Error('save failed');
+        const data: { id: string } = await res.json();
+        setRunId(data.id);
         setSaving('saved');
       } catch {
         setSaving('error');
@@ -79,6 +83,13 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
           isMoney: key === 'money',
         }));
       setBadges(next);
+      // Net direction of the choice's effects, weighted toward the stats
+      // that matter most for how the moment "feels" (stress moving the
+      // wrong way outweighs a small pay bump) — stress deltas count double
+      // and are inverted, since less stress is the good direction.
+      const netFeel = -2 * (effects.stress ?? 0) + (effects.rep ?? 0) + (effects.highlights ?? 0) * 5;
+      if (netFeel > 0) playPositive();
+      else if (netFeel < 0) playNegative();
       // Clear after the fly-up animation finishes so they don't linger as
       // static text once framer-motion's exit transition completes.
       setTimeout(() => setBadges([]), 1700);
@@ -99,7 +110,7 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
       setDecisions(nextDecisions);
 
       if (!choice.next) {
-        const finalEnding = determineEnding(nextStats, graph.calibration);
+        const finalEnding = determineEnding(nextStats, graph.calibration, difficulty);
         setEnding(finalEnding);
         void persistRun(nextDecisions, difficulty);
         return;
@@ -142,7 +153,15 @@ export function SimulationClient({ careerId }: SimulationClientProps) {
   if (ending) {
     return (
       <main className="min-h-screen flex items-center justify-center px-6 py-16">
-        <EndingReport careerId={careerId} stats={stats} endingKey={ending} saving={saving} highlightLabel={graph.highlightLabel} />
+        <EndingReport
+          careerId={careerId}
+          stats={stats}
+          endingKey={ending}
+          saving={saving}
+          highlightLabel={graph.highlightLabel}
+          difficulty={difficulty}
+          runId={runId}
+        />
       </main>
     );
   }

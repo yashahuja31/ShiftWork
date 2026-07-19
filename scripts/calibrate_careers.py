@@ -7,12 +7,20 @@ percentile checkpoints in the career's JSON under "calibration".
 
 This is what makes the compatibility score meaningful: the runtime score is
 computed as this player's percentile rank against how *everyone else who
-just picked randomly* would have done in this exact career, rather than
-against an arbitrary fixed formula. A career where the random baseline
-skews high (most random choices are reasonable ones) and a career where it
-skews low both end up with a genuinely spread 1-99 score distribution,
-because the calibration is per-career and derived from that career's own
-actual reachable outcomes.
+just picked randomly* would have done in this exact career and difficulty,
+rather than against an arbitrary fixed formula.
+
+Calibrated PER DIFFICULTY, not once per career. An earlier version shared
+one baseline across normal/realistic/chaos, which was a real fairness bug:
+chaos mode amplifies negative stress/energy effects at runtime
+(DIFFICULTY_MULTIPLIER in simulationEngine.ts) but the calibration baseline
+didn't account for that, so a chaos player's score was graded against a
+baseline that was actually easier than what they were facing — normal-mode
+players had a systematically easier path to a high score for equally good
+decisions. Simulating each difficulty separately with the same multiplier
+applyEffects() uses at runtime fixes that: a 90% in chaos and a 90% in
+normal both now mean the same thing ("better than 90% of random attempts at
+THIS difficulty"), and difficulty-segmented leaderboards become meaningful.
 
 Run after adding or editing any career JSON:
     python3 scripts/calibrate_careers.py
@@ -28,15 +36,22 @@ SEED = 20260709  # deterministic so re-running without content changes is a no-o
 
 INITIAL = {"stress": 20, "energy": 80, "rep": 60, "money": 420, "highlights": 0}
 
+# Must match DIFFICULTY_MULTIPLIER in src/lib/simulationEngine.ts exactly --
+# this script's whole point is grading against the same math the runtime
+# actually applies.
+DIFFICULTIES = {"normal": 1.0, "realistic": 1.15, "chaos": 1.35}
+
 
 def clamp(n, lo, hi):
     return min(hi, max(lo, n))
 
 
-def apply_effects(stats, effects):
+def apply_effects(stats, effects, mult):
     s = dict(stats)
-    s["stress"] = clamp(s["stress"] + effects.get("stress", 0), 0, 100)
-    s["energy"] = clamp(s["energy"] + effects.get("energy", 0), 0, 100)
+    s["stress"] = clamp(s["stress"] + round(effects.get("stress", 0) * mult), 0, 100)
+    e_delta = effects.get("energy", 0)
+    e_mult = mult if e_delta < 0 else 1  # matches applyEffects: mult only applies to negative energy
+    s["energy"] = clamp(s["energy"] + round(e_delta * e_mult), 0, 100)
     s["rep"] = clamp(s["rep"] + effects.get("rep", 0), 0, 100)
     s["money"] = max(0, s["money"] + effects.get("money", 0))
     s["highlights"] = s["highlights"] + effects.get("highlights", 0)
@@ -58,7 +73,7 @@ def percentile(sorted_values, pct):
     return sorted_values[f] + (sorted_values[c] - sorted_values[f]) * (k - f)
 
 
-def calibrate(graph, rng):
+def calibrate_one(graph, rng, mult):
     scenes = graph["scenes"]
     start = graph["startScene"]
     scores = []
@@ -68,7 +83,7 @@ def calibrate(graph, rng):
         while cur:
             scene = scenes[cur]
             choice = rng.choice(scene["choices"])
-            stats = apply_effects(stats, choice["effects"])
+            stats = apply_effects(stats, choice["effects"], mult)
             cur = choice["next"]
         scores.append(performance_index(stats))
     scores.sort()
@@ -78,20 +93,23 @@ def calibrate(graph, rng):
 
 def main():
     rng = random.Random(SEED)
-    summary = []
+    careers_done = 0
     for path in sorted(glob.glob(f"{CAREERS_DIR}/*.json")):
         graph = json.load(open(path, encoding="utf-8"))
-        calibration, scores = calibrate(graph, rng)
+        calibration = {}
+        line = f"{path.split('/')[-1]:32s}"
+        for difficulty, mult in DIFFICULTIES.items():
+            points, scores = calibrate_one(graph, rng, mult)
+            calibration[difficulty] = points
+            line += f" {difficulty}[p50={points['p50']:5.1f} mean={statistics.mean(scores):5.1f}]"
         graph["calibration"] = calibration
         with open(path, "w", encoding="utf-8") as f:
             json.dump(graph, f, indent=2, ensure_ascii=False)
             f.write("\n")
-        below_50 = sum(1 for s in scores if s < calibration["p50"]) / len(scores)
-        summary.append((path.split("/")[-1], calibration, statistics.mean(scores)))
-        print(f"{path.split('/')[-1]:32s} p10={calibration['p10']:6.1f} p50={calibration['p50']:6.1f} "
-              f"p90={calibration['p90']:6.1f} mean={statistics.mean(scores):6.1f}")
+        print(line)
+        careers_done += 1
 
-    print(f"\nCalibrated {len(summary)} careers, {SAMPLES} random samples each.")
+    print(f"\nCalibrated {careers_done} careers x {len(DIFFICULTIES)} difficulties, {SAMPLES} samples each.")
 
 
 if __name__ == "__main__":

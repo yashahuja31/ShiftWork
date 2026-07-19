@@ -58,7 +58,7 @@ export interface EndingCopy {
 // scripts/calibrate_careers.py and stored per career. This is what the
 // compatibility score and ending are actually measured against — see the
 // long comment above compatibilityScore for why.
-export interface Calibration {
+export interface PercentileCheckpoints {
   p1: number;
   p5: number;
   p10: number;
@@ -72,12 +72,23 @@ export interface Calibration {
   p99: number;
 }
 
+// Keyed by difficulty rather than a single flat set of checkpoints — chaos
+// mode amplifies negative stress/energy effects at runtime
+// (DIFFICULTY_MULTIPLIER below), and an earlier version of this calibration
+// didn't account for that: it graded every difficulty against the same
+// baseline, so a chaos player's score was measured against a bar that
+// didn't reflect how much harder chaos actually is. Simulating each
+// difficulty separately with the same multiplier applyEffects() uses at
+// runtime fixes that — see scripts/calibrate_careers.py.
+export type Calibration = Record<string, PercentileCheckpoints>;
+
 export interface SceneGraph {
   id: string;
   title: string;
   emoji: string;
   tagline: string;
   highlightLabel: string; // e.g. "Patients saved", "Shots captured"
+  traits: string[]; // e.g. ["high-pressure", "hands-on"] — drives lib/recommendations.ts
   startScene: string;
   scenes: Record<string, Scene>;
   endings: Record<EndingKey, EndingCopy>;
@@ -176,21 +187,30 @@ export function performanceIndex(stats: Stats): number {
 
 const PERCENTILE_KEYS = [1, 5, 10, 25, 35, 50, 65, 75, 90, 95, 99] as const;
 
+// Picks the checkpoints for a given difficulty, falling back to "normal"
+// for safety if an unrecognized difficulty string ever reaches this (it
+// shouldn't, since saveRunSchema validates it, but a missing lookup here
+// should degrade gracefully rather than throw).
+function resolveCheckpoints(calibration: Calibration, difficulty: string): PercentileCheckpoints {
+  return calibration[difficulty] ?? calibration.normal ?? Object.values(calibration)[0]!;
+}
+
 // Where does this performance index fall, as a percentile, against 20,000
-// simulated random playthroughs of this exact career (see
+// simulated random playthroughs of this exact career and difficulty (see
 // scripts/calibrate_careers.py)? This is the fix for the compatibility
 // score problem: an earlier version used one fixed formula/threshold set
 // for every career, and testing showed it could never produce a score below
 // the mid-50s no matter how badly someone played, because the actual
 // reachable stats in these scene graphs just don't get "bad" in absolute
-// terms very often. Comparing against a per-career random-play baseline
-// instead means the score is always relative to what an average attempt at
-// THIS SPECIFIC career actually looks like — so a below-average run
-// genuinely and reliably scores below 50, a well-played run scores high,
-// and no career is quietly "impossible to fail" or "impossible to ace" just
-// because of how its numbers happen to be tuned.
-function percentileRank(perf: number, calibration: Calibration): number {
-  const points = PERCENTILE_KEYS.map((p) => ({ pct: p, value: calibration[`p${p}` as keyof Calibration] }));
+// terms very often. Comparing against a per-career, per-difficulty
+// random-play baseline instead means the score is always relative to what
+// an average attempt at THIS SPECIFIC career and difficulty actually looks
+// like — so a below-average run genuinely and reliably scores below 50, a
+// well-played run scores high, and no career or difficulty is quietly
+// "impossible to fail" or "impossible to ace" just because of how its
+// numbers happen to be tuned.
+function percentileRank(perf: number, checkpoints: PercentileCheckpoints): number {
+  const points = PERCENTILE_KEYS.map((p) => ({ pct: p, value: checkpoints[`p${p}` as keyof PercentileCheckpoints] }));
   const first = points[0]!;
   const last = points[points.length - 1]!;
   if (perf <= first.value) return first.pct;
@@ -207,8 +227,8 @@ function percentileRank(perf: number, calibration: Calibration): number {
   return 50;
 }
 
-export function determineEnding(stats: Stats, calibration: Calibration): EndingKey {
-  const rank = percentileRank(performanceIndex(stats), calibration);
+export function determineEnding(stats: Stats, calibration: Calibration, difficulty: string): EndingKey {
+  const rank = percentileRank(performanceIndex(stats), resolveCheckpoints(calibration, difficulty));
   if (rank < 10) return 'burned_out';
   if (rank < 35) return 'written_up';
   if (rank < 65) return 'ordinary_day';
@@ -224,13 +244,14 @@ export function getEnding(careerId: string, key: EndingKey): EndingCopy {
  * The displayed "would you enjoy this career?" score. This IS the
  * percentile rank from percentileRank(), which is deliberately the whole
  * point: the number means "you did better than N% of people who tried this
- * exact career by picking randomly," which is both an honest description of
- * what's being measured and, empirically, produces a full and meaningful
- * 1-99 spread instead of clustering near the top. See
- * scripts/calibrate_careers.py for how each career's baseline was measured.
+ * exact career and difficulty by picking randomly," which is both an
+ * honest description of what's being measured and, empirically, produces a
+ * full and meaningful 1-99 spread instead of clustering near the top. See
+ * scripts/calibrate_careers.py for how each career/difficulty baseline was
+ * measured.
  */
-export function compatibilityScore(stats: Stats, calibration: Calibration): number {
-  return Math.round(percentileRank(performanceIndex(stats), calibration));
+export function compatibilityScore(stats: Stats, calibration: Calibration, difficulty: string): number {
+  return Math.round(percentileRank(performanceIndex(stats), resolveCheckpoints(calibration, difficulty)));
 }
 
 export interface ReplayResult {
@@ -272,7 +293,63 @@ export function replay(careerId: string, decisions: string[], difficulty: string
     currentSceneId = choice.next;
   }
 
-  return { finalStats: stats, endingKey: determineEnding(stats, graph.calibration), scenesVisited };
+  return { finalStats: stats, endingKey: determineEnding(stats, graph.calibration, difficulty), scenesVisited };
+}
+
+export interface TimelineStep {
+  sceneId: string;
+  time: string;
+  choiceText: string;
+  stats: Stats;
+}
+
+export interface ReplayWithHistoryResult extends ReplayResult {
+  timeline: TimelineStep[];
+}
+
+/**
+ * Same walk as replay(), but records a snapshot of stats after every
+ * decision instead of only returning the final one — this is what powers
+ * the per-run stress/energy timeline on the history detail page
+ * (/history/[runId]). Kept as a separate function rather than adding an
+ * optional callback to replay() itself: replay() runs on every save
+ * (server-side scoring integrity check, see SECURITY.md) and stays as
+ * simple as possible for that; this one only runs when someone actually
+ * opens a run's detail page, so the small duplication is worth the
+ * clarity.
+ */
+export function replayWithHistory(careerId: string, decisions: string[], difficulty: string): ReplayWithHistoryResult {
+  const graph = getGraph(careerId);
+  let stats = INITIAL_STATS;
+  let currentSceneId: string | null = graph.startScene;
+  const scenesVisited: string[] = [];
+  const timeline: TimelineStep[] = [];
+
+  for (const decisionId of decisions) {
+    if (!currentSceneId) {
+      throw new InvalidDecisionError('Received a decision after the shift already ended.');
+    }
+    const scene: Scene = getScene(graph, currentSceneId);
+    scenesVisited.push(currentSceneId);
+
+    const choice: Choice | undefined = scene.choices.find((c: Choice) => c.id === decisionId);
+    if (!choice) {
+      throw new InvalidDecisionError(
+        `Choice "${decisionId}" is not valid for scene "${currentSceneId}".`,
+      );
+    }
+
+    stats = applyEffects(stats, choice.effects, difficulty);
+    timeline.push({ sceneId: currentSceneId, time: scene.time, choiceText: choice.text, stats });
+    currentSceneId = choice.next;
+  }
+
+  return {
+    finalStats: stats,
+    endingKey: determineEnding(stats, graph.calibration, difficulty),
+    scenesVisited,
+    timeline,
+  };
 }
 
 /**

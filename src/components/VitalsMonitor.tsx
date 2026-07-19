@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Stats } from '@/lib/simulationEngine';
 import { moodFor } from '@/lib/mood';
+import { SoundToggle } from '@/components/SoundToggle';
 
 interface VitalsMonitorProps {
   stats: Stats;
@@ -74,6 +75,7 @@ export function VitalsMonitor({ stats, time, highlightLabel }: VitalsMonitorProp
             </motion.span>
           </AnimatePresence>
           <span className="font-mono text-sm text-ivory">{time}</span>
+          <SoundToggle />
         </div>
       </div>
 

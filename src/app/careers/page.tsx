@@ -39,8 +39,8 @@ export default async function CareersPage() {
     // leaderboard just renders empty rather than crashing the whole page.
   }
 
-  const globalEntries = rankRuns(globalRuns, 20);
-  const personalEntries = rankRuns(personalRuns, 20);
+  const globalEntries = rankRuns(globalRuns);
+  const personalEntries = rankRuns(personalRuns);
 
   return (
     <main className="min-h-screen px-6 sm:px-10 py-10">
@@ -71,7 +71,12 @@ export default async function CareersPage() {
             ))}
           </div>
 
-          <Leaderboard globalEntries={globalEntries} personalEntries={personalEntries} currentUserId={userId} />
+          <Leaderboard
+            globalEntries={globalEntries}
+            personalEntries={personalEntries}
+            currentUserId={userId}
+            careers={careers.map((c) => ({ id: c.id, title: c.title, emoji: c.emoji }))}
+          />
         </div>
       </div>
     </main>

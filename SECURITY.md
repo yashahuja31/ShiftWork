@@ -68,6 +68,29 @@ That's a more useful promise than "unhackable," and it's the honest one.
   from the same registry the game itself reads from, so there's no separate
   allowlist that could drift out of sync.
 
+### Two routes are deliberately public, and deliberately narrow
+
+`/share/[runId]` and `/api/og/[runId]` are allowlisted in `proxy.ts` as
+public — no Clerk session required. This is intentional, not an oversight:
+a shareable link needs to work for a logged-out visitor clicking it, and the
+Open Graph image needs to work for a social media crawler that will never
+have a session at all. Both routes fetch a `SimulationRun` by id with **no
+userId filter** — by design, since the id itself isn't a secret and the
+whole point is that it's shareable.
+
+What keeps this from being a privacy problem: both routes only ever read
+and return `career`, `difficulty`, `endingKey`, and the derived stats/score
+— the same class of information already shown, un-gated, on the global
+leaderboard to every signed-in user. Neither route touches `userId` or the
+`User` table at all; there's no code path in either file that could leak
+who played a given run, even though the run id itself is guessable-ish
+(a `cuid()`, not sequential, but not cryptographically secret either — it's
+treated as "unlisted," not "secret," the same way an unlisted YouTube video
+works). If you ever add anything to `SimulationRun` that shouldn't be
+public — notes, a display name, anything tied to identity — it needs to be
+explicitly excluded from these two routes' queries, not just left out of
+what's currently rendered.
+
 ### Input validation
 - Every API route parses its input through a **Zod schema**
   (`src/lib/validation.ts`) before touching the database: types, ranges, and

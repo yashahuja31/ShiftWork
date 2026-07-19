@@ -15,10 +15,20 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 // redundancy is deliberate: proxy.ts runs Clerk's Node.js proxy runtime
 // (new in Next.js 16), which is young enough that relying on it as the
 // single point of enforcement would be a mistake — see SECURITY.md.
+//
+// /share/* and /api/og/* are deliberately public too: a shareable run
+// result needs to work for logged-out visitors clicking the link, and for
+// social media crawlers fetching the preview image, neither of which have
+// a Clerk session. Both only ever expose the same non-identifying fields
+// already visible on the (also-public-within-the-app) global leaderboard —
+// career, difficulty, ending, score — never a userId or email. See
+// src/app/share/[runId]/page.tsx and src/app/api/og/[runId]/route.tsx.
 const isPublicRoute = createRouteMatcher([
   '/',
   '/sign-in(.*)',
   '/sign-up(.*)',
+  '/share/(.*)',
+  '/api/og/(.*)',
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

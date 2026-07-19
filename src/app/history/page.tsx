@@ -2,8 +2,13 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { db, type SimulationRunRow } from '@/lib/db';
-import { compatibilityScore, getGraph, type EndingKey, type Stats } from '@/lib/simulationEngine';
 import { CareerIcon } from '@/lib/careerIcons';
+import { rankRuns } from '@/lib/leaderboard';
+import { computeAchievements } from '@/lib/achievements';
+import { computeRecommendation } from '@/lib/recommendations';
+import { CAREER_IDS } from '@/lib/simulationEngine';
+import { Achievements } from '@/components/Achievements';
+import { RecommendationCard } from '@/components/RecommendationCard';
 
 export default async function HistoryPage() {
   // Defense in depth: proxy.ts already gates this route, but this page
@@ -19,7 +24,7 @@ export default async function HistoryPage() {
     runs = await db.simulationRun.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-      take: 50,
+      take: 100,
     });
   } catch {
     // Most likely cause locally: the migration hasn't been run yet
@@ -27,6 +32,13 @@ export default async function HistoryPage() {
     // 500 — an empty state with a hint is more useful than a stack trace.
     loadError = true;
   }
+
+  // rankRuns() sorts by score, which is right for the leaderboard but not
+  // for a history timeline — re-sort the same scored entries back to
+  // chronological order rather than reimplementing the scoring logic here.
+  const entries = [...rankRuns(runs)].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  const achievements = computeAchievements(entries, CAREER_IDS.length);
+  const recommendation = computeRecommendation(entries);
 
   return (
     <main className="min-h-screen px-6 sm:px-10 py-10">
@@ -51,7 +63,7 @@ export default async function HistoryPage() {
           </div>
         )}
 
-        {!loadError && runs.length === 0 && (
+        {!loadError && entries.length === 0 && (
           <div className="rounded-xl border border-line bg-panel p-10 text-center flex flex-col items-center gap-4">
             <p className="text-ivory font-medium">No shifts logged yet.</p>
             <p className="text-sm text-muted">Play one through to an ending and it&apos;ll show up here.</p>
@@ -64,63 +76,40 @@ export default async function HistoryPage() {
           </div>
         )}
 
-        {runs.map((run) => {
-          let graph;
-          try {
-            graph = getGraph(run.career);
-          } catch {
-            return null; // career no longer exists in the registry — skip rather than crash the page
-          }
+        {entries.length > 0 && recommendation && <RecommendationCard recommendation={recommendation} />}
+        {entries.length > 0 && <Achievements achievements={achievements} />}
 
-          const stats: Stats = {
-            stress: run.finalStress,
-            energy: run.finalEnergy,
-            rep: run.finalRep,
-            money: run.finalMoney,
-            highlights: run.highlights,
-          };
-          const endingKey = run.endingKey as EndingKey;
-          const ending = graph.endings[endingKey];
-          const score = compatibilityScore(stats, graph.calibration);
-
-          return (
-            <div
-              key={run.id}
-              className="rounded-xl border border-line bg-panel p-5 flex items-center gap-4"
-            >
-              <div className="flex items-center justify-center w-11 h-11 rounded-full bg-panel2 border border-line text-vital shrink-0">
-                <CareerIcon careerId={run.career} size={20} />
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-ivory font-medium truncate">{graph.title}</p>
-                  <span className="text-[10px] uppercase tracking-widest font-mono text-muted">
-                    {run.difficulty}
-                  </span>
-                </div>
-                <p className="text-sm text-muted truncate">
-                  {ending?.title ?? run.endingKey} ·{' '}
-                  {new Date(run.createdAt).toLocaleDateString(undefined, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </p>
-              </div>
-
-              <div className="text-right shrink-0">
-                <p className="font-mono text-lg text-vital">{score}%</p>
-                <Link
-                  href={`/simulation/${run.career}`}
-                  className="text-[10px] uppercase tracking-widest font-mono text-muted hover:text-ivory"
-                >
-                  Play again
-                </Link>
-              </div>
+        {entries.map((entry) => (
+          <Link
+            key={entry.id}
+            href={`/history/${entry.id}`}
+            className="rounded-xl border border-line bg-panel p-5 flex items-center gap-4 hover:border-vital/50 transition-colors"
+          >
+            <div className="flex items-center justify-center w-11 h-11 rounded-full bg-panel2 border border-line text-vital shrink-0">
+              <CareerIcon careerId={entry.careerId} size={20} />
             </div>
-          );
-        })}
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-ivory font-medium truncate">{entry.careerTitle}</p>
+                <span className="text-[10px] uppercase tracking-widest font-mono text-muted">{entry.difficulty}</span>
+              </div>
+              <p className="text-sm text-muted truncate">
+                {entry.endingTitle} ·{' '}
+                {entry.createdAt.toLocaleDateString(undefined, {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </p>
+            </div>
+
+            <div className="text-right shrink-0">
+              <p className="font-mono text-lg text-vital">{entry.score}%</p>
+              <span className="text-[10px] uppercase tracking-widest font-mono text-muted">Details →</span>
+            </div>
+          </Link>
+        ))}
       </div>
     </main>
   );

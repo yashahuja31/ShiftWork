@@ -20,7 +20,9 @@ import sys
 
 CAREERS_DIR = "src/data/careers"
 REQUIRED_ENDINGS = {"triumphant", "steady_hand", "ordinary_day", "burned_out", "written_up"}
-REQUIRED_TOP_FIELDS = {"id", "title", "emoji", "tagline", "highlightLabel", "startScene", "scenes", "endings"}
+REQUIRED_TOP_FIELDS = {"id", "title", "emoji", "tagline", "highlightLabel", "traits", "startScene", "scenes", "endings"}
+REQUIRED_DIFFICULTIES = {"normal", "realistic", "chaos"}
+REQUIRED_PERCENTILES = {"p1", "p5", "p10", "p25", "p35", "p50", "p65", "p75", "p90", "p95", "p99"}
 
 
 def validate(path):
@@ -31,8 +33,21 @@ def validate(path):
     if missing_top:
         errors.append(f"missing top-level fields: {missing_top}")
 
-    if "calibration" not in graph:
+    calibration = graph.get("calibration")
+    if calibration is None:
         errors.append("missing calibration -- run scripts/calibrate_careers.py")
+    else:
+        missing_difficulties = REQUIRED_DIFFICULTIES - set(calibration.keys())
+        if missing_difficulties:
+            errors.append(
+                f"calibration missing difficulties {missing_difficulties} -- "
+                "run scripts/calibrate_careers.py (this usually means the career "
+                "was calibrated before per-difficulty calibration existed)"
+            )
+        for difficulty in REQUIRED_DIFFICULTIES & set(calibration.keys()):
+            missing_pcts = REQUIRED_PERCENTILES - set(calibration[difficulty].keys())
+            if missing_pcts:
+                errors.append(f"calibration.{difficulty} missing percentiles {missing_pcts}")
 
     scenes = graph.get("scenes", {})
     ids = set(scenes.keys())

@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { compatibilityScore, getEnding, getGraph, type EndingKey, type Stats } from '@/lib/simulationEngine';
 import { moodFor } from '@/lib/mood';
+import { playEndingChime } from '@/lib/sound';
 import { CareerAvatar } from '@/components/CareerAvatar';
 
 interface EndingReportProps {
@@ -13,6 +14,8 @@ interface EndingReportProps {
   endingKey: EndingKey;
   saving: 'idle' | 'saving' | 'saved' | 'error';
   highlightLabel: string;
+  difficulty: string;
+  runId: string | null;
 }
 
 const CONFETTI_COLORS = ['#3ECF8E', '#D9A544', '#E8ECF1'];
@@ -65,10 +68,24 @@ function Confetti() {
   );
 }
 
-export function EndingReport({ careerId, stats, endingKey, saving, highlightLabel }: EndingReportProps) {
+function chimeTierFor(endingKey: EndingKey): 'high' | 'mid' | 'low' {
+  if (endingKey === 'triumphant' || endingKey === 'steady_hand') return 'high';
+  if (endingKey === 'burned_out' || endingKey === 'written_up') return 'low';
+  return 'mid';
+}
+
+export function EndingReport({ careerId, stats, endingKey, saving, highlightLabel, difficulty, runId }: EndingReportProps) {
   const graph = getGraph(careerId);
   const ending = getEnding(careerId, endingKey);
-  const score = compatibilityScore(stats, graph.calibration);
+  const score = compatibilityScore(stats, graph.calibration, difficulty);
+
+  // Fires once when the ending screen first appears. This is a useEffect
+  // rather than being called inline during render because playing audio is
+  // a side effect, not a pure computation — same reasoning as every other
+  // effect in this codebase (see the typewriter hook in SceneView.tsx).
+  useEffect(() => {
+    playEndingChime(chimeTierFor(endingKey));
+  }, [endingKey]);
 
   return (
     <motion.div
@@ -156,6 +173,18 @@ export function EndingReport({ careerId, stats, endingKey, saving, highlightLabe
         >
           View history
         </Link>
+        {runId ? (
+          <Link
+            href={`/share/${runId}`}
+            className="rounded-lg border border-vital/40 text-vital font-medium px-5 py-2.5 hover:bg-vital/10 transition"
+          >
+            Share this run
+          </Link>
+        ) : (
+          <span className="rounded-lg border border-line text-muted font-medium px-5 py-2.5 cursor-not-allowed">
+            {saving === 'error' ? 'Share unavailable' : 'Preparing share link…'}
+          </span>
+        )}
       </div>
     </motion.div>
   );

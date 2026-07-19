@@ -32,12 +32,18 @@ to end, sharing one engine.
 | **Replay variety** — each career has at least one randomized branch point so two playthroughs of the same career don't play out identically | ✅ |
 | End-of-shift report with a compatibility score that's an honest percentile against real random play, not a formula that quietly can't go below 50 (see "Fixing the compatibility score") | ✅ |
 | **Shift history page** (`/history`) — every past run, with career, ending, date, and a recomputed compatibility score, linked from the careers page, the ending screen, and the landing page nav | ✅ |
-| **Leaderboard** (`Leaderboard.tsx`, sidebar on `/careers`) — top 20 runs by score, with a smooth animated toggle between a global (all users) and personal (your own runs) view; no other player's identity is ever shown, only "· you" on your own global entries | ✅ |
+| **Leaderboard** (`Leaderboard.tsx`, sidebar on `/careers`) — top 20 runs by score, a smooth animated toggle between global and personal views, plus career and difficulty filters; no other player's identity is ever shown, only "· you" on your own global entries | ✅ |
+| **Difficulty-fair scoring** — each career's score is calibrated separately per difficulty (normal/realistic/chaos), matching the multiplier the engine actually applies at runtime, so a 90% in chaos and a 90% in normal mean the same thing — see "Fixing the compatibility score" | ✅ |
+| **Achievements** (`Achievements.tsx`, on `/history`) — 8 badges computed from real run history, no new tracked events needed | ✅ |
+| **Career recommendations** (`lib/recommendations.ts`, on `/history`) — deterministic, not an AI call: aggregates which trait tags correlate with your best scores and suggests unplayed careers sharing that trait, once you have 3+ runs | ✅ |
+| **Per-run analytics** (`/history/[runId]`) — a stress/energy/reputation timeline for that specific shift, replayed scene-by-scene from the stored decisions | ✅ |
+| **Shareable results** (`/share/[runId]`, `/api/og/[runId]`) — a public page and a dynamically generated Open Graph image per run, for sharing outside the app; shows only career/difficulty/ending/score, never who played it | ✅ |
+| **Synthesized sound effects** (`lib/sound.ts`) — Web Audio API tones on stat changes and endings, muteable, no audio file assets (see the design note below for why) | ✅ |
 | Accounts via Clerk (email + social login), session-gated routes | ✅ |
 | Server-side scoring — the server replays your decisions itself rather than trusting a client-submitted score | ✅ |
 | Run history persisted per user (Postgres/SQLite via Prisma) — see the `/history` page above | ✅ |
 | Optional AI narration hook for one scene (OpenAI), with a static fallback so the game is fully playable with zero API keys | ✅ |
-| Every career in the world, NPC conversations, leaderboards, voice narration, multiplayer, a full 3D/graphical world | 🔜 see "Future enhancements" and "On 'every career in the world'" below |
+| Every career in the world, NPC conversations, voice narration, multiplayer, a full 3D/graphical world | 🔜 see "Future enhancements" and "On 'every career in the world'" below |
 
 ### A full animated vignette for every scene, not just an icon
 
@@ -125,7 +131,7 @@ decisions list exactly like a click would be
 (`pickRandomChoice` in `simulationEngine.ts`), so server-side replay and
 scoring don't need to know or care that it wasn't a manual choice.
 
-### Fixing the compatibility score (twice)
+### Fixing the compatibility score (three times)
 
 **First attempt.** An early version of the score used one continuous formula
 over your final stats. Testing it against every possible playthrough of the
@@ -142,21 +148,36 @@ starting value of 60. In other words: is everyone compatible with this job?
 The numbers said yes, which was exactly the complaint — a system that can't
 tell an average attempt from a good one isn't measuring anything.
 
-**The actual fix** (`scripts/calibrate_careers.py` +
-`compatibilityScore`/`determineEnding` in `simulationEngine.ts`) replaces
+**The percentile-calibration fix** (`scripts/calibrate_careers.py` +
+`compatibilityScore`/`determineEnding` in `simulationEngine.ts`) replaced
 fixed thresholds with **per-career percentile calibration**: for each
 career, 20,000 simulated random playthroughs are run offline, a
 "performance index" (reputation-weighted, composure and energy contributing
 less) is computed for each, and the resulting percentile checkpoints are
 stored in that career's JSON under `"calibration"`. At runtime, your score
 *is* your percentile rank against that baseline — "better than N% of people
-who tried this shift" — and the ending tier is read off the same rank.
+who tried this shift" — and the ending tier is read off the same rank. This
+was verified by simulating 20,000 random playthroughs against the finished
+system: mean and median score of exactly 50.0, 50% of random players scoring
+below 50, by construction.
 
-This was verified the way the bug was found: simulating 20,000 random
-playthroughs against the finished system gives a mean and median score of
-**exactly 50.0**, with **50% of random players scoring below 50**, by
-construction. Optimal play scores 99; consistently poor play scores 1. The
-number now means what it says.
+**Still one gap: difficulty wasn't accounted for.** That calibration ran
+once per career, at the base (normal-difficulty) effect magnitudes. But
+`applyEffects()` amplifies negative stress/energy effects by 1.15x on
+realistic and 1.35x on chaos (`DIFFICULTY_MULTIPLIER`) — meaning a chaos
+player was always going to face harder numbers than the baseline they were
+being graded against, so normal-mode players had a systematically easier
+path to a high score for equally good decisions. The fix:
+`scripts/calibrate_careers.py` now runs the Monte Carlo simulation three
+times per career, once per difficulty, applying the exact same multiplier
+`applyEffects()` uses at runtime — `calibration` in each career's JSON is
+now keyed by difficulty (`{ normal: {...}, realistic: {...}, chaos: {...} }`),
+and `compatibilityScore`/`determineEnding` both take a `difficulty` argument
+to look up the right one. Verified the same way as the first fix: simulating
+20,000 random playthroughs under *each* difficulty independently now gives a
+mean score of ~50 for all three, not just for normal. A 90% in chaos and a
+90% in normal now mean the same thing: better than 90% of people who tried
+that exact combination.
 
 ---
 
@@ -291,27 +312,37 @@ shiftwork/
 │   ├── app/
 │   │   ├── page.tsx                   # Public landing page (animated hero + rotating preview)
 │   │   ├── careers/page.tsx           # Career picker (protected) — generated from CAREER_GRAPHS
-│   │   ├── history/page.tsx           # Past runs, per user (protected)
+│   │   ├── history/page.tsx           # Past runs, achievements, recommendations (protected)
+│   │   ├── history/[runId]/page.tsx   # Per-run detail: stats + stress/energy timeline (protected, ownership-checked)
+│   │   ├── share/[runId]/page.tsx     # Public shareable run result, OG metadata (no auth — see proxy.ts)
 │   │   ├── simulation/page.tsx        # Redirects /simulation -> /simulation/trauma_surgeon
 │   │   ├── simulation/[career]/page.tsx  # The game itself (protected, validates career id)
 │   │   ├── sign-in/, sign-up/         # Clerk-hosted auth pages
 │   │   └── api/
 │   │       ├── simulation/route.ts    # Save/list runs — auth + validation + server-side scoring
-│   │       └── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
+│   │       ├── narrate/route.ts       # Optional AI narration — auth + rate limit + safe fallback
+│   │       └── og/[runId]/route.tsx   # Dynamic Open Graph image for a shared run (no auth)
 │   ├── components/
 │   │   ├── LandingHero.tsx            # Landing page's animated hero + rotating live career preview (client)
 │   │   ├── CareerAvatar.tsx           # The animated SVG character (mood, tension, ending poses)
 │   │   ├── SceneStage.tsx             # Full animated per-scene vignette (commute/rest/alert/...), not just an icon
-│   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + stat readouts
+│   │   ├── VitalsMonitor.tsx          # ECG signature element + mood face + sound toggle + stat readouts
 │   │   ├── SceneView.tsx              # Typewriter narration + staggered, tension-staged choices, randomized-scene auto-advance
 │   │   ├── FloatingDeltas.tsx         # Sims-style floating "+10 REP" stat pop-ups
 │   │   ├── SimulationClient.tsx       # The game's client-side state machine, per career
+│   │   ├── SoundToggle.tsx            # Mute/unmute for the synthesized sound effects
+│   │   ├── StatTimeline.tsx           # Hand-rolled SVG line chart for the per-run analytics page
+│   │   ├── Achievements.tsx           # Badge row on /history
+│   │   ├── RecommendationCard.tsx     # "Based on your shifts" suggestion on /history
 │   │   ├── CareerCard.tsx
-│   │   ├── Leaderboard.tsx            # Global/personal top-20 sidebar with a smooth animated toggle
-│   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake flourish, final avatar pose
+│   │   ├── Leaderboard.tsx            # Global/personal top-20 sidebar, career + difficulty filters, smooth toggle
+│   │   └── EndingReport.tsx           # Ending copy, compatibility score, confetti/shake, share link, ending chime
 │   ├── lib/
-│   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay, ending, calibrated score
+│   │   ├── simulationEngine.ts        # Career registry + pure functions: effects, replay(WithHistory), ending, calibrated score
 │   │   ├── leaderboard.ts             # Turns raw runs into ranked, scored leaderboard entries
+│   │   ├── achievements.ts            # 8 badge definitions + evaluation over run history
+│   │   ├── recommendations.ts         # Deterministic trait-based career suggestions
+│   │   ├── sound.ts                   # Synthesized SFX via the Web Audio API (no audio file assets)
 │   │   ├── careerIcons.tsx            # Career id -> prop icon for the avatar
 │   │   ├── sceneEnvironments.tsx      # Scene environment tag -> icon + label for the backdrop
 │   │   ├── dayCycle.ts                # Scene time -> hour-of-day -> ambient gradient
@@ -352,6 +383,7 @@ proper registry — there is no per-career code to write:
      "emoji": "🧑‍🎨",
      "tagline": "One line describing the day's core tension.",
      "highlightLabel": "Something tracked", // e.g. "Cases solved"
+     "traits": ["high-pressure", "analytical"], // drives lib/recommendations.ts — reuse existing trait strings from other careers where they genuinely apply, rather than inventing new ones each time, or recommendations will never group two careers together
      "startScene": "wake_up",
      "scenes": {
        "wake_up": {
@@ -421,32 +453,6 @@ Roughly in the order they'd add the most value:
   examples — astronaut, trauma surgeon, investment banker, air traffic
   controller — plus firefighter, teacher, paramedic, and software engineer).
   See "On 'every career in the world'" below for the honest scope on this.
-- **Leaderboard segmentation, and a fairness gap worth fixing first.**
-  The leaderboard (`Leaderboard.tsx`) currently mixes every difficulty
-  into one ranking, but `calibrate_careers.py`'s Monte Carlo baseline
-  doesn't apply the difficulty multiplier `applyEffects` uses at runtime
-  (see `simulationEngine.ts`) — meaning chaos mode is genuinely harder to
-  score well in than the calibration assumes, and normal-mode players have
-  an easier path to a high leaderboard score for the same quality of
-  decisions. Either calibrate each difficulty separately (three baselines
-  per career instead of one) or segment the leaderboard by difficulty —
-  worth doing before this leaderboard is treated as a serious ranking
-  rather than a fun extra. Per-career leaderboards ("best Trauma
-  Surgeons") are a smaller, purely additive follow-up once that's sorted.
-- **Achievements.** The history page already has every run per user;
-  badges ("completed all 12 careers," "5 triumphant endings," "survived
-  chaos mode without burning out") are a query over existing data, not a
-  new data model.
-- **Shareable result cards.** Rendering the ending screen (score, career,
-  avatar pose) as an image for social sharing is a classic, relatively
-  low-effort feature with real growth value — `CareerAvatar` and the
-  ending copy already exist, this is mostly an image-generation endpoint.
-- **Per-run analytics.** The original brainstorm's "Phase 6" wanted a
-  stress graph and decision timeline per playthrough. `decisions` is
-  already stored per run — replaying it scene-by-scene while capturing
-  intermediate stats (instead of just the final ones, like `replay()`
-  does now) would drive a "how your shift actually went" chart on the
-  history page.
 - **Richer randomized events.** Right now each career has exactly one
   randomized beat and "chaos mode" scales existing effect magnitudes. The
   original design doc's Feature 4 envisioned a broader pool of injectable
@@ -459,28 +465,42 @@ Roughly in the order they'd add the most value:
   `api/narrate/route.ts`, but as a back-and-forth exchange instead of a
   single generated beat, gated the same way (works with zero AI keys,
   degrades to scripted dialogue if none are configured).
-- **AI career recommendations** after several completed runs — "you
-  consistently stay calm under pressure, you might like: Pilot, Surgeon" —
-  more achievable now than when this was first written, since there's
-  real `SimulationRun` history per user to aggregate over via the same
-  Prisma queries the history page and leaderboard already use.
-- **Sound design.** Distinct from voice narration below — ambient audio
-  per `SceneStage` environment tag (a low hum for `work`, something
-  softer for `rest`) and small SFX on stat changes/endings. The
-  environment tagging this would hook into already exists.
 - **A richer character.** `CareerAvatar.tsx` is deliberately a simple,
   abstract figure (see "The animated character" above) so it scales to any
   number of careers without needing bespoke art. A fuller version — walking
   between locations, more than one pose per mood, actual per-career outfits
   instead of a single prop icon — is a natural next step once there's a
   reason to invest in more elaborate art direction for a specific career.
-- **Voice narration, badges/achievements, multiplayer, a full 3D/graphical
-  world** — all named in the original brainstorm's "Future Features" list.
-  Each is a substantially larger project in its own right (voice needs a TTS
-  pipeline and per-scene audio direction; multiplayer needs a real-time
-  transport and a shared-state model; a 3D world is closer to a second
-  product than an extension of this one) — worth scoping separately once the
-  current version has real usage data to justify them.
+- **Richer sound design.** What's built now (`lib/sound.ts`) is short
+  synthesized tones on stat changes and endings — deliberately not ambient
+  background audio, which is much harder to get right without being able to
+  actually listen to it while building (loop points, volume balance across
+  12 very different careers, browser autoplay policy edge cases). A real
+  ambient layer per `SceneStage` environment tag is a reasonable next step,
+  but wants a proper listening/tuning pass, not a blind first attempt.
+- **Voice narration, multiplayer, a full 3D/graphical world** — all named in
+  the original brainstorm's "Future Features" list. Each is a substantially
+  larger project in its own right (voice needs a TTS pipeline and per-scene
+  audio direction; multiplayer needs a real-time transport and a
+  shared-state model; a 3D world is closer to a second product than an
+  extension of this one) — worth scoping separately once the current
+  version has real usage data to justify them.
+
+### What got built instead of staying on this list
+
+A few things that were on this list in earlier versions of this README are
+done now, in case you're comparing against an old copy of this file:
+**achievements** (`lib/achievements.ts`, 8 badges on `/history`, computed
+from existing run data, no new tracked events), **shareable result cards**
+(`/share/[runId]` + a dynamically generated Open Graph image at
+`/api/og/[runId]`), **per-run analytics** (`/history/[runId]`, a stress/
+energy/reputation timeline replayed from the stored decisions), **career
+recommendations** (`lib/recommendations.ts` — deterministic, aggregated from
+which trait tags correlate with your best scores, not an AI call), and
+**leaderboard segmentation** (career and difficulty filters on
+`Leaderboard.tsx`, alongside the difficulty-fairness calibration fix — see
+"Fixing the compatibility score" above for why that fix mattered before the
+filters were worth adding at all).
 
 ### On "every career in the world"
 
