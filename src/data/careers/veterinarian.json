@@ -1,0 +1,391 @@
+{
+  "id": "veterinarian",
+  "title": "Every Patient Can't Tell You What's Wrong",
+  "emoji": "🐾",
+  "tagline": "A full appointment book, a worried owner in the lobby, and a patient who can't tell you where it hurts.",
+  "highlightLabel": "Animals treated",
+  "traits": [
+    "analytical",
+    "hands-on",
+    "patient"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:30 AM",
+      "text": "The clinic opens at eight, but there's already a message on the machine from an anxious owner about their dog not eating since yesterday.",
+      "choices": [
+        {
+          "id": "call_back_early",
+          "text": "Call them back before you even get to the clinic",
+          "next": "clinic_arrival",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "wait_till_clinic",
+          "text": "Wait until you're actually at the clinic to call",
+          "next": "clinic_arrival",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "clinic_arrival": {
+      "time": "07:30 AM",
+      "text": "Gloves, scrubs, the smell of antiseptic — the clinic before opening has its own particular quiet.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Review today's appointment list",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "07:50 AM",
+      "text": "The morning before opening fills in with the small, unscripted moments of running a clinic — a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "vet_tech_joke",
+          "text": "Your vet tech shares a genuinely funny story from yesterday",
+          "next": "first_appointment",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "supply_delay",
+          "text": "A supply delivery is running late, complicating the morning",
+          "next": "first_appointment",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_coffee",
+          "text": "Someone brought real coffee for the whole team today",
+          "next": "first_appointment",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "first_appointment": {
+      "time": "08:15 AM",
+      "text": "First patient: an elderly cat, routine checkup, owner anxious about every small sound the cat makes.",
+      "choices": [
+        {
+          "id": "reassure_owner_fully",
+          "text": "Take the extra time to reassure the owner thoroughly",
+          "next": "morning_appointments",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "keep_it_efficient",
+          "text": "Keep the appointment efficient — the day is full",
+          "next": "morning_appointments",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_appointments": {
+      "time": "10:00 AM",
+      "text": "The morning moves through vaccinations, a limping dachshund, and a rabbit that absolutely does not want to be examined.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get through the appointment block",
+          "next": "lunch_interruption",
+          "effects": {
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "lunch_interruption": {
+      "time": "12:30 PM",
+      "text": "Lunch is interrupted by a front-desk call: a walk-in, a dog that got into something in the yard, vomiting and lethargic.",
+      "choices": [
+        {
+          "id": "see_immediately",
+          "text": "See the walk-in immediately, lunch or not",
+          "next": "emergency_surgery_prep",
+          "effects": {
+            "energy": -6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "finish_eating_first",
+          "text": "Finish eating first — the walk-in is stable enough to wait ten minutes",
+          "next": "emergency_surgery_prep",
+          "effects": {
+            "energy": 6,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "emergency_surgery_prep": {
+      "time": "13:00 PM",
+      "text": "X-rays show it: a foreign object causing a blockage, and the dog's condition is deteriorating faster than expected.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Prep for emergency surgery",
+          "next": "surgery_complication",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "surgery_complication": {
+      "time": "13:45 PM",
+      "text": "Mid-surgery, the dog's vitals suddenly drop — a complication nobody could have predicted from the X-rays, and you have seconds, not minutes, to respond.",
+      "choices": [
+        {
+          "id": "stabilize_first",
+          "text": "Stop and stabilize vitals before continuing the procedure",
+          "next": "surgery_outcome_stabilize",
+          "effects": {
+            "stress": 16,
+            "rep": 10
+          }
+        },
+        {
+          "id": "push_through",
+          "text": "Push through — stopping now is riskier than finishing fast",
+          "next": "surgery_outcome_push",
+          "effects": {
+            "stress": 18,
+            "rep": -6
+          }
+        },
+        {
+          "id": "call_second_vet",
+          "text": "Call in another vet from down the hall to help manage it",
+          "next": "surgery_outcome_team",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "call_owner_first",
+          "text": "Pause to call the owner before making the call yourself",
+          "next": "surgery_outcome_call",
+          "effects": {
+            "stress": -6,
+            "rep": -10
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "surgery_outcome_stabilize": {
+      "time": "14:00 PM",
+      "text": "The extra two minutes stabilizing pays off completely — the rest of the surgery goes clean, and the dog's vitals hold steady the whole way through.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the surgery",
+          "next": "afternoon_appointments",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "surgery_outcome_push": {
+      "time": "13:58 PM",
+      "text": "You finish fast, hands steady despite the dropping numbers. It works — barely — and the recovery afterward is more delicate than it needed to be.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the surgery",
+          "next": "afternoon_appointments",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "surgery_outcome_team": {
+      "time": "14:05 PM",
+      "text": "A second set of hands manages the vitals while you finish the procedure — exactly the kind of moment that makes you grateful for a clinic that isn't a solo operation.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the surgery",
+          "next": "afternoon_appointments",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "surgery_outcome_call": {
+      "time": "13:50 PM",
+      "text": "The call to the owner costs precious minutes during a genuine emergency — informed consent matters, but the timing here nearly cost the patient more than it needed to.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the surgery",
+          "next": "afternoon_appointments",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "afternoon_appointments": {
+      "time": "16:00 PM",
+      "text": "The rest of the afternoon appointment block is waiting, including a nervous new puppy owner with a long list of questions.",
+      "choices": [
+        {
+          "id": "answer_all_questions",
+          "text": "Answer every question thoroughly, however long it takes",
+          "next": "evening_calls",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "keep_moving",
+          "text": "Give the essentials and keep the schedule moving",
+          "next": "evening_calls",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "evening_calls": {
+      "time": "18:00 PM",
+      "text": "Closing time, but there's still a follow-up call to make to this afternoon's surgery patient's owner.",
+      "choices": [
+        {
+          "id": "call_personally",
+          "text": "Make the follow-up call yourself before leaving",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "let_tech_handle_it",
+          "text": "Let your vet tech handle the follow-up call",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:30 PM",
+      "text": "The clinic goes quiet for the night. Somewhere across town, a dog that almost didn't make it is resting comfortably.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Save of the Week",
+      "blurb": "Every call today held, including the one that mattered most. This is the day clients tell their friends about."
+    },
+    "steady_hand": {
+      "title": "Solid Day",
+      "blurb": "No headlines, no hesitation — just careful, competent care for every patient, all day long."
+    },
+    "ordinary_day": {
+      "title": "Full Appointment Book",
+      "blurb": "A busy, ordinary day treating a full slate of patients. Tomorrow's book is just as full."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it to closing, but you're not sure how. This pace, patient after patient, has a real cost."
+    },
+    "written_up": {
+      "title": "Case Review",
+      "blurb": "A few of today's calls are heading into a formal case review. The patients are safe. The clinic still wants to understand the decisions."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 59.2,
+      "p5": 63.4,
+      "p10": 65.9,
+      "p25": 70.2,
+      "p35": 72.0,
+      "p50": 74.8,
+      "p65": 77.3,
+      "p75": 79.4,
+      "p90": 82.6,
+      "p95": 84.4,
+      "p99": 87.2
+    },
+    "realistic": {
+      "p1": 58.2,
+      "p5": 62.5,
+      "p10": 65.2,
+      "p25": 69.4,
+      "p35": 71.3,
+      "p50": 74.2,
+      "p65": 76.7,
+      "p75": 78.7,
+      "p90": 81.9,
+      "p95": 83.8,
+      "p99": 86.6
+    },
+    "chaos": {
+      "p1": 57.1,
+      "p5": 61.4,
+      "p10": 64.1,
+      "p25": 68.8,
+      "p35": 70.7,
+      "p50": 73.6,
+      "p65": 76.2,
+      "p75": 78.0,
+      "p90": 81.5,
+      "p95": 83.1,
+      "p99": 86.3
+    }
+  }
+}

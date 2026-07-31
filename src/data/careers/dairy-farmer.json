@@ -1,0 +1,349 @@
+{
+  "id": "dairy_farmer",
+  "title": "The Herd Doesn't Take Weekends",
+  "emoji": "🐄",
+  "tagline": "A hundred and twenty cows, a milking parlor that runs on schedule no matter what, and one animal that's clearly not right this morning.",
+  "highlightLabel": "Herd health maintained",
+  "traits": [
+    "hands-on",
+    "physical",
+    "patient"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "04:00 AM",
+      "text": "Milking starts at 4:30, every day, weekends and holidays included. The cows don't know the difference and wouldn't care if they did.",
+      "choices": [
+        {
+          "id": "check_weather_report",
+          "text": "Check the weather report before heading to the barn",
+          "next": "barn_arrival",
+          "effects": {
+            "energy": -2,
+            "rep": 6
+          }
+        },
+        {
+          "id": "head_straight_out",
+          "text": "Head straight to the barn",
+          "next": "barn_arrival",
+          "effects": {
+            "energy": 3,
+            "rep": -2
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "barn_arrival": {
+      "time": "04:30 AM",
+      "text": "The barn is loud with the particular sound of a hundred and twenty cows who know exactly what time it is.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin the morning milking",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "random_moment": {
+      "time": "05:15 AM",
+      "text": "The morning milking routine has its own small rhythm — mostly the same, a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "good_yield",
+          "text": "The morning's milk yield comes in noticeably strong",
+          "next": "sick_cow_notice",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "equipment_hiccup",
+          "text": "A minor equipment hiccup slows down one milking line",
+          "next": "sick_cow_notice",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "calm_herd",
+          "text": "The herd is unusually calm and easy this morning",
+          "next": "sick_cow_notice",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "sick_cow_notice": {
+      "time": "06:00 AM",
+      "text": "One of your best milkers is off her feed and standing apart from the herd — not a good sign this early in the morning.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Take a closer look",
+          "next": "sick_cow_decision",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "sick_cow_decision": {
+      "time": "06:15 AM",
+      "text": "Her temperature is up and she's showing signs that could be early mastitis or something more serious — and it's a two-hour drive round trip for the vet if you call now, on a morning already full of chores.",
+      "choices": [
+        {
+          "id": "call_vet_immediately",
+          "text": "Call the vet immediately, whatever the morning's schedule looks like",
+          "next": "cow_outcome_vet",
+          "effects": {
+            "stress": 6,
+            "rep": 10,
+            "money": -15
+          }
+        },
+        {
+          "id": "treat_yourself_first",
+          "text": "Start treatment yourself with what you have on hand",
+          "next": "cow_outcome_self",
+          "effects": {
+            "stress": 10,
+            "rep": 6
+          }
+        },
+        {
+          "id": "isolate_and_monitor",
+          "text": "Isolate her from the herd and monitor through the morning",
+          "next": "cow_outcome_monitor",
+          "effects": {
+            "stress": -4,
+            "rep": 4
+          }
+        },
+        {
+          "id": "finish_milking_first",
+          "text": "Finish the rest of the herd's milking before dealing with her",
+          "next": "cow_outcome_delay",
+          "effects": {
+            "stress": -6,
+            "rep": -8
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "cow_outcome_vet": {
+      "time": "08:30 AM",
+      "text": "The vet catches it early — a treatable infection that would have spread through the herd's udders if it waited even one more day. Expensive call, exactly the right one.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the morning's chores",
+          "next": "midday_chores",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "cow_outcome_self": {
+      "time": "07:00 AM",
+      "text": "Your own treatment helps, and by midmorning she's improved enough that the vet visit, when it happens later, is more precautionary than urgent — a reasonable, capable call.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the morning's chores",
+          "next": "midday_chores",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "cow_outcome_monitor": {
+      "time": "07:30 AM",
+      "text": "She holds steady through the morning under close watch, not worse but not clearly better — a reasonable wait-and-see call that costs nothing but attention.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the morning's chores",
+          "next": "midday_chores",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "cow_outcome_delay": {
+      "time": "08:00 AM",
+      "text": "By the time the rest of the herd is milked, her condition has clearly worsened — the delay cost real time on something that needed attention right away.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Call the vet now",
+          "next": "midday_chores",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "midday_chores": {
+      "time": "10:00 AM",
+      "text": "Feed deliveries, fence repairs, and the equipment maintenance list that never actually gets shorter.",
+      "choices": [
+        {
+          "id": "fix_fence_properly",
+          "text": "Fix the back fence properly instead of a quick patch",
+          "next": "afternoon_calving",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_patch",
+          "text": "Quick patch now, proper fix another day",
+          "next": "afternoon_calving",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_calving": {
+      "time": "13:00 PM",
+      "text": "A cow due any day now is showing early signs of labor — not urgent yet, but worth keeping an eye on through the afternoon.",
+      "choices": [
+        {
+          "id": "stay_close",
+          "text": "Stay close to the barn through the afternoon",
+          "next": "evening_milking",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "continue_normal_work",
+          "text": "Continue your normal afternoon work and check periodically",
+          "next": "evening_milking",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "evening_milking": {
+      "time": "17:00 PM",
+      "text": "Evening milking, the second of the day's two sessions, the whole herd cycling through again exactly like clockwork.",
+      "choices": [
+        {
+          "id": "thorough_evening_check",
+          "text": "Do a thorough health check on every cow while milking",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "standard_milking",
+          "text": "Keep to the standard milking routine",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "end_shift": {
+      "time": "19:00 PM",
+      "text": "The barn quiets down for the night. Tomorrow at 4:30, all of it starts again, exactly the same and never quite the same.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head in for the night",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Herd Never Looked Better",
+      "blurb": "Every call today was the right one, including the hard one this morning. This is the kind of day that keeps a herd healthy for years."
+    },
+    "steady_hand": {
+      "title": "Solid Day's Work",
+      "blurb": "No emergencies that got away from you — just careful, attentive farming, chore after chore."
+    },
+    "ordinary_day": {
+      "title": "Another Day on the Farm",
+      "blurb": "A full day of milking, feeding, and fixing things. Tomorrow starts at 4:30 exactly the same."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through both milkings, but your body is telling you exactly what that cost. This pace needs real rest."
+    },
+    "written_up": {
+      "title": "A Hard Conversation with the Vet",
+      "blurb": "Something about today's herd health call is going to need explaining. The herd is safe. The judgment call still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 66.1,
+      "p5": 68.5,
+      "p10": 70.0,
+      "p25": 73.0,
+      "p35": 74.3,
+      "p50": 76.0,
+      "p65": 78.1,
+      "p75": 79.2,
+      "p90": 82.3,
+      "p95": 83.1,
+      "p99": 86.1
+    },
+    "realistic": {
+      "p1": 66.3,
+      "p5": 68.2,
+      "p10": 70.2,
+      "p25": 72.4,
+      "p35": 74.1,
+      "p50": 75.6,
+      "p65": 77.8,
+      "p75": 78.8,
+      "p90": 81.9,
+      "p95": 82.8,
+      "p99": 85.8
+    },
+    "chaos": {
+      "p1": 64.6,
+      "p5": 67.9,
+      "p10": 70.1,
+      "p25": 72.0,
+      "p35": 73.9,
+      "p50": 75.1,
+      "p65": 77.4,
+      "p75": 78.4,
+      "p90": 81.2,
+      "p95": 82.3,
+      "p99": 85.7
+    }
+  }
+}

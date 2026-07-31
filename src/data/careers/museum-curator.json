@@ -1,0 +1,348 @@
+{
+  "id": "museum_curator",
+  "title": "The Exhibit Opens Friday",
+  "emoji": "🏛️",
+  "tagline": "A major exhibit opening in three days, a donor with strong opinions, and a question about one piece's authenticity that nobody wants to ask out loud.",
+  "highlightLabel": "Exhibits opened",
+  "traits": [
+    "analytical",
+    "creative",
+    "patient"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "07:00 AM",
+      "text": "Three days until the exhibit opens. The catalog is at the printer, the gallery layout is finalized, and there's still a hundred small things that could go wrong.",
+      "choices": [
+        {
+          "id": "review_checklist_fully",
+          "text": "Review the full opening checklist before leaving",
+          "next": "museum_arrival",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_plan",
+          "text": "Trust the plan that's already in place",
+          "next": "museum_arrival",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "museum_arrival": {
+      "time": "08:00 AM",
+      "text": "The gallery is quiet before opening, pieces still being adjusted under careful lighting, everything half-finished and half-perfect.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Walk the gallery",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:45 AM",
+      "text": "The quiet morning hours before a museum opens have their own particular texture — a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "conservator_praise",
+          "text": "The conservator mentions how well one restoration turned out",
+          "next": "donor_call",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "lighting_issue",
+          "text": "A lighting fixture in one gallery needs an unexpected fix",
+          "next": "donor_call",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_morning_light",
+          "text": "Morning light through the atrium hits the main piece beautifully",
+          "next": "donor_call",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "donor_call": {
+      "time": "09:30 AM",
+      "text": "A major donor calls, wanting their name more prominently placed on the exhibit signage than originally agreed.",
+      "choices": [
+        {
+          "id": "hold_the_line",
+          "text": "Hold the line on the original agreement, diplomatically",
+          "next": "morning_installation",
+          "effects": {
+            "stress": 6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "accommodate_donor",
+          "text": "Accommodate the request to keep the relationship smooth",
+          "next": "morning_installation",
+          "effects": {
+            "rep": -4,
+            "stress": -4
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "morning_installation": {
+      "time": "11:00 AM",
+      "text": "The installation team is placing the final pieces. One case in particular — the exhibit's centerpiece — is getting extra care.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Oversee the centerpiece placement",
+          "next": "authentication_question",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "authentication_question": {
+      "time": "11:30 AM",
+      "text": "A visiting scholar, invited for an early preview, quietly mentions a detail in the centerpiece's provenance documents that doesn't quite line up with known records. If they're right, the exhibit's biggest draw might not be what it's labeled as — and it opens in three days, already announced publicly.",
+      "choices": [
+        {
+          "id": "investigate_immediately",
+          "text": "Halt everything and investigate the provenance immediately",
+          "next": "auth_outcome_investigate",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "quiet_second_opinion",
+          "text": "Quietly bring in a second, independent expert before deciding anything",
+          "next": "auth_outcome_second_opinion",
+          "effects": {
+            "stress": 8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "proceed_with_disclaimer",
+          "text": "Proceed with an added disclaimer about disputed provenance",
+          "next": "auth_outcome_disclaimer",
+          "effects": {
+            "stress": -4,
+            "rep": 4
+          }
+        },
+        {
+          "id": "proceed_as_planned",
+          "text": "Proceed as planned — the scholar's concern is likely minor",
+          "next": "auth_outcome_proceed",
+          "effects": {
+            "stress": -8,
+            "rep": -12
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "auth_outcome_investigate": {
+      "time": "13:00 PM",
+      "text": "The deep dive into the archives takes most of the day, and it resolves cleanly — the discrepancy was a clerical error decades old, nothing more. The exhibit opens with its provenance more solid than it's ever been.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finalize the exhibit",
+          "next": "press_preview",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "auth_outcome_second_opinion": {
+      "time": "13:30 PM",
+      "text": "The independent expert confirms the piece is genuine within a few hours — quiet, careful, and exactly thorough enough without creating a public spectacle over what turns out to be a non-issue.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finalize the exhibit",
+          "next": "press_preview",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "auth_outcome_disclaimer": {
+      "time": "12:00 PM",
+      "text": "The disclaimer is honest and professionally handled, though it takes some of the shine off the centerpiece's unveiling. Transparency, even when it costs a little drama.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finalize the exhibit",
+          "next": "press_preview",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "auth_outcome_proceed": {
+      "time": "11:45 AM",
+      "text": "The exhibit proceeds exactly as planned. The scholar's concern turns out to be worth more than you gave it credit for, and it's the kind of thing that tends to resurface later, at a worse time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finalize the exhibit",
+          "next": "press_preview",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "press_preview": {
+      "time": "15:00 PM",
+      "text": "A press preview walkthrough, journalists asking questions about the collection's centerpiece and its history.",
+      "choices": [
+        {
+          "id": "engage_deeply",
+          "text": "Engage deeply with every question, however technical",
+          "next": "board_meeting",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "keep_it_brief",
+          "text": "Keep answers brief and let the exhibit speak for itself",
+          "next": "board_meeting",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "board_meeting": {
+      "time": "16:30 PM",
+      "text": "A board meeting to review final opening preparations — budget, staffing, the donor relationship from this morning.",
+      "choices": [
+        {
+          "id": "full_transparency",
+          "text": "Give the board a fully honest account of today's events",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "highlight_reel",
+          "text": "Give the polished version that keeps things simple",
+          "next": "end_shift",
+          "effects": {
+            "rep": -4,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "The gallery lights dim for the night. In three days, all of this becomes visible to the public for the first time.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Exhibit of the Season",
+      "blurb": "Every call today was the right one, including the hardest one. This is the exhibit people will be talking about for years."
+    },
+    "steady_hand": {
+      "title": "Solid Preparation",
+      "blurb": "No scandals, no scrambling — just careful, thorough curatorial work, decision after decision."
+    },
+    "ordinary_day": {
+      "title": "Another Exhibit Ready",
+      "blurb": "A full day of preparation, handled well. The next exhibit is already being planned."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but there's nothing left in you. This pace, deadline after deadline, has a real cost."
+    },
+    "written_up": {
+      "title": "A Question for the Board",
+      "blurb": "Something about today's handling is going to come up with the board. The exhibit opens. The questions about how it got there don't fully go away."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 63.5,
+      "p5": 67.6,
+      "p10": 68.9,
+      "p25": 72.2,
+      "p35": 74.0,
+      "p50": 76.3,
+      "p65": 78.2,
+      "p75": 79.7,
+      "p90": 82.7,
+      "p95": 84.0,
+      "p99": 88.1
+    },
+    "realistic": {
+      "p1": 64.7,
+      "p5": 67.5,
+      "p10": 69.0,
+      "p25": 72.4,
+      "p35": 73.7,
+      "p50": 75.9,
+      "p65": 78.0,
+      "p75": 79.5,
+      "p90": 82.2,
+      "p95": 83.7,
+      "p99": 87.7
+    },
+    "chaos": {
+      "p1": 64.3,
+      "p5": 67.3,
+      "p10": 69.1,
+      "p25": 72.0,
+      "p35": 73.6,
+      "p50": 75.4,
+      "p65": 77.6,
+      "p75": 78.9,
+      "p90": 81.7,
+      "p95": 83.0,
+      "p99": 87.5
+    }
+  }
+}

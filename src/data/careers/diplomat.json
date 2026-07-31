@@ -1,0 +1,348 @@
+{
+  "id": "diplomat",
+  "title": "Every Word Is on the Record",
+  "emoji": "🕊️",
+  "tagline": "A trade negotiation three months in the making, a delegation that just changed its position overnight, and every word about to be quoted somewhere.",
+  "highlightLabel": "Agreements reached",
+  "traits": [
+    "communication",
+    "analytical",
+    "responsibility"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "Final day of negotiations. Overnight cables from the home office add new red lines to a deal you thought was nearly settled.",
+      "choices": [
+        {
+          "id": "read_full_cables",
+          "text": "Read every cable in full before the morning session",
+          "next": "embassy_briefing",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "skim_the_highlights",
+          "text": "Skim for the key changes and move quickly",
+          "next": "embassy_briefing",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "embassy_briefing": {
+      "time": "07:00 AM",
+      "text": "A briefing with your own delegation before heading to the negotiating table — aligning on the new position before the other side sees any daylight between you.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to the negotiating session",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "random_moment": {
+      "time": "08:00 AM",
+      "text": "The walk into the negotiating hall has its own particular quiet before a big session — a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "friendly_counterpart",
+          "text": "A counterpart from the other delegation greets you warmly in the hallway",
+          "next": "morning_session",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "translation_hiccup",
+          "text": "A minor translation equipment issue delays the start slightly",
+          "next": "morning_session",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_omen",
+          "text": "Someone jokes that today feels like the day it finally gets done",
+          "next": "morning_session",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_session": {
+      "time": "09:00 AM",
+      "text": "The morning session opens tense — the other delegation has clearly received their own overnight instructions, and the room's mood has shifted.",
+      "choices": [
+        {
+          "id": "address_shift_directly",
+          "text": "Address the shift in tone directly and openly",
+          "next": "closed_door_meeting",
+          "effects": {
+            "stress": 6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "proceed_as_planned",
+          "text": "Proceed with the planned agenda as if nothing changed",
+          "next": "closed_door_meeting",
+          "effects": {
+            "rep": -4,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "closed_door_meeting": {
+      "time": "11:00 AM",
+      "text": "A closed-door session with just the lead negotiators. This is where the real deal either comes together or falls apart.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Enter the closed session",
+          "next": "sticking_point",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "sticking_point": {
+      "time": "11:30 AM",
+      "text": "The other delegation's lead negotiator states, flatly, that a key provision your government considers non-negotiable is now off the table entirely — a position reversal that could collapse three months of work in this one room, right now.",
+      "choices": [
+        {
+          "id": "hold_firm_publicly",
+          "text": "Hold firm on the provision, clearly and on the record",
+          "next": "sticking_outcome_firm",
+          "effects": {
+            "stress": 16,
+            "rep": 8
+          }
+        },
+        {
+          "id": "propose_creative_alternative",
+          "text": "Propose a creative alternative that addresses both sides' real concerns",
+          "next": "sticking_outcome_creative",
+          "effects": {
+            "stress": 8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "call_recess_to_consult",
+          "text": "Call a recess to consult with the home office before responding",
+          "next": "sticking_outcome_recess",
+          "effects": {
+            "stress": -6,
+            "rep": 4
+          }
+        },
+        {
+          "id": "concede_the_point",
+          "text": "Concede the point to keep the broader deal alive",
+          "next": "sticking_outcome_concede",
+          "effects": {
+            "stress": -8,
+            "rep": -10
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "sticking_outcome_firm": {
+      "time": "12:15 PM",
+      "text": "Holding firm, clearly and without hostility, forces the other side to actually justify their reversal — and under scrutiny, it turns out to be a negotiating tactic more than a real red line. The provision stays.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a final agreement",
+          "next": "afternoon_drafting",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "sticking_outcome_creative": {
+      "time": "12:30 PM",
+      "text": "The alternative framing gives both sides a way to claim the outcome they need politically, while substantively preserving what actually matters. This is the kind of solution that ends up in diplomacy textbooks.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a final agreement",
+          "next": "afternoon_drafting",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "sticking_outcome_recess": {
+      "time": "13:00 PM",
+      "text": "The consultation costs an hour and confirms your instinct on how far you can bend — a careful, properly authorized position that holds up for the rest of the negotiation.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Resume and continue toward a final agreement",
+          "next": "afternoon_drafting",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "sticking_outcome_concede": {
+      "time": "11:50 AM",
+      "text": "The concession keeps the talks alive, and the deal that eventually emerges is noticeably weaker than what your government wanted. It closes the day, but it isn't the outcome anyone back home was hoping for.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a final agreement",
+          "next": "afternoon_drafting",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_drafting": {
+      "time": "15:00 PM",
+      "text": "Legal teams from both sides begin drafting final language — every word choice here will be read closely for years.",
+      "choices": [
+        {
+          "id": "review_every_clause",
+          "text": "Personally review every clause of the draft language",
+          "next": "press_statement",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_legal_team",
+          "text": "Trust your legal team's drafting and focus elsewhere",
+          "next": "press_statement",
+          "effects": {
+            "rep": -3,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "press_statement": {
+      "time": "17:00 PM",
+      "text": "A joint press statement needs to go out before the news cycle fills the gap with speculation. The wording matters as much as the deal itself.",
+      "choices": [
+        {
+          "id": "careful_joint_language",
+          "text": "Take the time to get truly joint, careful language",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 10
+          }
+        },
+        {
+          "id": "issue_quickly",
+          "text": "Issue a quick statement to control the news cycle now",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "end_shift": {
+      "time": "19:00 PM",
+      "text": "The negotiating hall empties out. Somewhere, cables are already being drafted back to two capitals about what happened here today.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head back to the embassy",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Agreement That Held",
+      "blurb": "Every call today was the right one, including the hardest one. This is the deal that gets cited in diplomatic history."
+    },
+    "steady_hand": {
+      "title": "Solid Diplomacy",
+      "blurb": "No theatrics, no unnecessary concessions — just careful, patient negotiation, clause by clause."
+    },
+    "ordinary_day": {
+      "title": "Talks Concluded",
+      "blurb": "A full day of negotiation, an agreement reached. Tomorrow there's another set of talks exactly like it."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the session, but you're not sure how. Round after round, this pace has a real cost."
+    },
+    "written_up": {
+      "title": "A Question from the Home Office",
+      "blurb": "Something about today's concessions is going to need explaining back home. The deal is signed. Whether it should have been, the way it was, is still being asked."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 64.1,
+      "p5": 67.5,
+      "p10": 68.8,
+      "p25": 72.4,
+      "p35": 73.9,
+      "p50": 75.7,
+      "p65": 78.0,
+      "p75": 79.4,
+      "p90": 82.3,
+      "p95": 83.9,
+      "p99": 86.0
+    },
+    "realistic": {
+      "p1": 63.2,
+      "p5": 66.9,
+      "p10": 68.8,
+      "p25": 71.7,
+      "p35": 73.4,
+      "p50": 75.1,
+      "p65": 77.6,
+      "p75": 78.6,
+      "p90": 81.7,
+      "p95": 83.3,
+      "p99": 87.5
+    },
+    "chaos": {
+      "p1": 63.2,
+      "p5": 66.5,
+      "p10": 68.9,
+      "p25": 71.4,
+      "p35": 73.1,
+      "p50": 74.7,
+      "p65": 76.9,
+      "p75": 78.1,
+      "p90": 81.3,
+      "p95": 82.6,
+      "p99": 84.7
+    }
+  }
+}

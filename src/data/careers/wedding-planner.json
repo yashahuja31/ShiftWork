@@ -1,0 +1,377 @@
+{
+  "id": "wedding_planner",
+  "title": "The Ceremony Starts at Four",
+  "emoji": "💐",
+  "tagline": "Two hundred guests, a ceremony that starts at four sharp, and a vendor who just stopped answering their phone.",
+  "highlightLabel": "Weddings pulled off",
+  "traits": [
+    "creative",
+    "communication",
+    "fast-paced"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "Wedding day. The timeline is printed, laminated, and taped inside your binder — and it never survives contact with reality quite the way it's written.",
+      "choices": [
+        {
+          "id": "call_every_vendor",
+          "text": "Call every vendor for a final confirmation before you even leave",
+          "next": "venue_arrival",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_confirmations",
+          "text": "Trust yesterday's confirmations and head to the venue",
+          "next": "venue_arrival",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "venue_arrival": {
+      "time": "07:30 AM",
+      "text": "The venue is empty and quiet, exactly the calm before the day fills it with two hundred people and a great deal of feeling.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin setup",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:30 AM",
+      "text": "Setup mornings have their own small, unpredictable texture — a little different at every wedding.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "venue_staff_helpful",
+          "text": "The venue staff turns out to be unusually helpful today",
+          "next": "florist_delivery",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "linen_mixup",
+          "text": "A minor linen color mixup needs sorting out",
+          "next": "florist_delivery",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_weather",
+          "text": "The weather forecast just improved for the outdoor portion",
+          "next": "florist_delivery",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "florist_delivery": {
+      "time": "09:30 AM",
+      "text": "Flowers arrive, mostly right — one arrangement is noticeably different from what was ordered.",
+      "choices": [
+        {
+          "id": "fix_it_yourself",
+          "text": "Rework the arrangement yourself with what's on hand",
+          "next": "bridal_party_arrival",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "let_it_go",
+          "text": "Let it go — it's close enough and there's a lot left to do",
+          "next": "bridal_party_arrival",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "bridal_party_arrival": {
+      "time": "11:00 AM",
+      "text": "The bridal party arrives for hair and makeup, nerves already running high. Someone's asking you a question every ninety seconds.",
+      "choices": [
+        {
+          "id": "stay_present_throughout",
+          "text": "Stay present and handle every question personally",
+          "next": "vendor_crisis",
+          "effects": {
+            "stress": 6,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "delegate_to_assistant",
+          "text": "Delegate most of it to your assistant and keep working setup",
+          "next": "vendor_crisis",
+          "effects": {
+            "stress": -4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "vendor_crisis": {
+      "time": "13:00 PM",
+      "text": "The photographer, confirmed twice this week, isn't answering calls or texts. Ceremony is at four. A backup photographer exists, but booking them now means real cost and real risk of a different style than the couple chose.",
+      "choices": [
+        {
+          "id": "book_backup_immediately",
+          "text": "Book the backup photographer immediately, no more waiting",
+          "next": "vendor_outcome_backup",
+          "effects": {
+            "stress": 10,
+            "rep": 8,
+            "money": -30
+          }
+        },
+        {
+          "id": "keep_trying_original",
+          "text": "Keep trying to reach the original photographer a little longer",
+          "next": "vendor_outcome_wait",
+          "effects": {
+            "stress": 16,
+            "rep": -8
+          }
+        },
+        {
+          "id": "tell_couple_now",
+          "text": "Tell the couple immediately and let them help decide",
+          "next": "vendor_outcome_transparent",
+          "effects": {
+            "stress": 4,
+            "rep": 10
+          }
+        },
+        {
+          "id": "ask_venue_recommendation",
+          "text": "Ask the venue for their go-to backup on short notice",
+          "next": "vendor_outcome_venue",
+          "effects": {
+            "stress": 6,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "vendor_outcome_backup": {
+      "time": "13:20 PM",
+      "text": "The backup arrives with forty minutes to spare, professional and ready. The couple never even needs to know how close it came.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Brief the backup photographer on the day's shot list",
+          "next": "ceremony_prep",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "vendor_outcome_wait": {
+      "time": "13:35 PM",
+      "text": "The original photographer finally calls back — car trouble, genuinely unavoidable, and now genuinely too late. The scramble for a backup happens with far less runway than it should have had.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Scramble for a last-minute replacement",
+          "next": "ceremony_prep",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "vendor_outcome_transparent": {
+      "time": "13:15 PM",
+      "text": "The couple, to their credit, takes it in stride and trusts your judgment on the replacement. Being honest with them early turns a crisis into a decision made together instead of a surprise sprung on them.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Move forward with their input",
+          "next": "ceremony_prep",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "vendor_outcome_venue": {
+      "time": "13:25 PM",
+      "text": "The venue's go-to photographer happens to be available and is already familiar with the space — a genuinely lucky break that comes together faster than expected.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Confirm the arrangement",
+          "next": "ceremony_prep",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "ceremony_prep": {
+      "time": "15:00 PM",
+      "text": "Guests are arriving. The processional order needs a final check, and the officiant has one last question about timing.",
+      "choices": [
+        {
+          "id": "triple_check_everything",
+          "text": "Triple-check every detail before the ceremony starts",
+          "next": "ceremony",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_plan",
+          "text": "Trust the plan you've already built and let it run",
+          "next": "ceremony",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "ceremony": {
+      "time": "16:00 PM",
+      "text": "The ceremony begins, exactly on time. Whatever happened this morning, none of it is visible from where the two hundred guests are sitting.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Watch it come together",
+          "next": "reception_setup",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "reception_setup": {
+      "time": "17:00 PM",
+      "text": "While the ceremony wraps, the reception space needs to flip fast — tables, lighting, the band's soundcheck, all in under an hour.",
+      "choices": [
+        {
+          "id": "oversee_personally",
+          "text": "Oversee the flip personally, detail by detail",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_crew",
+          "text": "Trust the setup crew to handle it and take a breath",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "22:00 PM",
+      "text": "The reception is in full swing, the couple on the dance floor, and for the first time all day, there's genuinely nothing left for you to fix.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Wedding They'll Never Forget",
+      "blurb": "Every call today was the right one, including the one nobody but you will ever know about. This is the wedding other planners hear about."
+    },
+    "steady_hand": {
+      "title": "Flawless Execution",
+      "blurb": "No visible hiccups, no stressed-out couple — just careful, competent planning from setup to send-off."
+    },
+    "ordinary_day": {
+      "title": "Another Beautiful Wedding",
+      "blurb": "A full wedding day, pulled off. Nobody in the room knows how much work that actually took, which is exactly the job."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You made it to the send-off, but there's nothing left in you. This pace, wedding after wedding, has a real cost."
+    },
+    "written_up": {
+      "title": "A Hard Conversation",
+      "blurb": "Something about today's handling is going to need explaining to the couple, or the venue, or both."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 60.4,
+      "p5": 63.5,
+      "p10": 66.6,
+      "p25": 71.0,
+      "p35": 73.3,
+      "p50": 76.3,
+      "p65": 78.8,
+      "p75": 79.9,
+      "p90": 82.8,
+      "p95": 83.5,
+      "p99": 85.4
+    },
+    "realistic": {
+      "p1": 59.3,
+      "p5": 62.8,
+      "p10": 65.4,
+      "p25": 70.4,
+      "p35": 72.8,
+      "p50": 75.5,
+      "p65": 77.6,
+      "p75": 78.9,
+      "p90": 81.4,
+      "p95": 82.7,
+      "p99": 84.1
+    },
+    "chaos": {
+      "p1": 58.2,
+      "p5": 61.5,
+      "p10": 63.7,
+      "p25": 69.4,
+      "p35": 72.2,
+      "p50": 74.9,
+      "p65": 77.0,
+      "p75": 78.6,
+      "p90": 80.8,
+      "p95": 82.4,
+      "p99": 83.6
+    }
+  }
+}

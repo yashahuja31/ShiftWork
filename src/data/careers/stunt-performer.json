@@ -1,0 +1,352 @@
+{
+  "id": "stunt_performer",
+  "title": "One Take, No Second Chances",
+  "emoji": "🎬",
+  "tagline": "A forty-foot fall scheduled for this afternoon, a director who wants it in one take, and a rigging check that just turned up something odd.",
+  "highlightLabel": "Stunts landed clean",
+  "traits": [
+    "physical",
+    "precision",
+    "high-pressure"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:00 AM",
+      "text": "Call time is 6 AM. Today's the big fall sequence — the one you've been training for over the last three weeks.",
+      "choices": [
+        {
+          "id": "full_warmup",
+          "text": "Do your complete warmup and mobility routine before leaving",
+          "next": "set_arrival",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "light_stretch",
+          "text": "A light stretch is enough — save the energy for the stunt",
+          "next": "set_arrival",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "set_arrival": {
+      "time": "06:00 AM",
+      "text": "The set is already alive with activity — grips, camera crew, the stunt coordinator running through today's sequence one more time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Check in with the stunt coordinator",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "06:45 AM",
+      "text": "The morning setup on a stunt-heavy shoot day has its own particular rhythm — a little different every time.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "crew_encouragement",
+          "text": "A few crew members stop by with genuine encouragement",
+          "next": "wire_rehearsal",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "weather_delay",
+          "text": "A brief weather delay pushes the schedule slightly",
+          "next": "wire_rehearsal",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_light",
+          "text": "The morning light is exactly what the cinematographer wanted",
+          "next": "wire_rehearsal",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "wire_rehearsal": {
+      "time": "08:00 AM",
+      "text": "A slow, careful walkthrough of the fall sequence without cameras — the rigging, the landing zone, the exact choreography of the stunt.",
+      "choices": [
+        {
+          "id": "full_dry_run",
+          "text": "Insist on a full dry run at reduced height first",
+          "next": "rigging_check",
+          "effects": {
+            "energy": -4,
+            "rep": 10
+          }
+        },
+        {
+          "id": "trust_the_walkthrough",
+          "text": "Trust the walkthrough and save time for the actual shot",
+          "next": "rigging_check",
+          "effects": {
+            "rep": -4,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "rigging_check": {
+      "time": "10:00 AM",
+      "text": "Final rigging check before lunch. Your rigger pauses on one of the connection points — nothing obviously wrong, but something about the wear pattern doesn't sit right with them.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hear the rigger out",
+          "next": "rigging_decision",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "rigging_decision": {
+      "time": "10:15 AM",
+      "text": "The rigger thinks the connection point is probably fine, but isn't fully certain. Replacing it means a two-hour delay on a schedule that's already tight, with the director watching the clock. This is the exact moment stunt performers are trained never to rush.",
+      "choices": [
+        {
+          "id": "replace_the_gear",
+          "text": "Replace the gear, full stop, whatever it costs the schedule",
+          "next": "rigging_outcome_replace",
+          "effects": {
+            "stress": -6,
+            "rep": 12,
+            "money": -20
+          }
+        },
+        {
+          "id": "trust_the_rigger_partial",
+          "text": "Have the rigger reinforce the point rather than fully replace it",
+          "next": "rigging_outcome_reinforce",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "proceed_as_planned",
+          "text": "Proceed as planned — it's probably nothing",
+          "next": "rigging_outcome_proceed",
+          "effects": {
+            "stress": 14,
+            "rep": -10
+          }
+        },
+        {
+          "id": "request_second_opinion",
+          "text": "Bring in a second rigger for an independent opinion",
+          "next": "rigging_outcome_second",
+          "effects": {
+            "stress": 4,
+            "rep": 10
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "rigging_outcome_replace": {
+      "time": "12:30 PM",
+      "text": "The replacement costs two hours and a testy conversation with the production schedule — and the new gear is unquestionably solid. The fall, when it finally happens, goes exactly to plan.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Perform the stunt",
+          "next": "afternoon_shoot",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "rigging_outcome_reinforce": {
+      "time": "11:00 PM",
+      "text": "The reinforcement holds, and the stunt goes off without incident — a reasonable middle path that respects both the schedule and the actual risk.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Perform the stunt",
+          "next": "afternoon_shoot",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "rigging_outcome_proceed": {
+      "time": "10:30 AM",
+      "text": "The stunt goes ahead on schedule, and the gear holds — this time. It's the kind of call that looks fine in hindsight and terrible in the moment it was actually made.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Perform the stunt",
+          "next": "afternoon_shoot",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "rigging_outcome_second": {
+      "time": "11:15 AM",
+      "text": "The second rigger's independent read confirms the gear is sound after all — a slightly longer process, but everyone on set, including you, goes into the fall with real confidence instead of a shrug.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Perform the stunt",
+          "next": "afternoon_shoot",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_shoot": {
+      "time": "14:00 PM",
+      "text": "The fall lands clean. The director wants one more angle covered — a second take of a stunt you're not contractually required to repeat today.",
+      "choices": [
+        {
+          "id": "do_the_second_take",
+          "text": "Agree to the second take for the better coverage",
+          "next": "wardrobe_fitting",
+          "effects": {
+            "stress": 8,
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "decline_second_take",
+          "text": "Decline — one clean take is what was agreed",
+          "next": "wardrobe_fitting",
+          "effects": {
+            "stress": -4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "wardrobe_fitting": {
+      "time": "16:00 PM",
+      "text": "A wardrobe fitting for tomorrow's fight choreography sequence, plus a run-through of the moves with the stunt coordinator.",
+      "choices": [
+        {
+          "id": "full_rehearsal",
+          "text": "Do a full rehearsal of tomorrow's sequence today",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_walkthrough",
+          "text": "Do a quick walkthrough and save the rest for tomorrow",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "Set wraps for the day. Every muscle in your body knows exactly how much work today actually was.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head back to the hotel",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Shot They'll Use in the Trailer",
+      "blurb": "Every call today was the right one, including the hardest one. This is the stunt people ask you about for years."
+    },
+    "steady_hand": {
+      "title": "Clean and Professional",
+      "blurb": "No injuries, no drama — just careful, well-executed stunt work, take after take."
+    },
+    "ordinary_day": {
+      "title": "Another Day on Set",
+      "blurb": "A solid day of stunt work, landed clean. Tomorrow's sequence is already being rigged."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but your body is telling you exactly what that cost. This pace needs real recovery time."
+    },
+    "written_up": {
+      "title": "Safety Review Called",
+      "blurb": "Something about today's rigging call is heading into a safety review. Nobody was hurt. The production still wants answers."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 58.3,
+      "p5": 61.8,
+      "p10": 64.0,
+      "p25": 70.3,
+      "p35": 73.5,
+      "p50": 77.0,
+      "p65": 79.3,
+      "p75": 81.0,
+      "p90": 83.8,
+      "p95": 85.2,
+      "p99": 87.3
+    },
+    "realistic": {
+      "p1": 57.0,
+      "p5": 60.7,
+      "p10": 63.4,
+      "p25": 70.3,
+      "p35": 73.3,
+      "p50": 76.5,
+      "p65": 78.9,
+      "p75": 80.4,
+      "p90": 83.5,
+      "p95": 85.6,
+      "p99": 87.0
+    },
+    "chaos": {
+      "p1": 55.3,
+      "p5": 59.0,
+      "p10": 61.5,
+      "p25": 69.6,
+      "p35": 72.6,
+      "p50": 75.9,
+      "p65": 78.5,
+      "p75": 80.2,
+      "p90": 83.3,
+      "p95": 85.6,
+      "p99": 88.7
+    }
+  }
+}

@@ -1,0 +1,367 @@
+{
+  "id": "hostage_negotiator",
+  "title": "Every Word Could End This",
+  "emoji": "📞",
+  "tagline": "A barricaded subject, a phone line that's the only thing connecting you to them, and a tactical team waiting on your read of the situation.",
+  "highlightLabel": "Standoffs resolved safely",
+  "traits": [
+    "people-reading",
+    "high-pressure",
+    "communication"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "07:00 AM",
+      "text": "On-call rotation. Your phone rings before you're fully awake — a barricade situation developing, a subject alone with a hostage, tactical already staging.",
+      "choices": [
+        {
+          "id": "get_full_briefing_first",
+          "text": "Get a full briefing on the way before saying anything",
+          "next": "scene_arrival",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "head_out_immediately",
+          "text": "Head out immediately and get briefed on arrival",
+          "next": "scene_arrival",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "scene_arrival": {
+      "time": "07:45 AM",
+      "text": "The scene is exactly as tense as it sounded on the phone — perimeter set, tactical team positioned, a command post already assembling the pieces of what happened.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get the full situational briefing",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "random_moment": {
+      "time": "08:00 AM",
+      "text": "The first minutes on scene have their own particular tension — a little different at every incident.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "family_info",
+          "text": "A family member on scene gives you a useful detail about the subject",
+          "next": "initial_contact",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "media_presence",
+          "text": "News vans are already setting up at the perimeter",
+          "next": "initial_contact",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_command_post",
+          "text": "The command post is unusually well organized this time",
+          "next": "initial_contact",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "initial_contact": {
+      "time": "08:30 AM",
+      "text": "First phone contact with the subject — agitated, unpredictable, but talking. The hostage's status is still unconfirmed.",
+      "choices": [
+        {
+          "id": "let_them_talk",
+          "text": "Let them talk at length before saying much yourself",
+          "next": "morning_negotiation",
+          "effects": {
+            "stress": -4,
+            "rep": 8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "establish_control_early",
+          "text": "Establish clear structure to the conversation early",
+          "next": "morning_negotiation",
+          "effects": {
+            "rep": 4,
+            "stress": 4
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "morning_negotiation": {
+      "time": "10:00 AM",
+      "text": "Ninety minutes in, the subject's tone has calmed somewhat, but they still won't confirm the hostage is unharmed.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue building rapport",
+          "next": "critical_moment",
+          "effects": {
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "critical_moment": {
+      "time": "11:30 AM",
+      "text": "The subject suddenly goes quiet on the phone after a raised voice in the background — tactical is asking for a decision on entry, right now, and whatever you say next could be the thing that ends this calmly or ends it very differently.",
+      "choices": [
+        {
+          "id": "stay_on_the_line",
+          "text": "Stay on the line and keep talking, calm and steady",
+          "next": "critical_outcome_stay",
+          "effects": {
+            "stress": 18,
+            "rep": 10
+          }
+        },
+        {
+          "id": "request_tactical_hold",
+          "text": "Request tactical hold their position while you assess",
+          "next": "critical_outcome_hold",
+          "effects": {
+            "stress": 8,
+            "rep": 8
+          }
+        },
+        {
+          "id": "escalate_to_entry",
+          "text": "Recommend tactical entry immediately",
+          "next": "critical_outcome_entry",
+          "effects": {
+            "stress": 14,
+            "rep": -6
+          }
+        },
+        {
+          "id": "change_negotiator_voice",
+          "text": "Bring in a family member to speak, briefly, on the line",
+          "next": "critical_outcome_family",
+          "effects": {
+            "stress": 6,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "critical_outcome_stay": {
+      "time": "11:40 AM",
+      "text": "The subject comes back on the line after the longest thirty seconds of the day. The hostage is unharmed — the raised voice was the subject's own frustration, not violence. Staying calm on the line was exactly the right call.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a peaceful resolution",
+          "next": "afternoon_resolution",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "critical_outcome_hold": {
+      "time": "11:42 AM",
+      "text": "Tactical holds, and the pause gives the subject room to come back to the phone on their own terms — a careful, measured call that respects how fragile the moment actually was.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a peaceful resolution",
+          "next": "afternoon_resolution",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "critical_outcome_entry": {
+      "time": "11:38 AM",
+      "text": "Tactical entry resolves the situation, but it's a far more dangerous ending than the one that was quietly available if the line had just stayed open a little longer.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Debrief the outcome",
+          "next": "afternoon_resolution",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "critical_outcome_family": {
+      "time": "11:45 AM",
+      "text": "The family member's voice on the line does something your own careful neutrality couldn't — the subject's tone shifts immediately, and the standoff's temperature drops with it.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward a peaceful resolution",
+          "next": "afternoon_resolution",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "afternoon_resolution": {
+      "time": "13:00 PM",
+      "text": "Hours into the standoff, the subject is finally talking about how this ends, not just why it started.",
+      "choices": [
+        {
+          "id": "patient_final_push",
+          "text": "Stay patient and let them arrive at surrender on their own terms",
+          "next": "peaceful_end",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "push_for_quicker_resolution",
+          "text": "Push more directly for a faster resolution",
+          "next": "peaceful_end",
+          "effects": {
+            "rep": -4,
+            "stress": 6
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "peaceful_end": {
+      "time": "15:00 PM",
+      "text": "The subject agrees to come out. The hostage is safe. Six hours after it started, the actual ending is almost anticlimactic — which is exactly what a good ending to this looks like.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Oversee the safe conclusion",
+          "next": "debrief",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "debrief": {
+      "time": "16:30 PM",
+      "text": "A full debrief with the tactical commander and your own supervisor — what worked, what nearly didn't, what the next negotiator on rotation should know.",
+      "choices": [
+        {
+          "id": "honest_debrief",
+          "text": "Be fully honest about every close moment, not just the good calls",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "clean_summary",
+          "text": "Give the clean summary version",
+          "next": "end_shift",
+          "effects": {
+            "rep": -4,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "end_shift": {
+      "time": "17:30 PM",
+      "text": "The scene clears. Somewhere, a family is being reunited, and you're already back on the on-call list for whatever comes next.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "social"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Nobody Got Hurt",
+      "blurb": "Every call today was the right one, including the hardest one. This is the standoff other negotiators study."
+    },
+    "steady_hand": {
+      "title": "Resolved Safely",
+      "blurb": "No theatrics, no shortcuts — just patient, careful negotiation until it was actually over."
+    },
+    "ordinary_day": {
+      "title": "Another Standoff Ended",
+      "blurb": "A long, tense day that ended the way it needed to. The on-call phone could ring again any minute."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the standoff, but you're not sure how. This kind of pressure has a real cost."
+    },
+    "written_up": {
+      "title": "Incident Review",
+      "blurb": "Something about today's tactical call is heading into a formal review. Everyone's safe. The department still wants to understand the decision."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 58.1,
+      "p5": 62.4,
+      "p10": 64.9,
+      "p25": 69.5,
+      "p35": 71.6,
+      "p50": 74.6,
+      "p65": 77.6,
+      "p75": 79.83,
+      "p90": 83.8,
+      "p95": 85.2,
+      "p99": 87.9
+    },
+    "realistic": {
+      "p1": 56.4,
+      "p5": 61.3,
+      "p10": 63.6,
+      "p25": 68.0,
+      "p35": 70.4,
+      "p50": 73.8,
+      "p65": 76.8,
+      "p75": 79.4,
+      "p90": 83.4,
+      "p95": 84.7,
+      "p99": 87.6
+    },
+    "chaos": {
+      "p1": 55.8,
+      "p5": 59.9,
+      "p10": 62.3,
+      "p25": 67.3,
+      "p35": 69.6,
+      "p50": 73.1,
+      "p65": 76.0,
+      "p75": 78.6,
+      "p90": 82.7,
+      "p95": 84.2,
+      "p99": 87.2
+    }
+  }
+}

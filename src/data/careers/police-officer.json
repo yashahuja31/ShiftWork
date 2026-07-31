@@ -1,0 +1,401 @@
+{
+  "id": "police_officer",
+  "title": "The Radio Never Goes Quiet",
+  "emoji": "🚓",
+  "tagline": "A ten-hour patrol, a call that could be nothing or everything, and a radio that never really lets you relax.",
+  "highlightLabel": "Situations de-escalated",
+  "traits": [
+    "high-pressure",
+    "physical",
+    "people-reading"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:45 AM",
+      "text": "Roll call is at 6:30. Your vest still smells like yesterday's coffee, and today's briefing mentions a rash of car break-ins on your beat.",
+      "choices": [
+        {
+          "id": "check_gear_fully",
+          "text": "Do a full check of your gear before roll call",
+          "next": "roll_call",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_check",
+          "text": "Quick check — you know it's fine",
+          "next": "roll_call",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "roll_call": {
+      "time": "06:30 AM",
+      "text": "Sergeant runs through the overnight incident log and today's watch priorities. Your partner is already waiting by the cruiser.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head out on patrol",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "random_moment": {
+      "time": "07:15 AM",
+      "text": "The first hour of a shift always settles into its own rhythm — quiet streets, a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "friendly_wave",
+          "text": "A shop owner you know waves you down just to say hello",
+          "next": "traffic_stop",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "radio_static",
+          "text": "Dispatch radio cuts to static for an uneasy minute",
+          "next": "traffic_stop",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_coffee",
+          "text": "You catch the diner on your route at exactly the right moment for coffee",
+          "next": "traffic_stop",
+          "effects": {
+            "stress": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "traffic_stop": {
+      "time": "08:30 AM",
+      "text": "A routine traffic stop for a broken taillight. The driver is fidgety, avoiding eye contact — could be nothing, could be something.",
+      "choices": [
+        {
+          "id": "thorough_stop",
+          "text": "Take the extra time to do it by the book, fully",
+          "next": "morning_patrol",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "quick_warning",
+          "text": "Give a quick warning and move on",
+          "next": "morning_patrol",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "morning_patrol": {
+      "time": "10:00 AM",
+      "text": "Back on patrol. The break-ins from this morning's briefing are still bothering you — something about the pattern doesn't add up yet.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep patrolling",
+          "next": "domestic_call",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "domestic_call": {
+      "time": "12:15 PM",
+      "text": "Dispatch: a domestic disturbance call, neighbors reporting shouting. You arrive to raised voices behind the door and no way to know what's actually happening inside until you're through it.",
+      "choices": [
+        {
+          "id": "enter_immediately",
+          "text": "Knock and enter immediately to assess the situation",
+          "next": "domestic_outcome_immediate",
+          "effects": {
+            "stress": 14,
+            "rep": 8
+          }
+        },
+        {
+          "id": "wait_and_listen",
+          "text": "Wait outside the door and listen before entering",
+          "next": "domestic_outcome_wait",
+          "effects": {
+            "stress": -4,
+            "rep": 6
+          }
+        },
+        {
+          "id": "call_for_backup",
+          "text": "Call for backup before doing anything else",
+          "next": "domestic_outcome_backup",
+          "effects": {
+            "stress": -6,
+            "rep": -4
+          }
+        },
+        {
+          "id": "de_escalate_from_door",
+          "text": "Announce yourself calmly and try to talk them down through the door first",
+          "next": "domestic_outcome_talk",
+          "effects": {
+            "stress": 4,
+            "rep": 10
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "domestic_outcome_immediate": {
+      "time": "12:22 PM",
+      "text": "You're through the door fast. It turns out to be a heated argument, nothing physical — your quick presence is what actually ends it, before it could become something worse.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "De-escalate and file the report",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "domestic_outcome_wait": {
+      "time": "12:24 PM",
+      "text": "The extra thirty seconds tells you exactly what you're walking into before you have to. You go in prepared, and it makes all the difference in how calmly it resolves.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "De-escalate and file the report",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "domestic_outcome_backup": {
+      "time": "12:30 PM",
+      "text": "Backup arrives in six minutes. By the time you go in together, the shouting has already stopped on its own — six minutes that, this time, you didn't actually need.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Check on the household",
+          "next": "lunch_break",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "domestic_outcome_talk": {
+      "time": "12:28 PM",
+      "text": "Your voice through the door, calm and steady, does more than a fast entry would have. By the time the door opens, most of the tension already has.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "De-escalate and file the report",
+          "next": "lunch_break",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "lunch_break": {
+      "time": "13:30 PM",
+      "text": "A short window for lunch, if the radio stays quiet long enough to actually eat it.",
+      "choices": [
+        {
+          "id": "eat_properly",
+          "text": "Actually sit down and eat",
+          "next": "afternoon_patrol",
+          "effects": {
+            "energy": 12,
+            "stress": -6
+          }
+        },
+        {
+          "id": "eat_in_cruiser",
+          "text": "Eat in the cruiser, staying available",
+          "next": "afternoon_patrol",
+          "effects": {
+            "rep": 4,
+            "stress": 4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_patrol": {
+      "time": "15:00 PM",
+      "text": "A store owner flags you down: security footage shows the same car from three of this week's break-ins, parked outside right now.",
+      "choices": [
+        {
+          "id": "approach_immediately",
+          "text": "Approach the vehicle immediately",
+          "next": "school_zone",
+          "effects": {
+            "stress": 10,
+            "rep": 10
+          }
+        },
+        {
+          "id": "observe_first",
+          "text": "Observe from a distance and call in the plate first",
+          "next": "school_zone",
+          "effects": {
+            "stress": -4,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "school_zone": {
+      "time": "16:30 PM",
+      "text": "School lets out. Traffic control duty at the crosswalk, a hundred kids at once, and a driver clearly not paying attention approaching the intersection.",
+      "choices": [
+        {
+          "id": "step_in_firmly",
+          "text": "Step in firmly to stop traffic before it's a problem",
+          "next": "evening_report",
+          "effects": {
+            "stress": 8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "standard_signal",
+          "text": "Signal normally and trust drivers to stop",
+          "next": "evening_report",
+          "effects": {
+            "stress": -3,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "evening_report": {
+      "time": "18:00 PM",
+      "text": "Paperwork for the day's calls, the part of the job that never quite gets easier no matter how many years in.",
+      "choices": [
+        {
+          "id": "thorough_reports",
+          "text": "Write thorough, detailed reports on everything",
+          "next": "end_shift",
+          "effects": {
+            "rep": 8,
+            "energy": -5
+          }
+        },
+        {
+          "id": "quick_reports",
+          "text": "Keep the reports brief and get to end of shift",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "end_shift": {
+      "time": "18:30 PM",
+      "text": "Shift change. The next watch takes the radio, and whatever the night brings isn't yours to answer anymore.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Clock out",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "rest"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Textbook Watch",
+      "blurb": "Every call today was handled exactly right, including the one that could have gone very differently. This is the shift the department talks about."
+    },
+    "steady_hand": {
+      "title": "Solid Shift",
+      "blurb": "No headlines, no incidents that needed explaining. Just careful, competent police work, call after call."
+    },
+    "ordinary_day": {
+      "title": "Routine Patrol",
+      "blurb": "A normal ten hours on the beat. Tomorrow's watch looks about the same."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it to end of shift, but you're not sure how. Call after call, this pace has a real cost."
+    },
+    "written_up": {
+      "title": "Under Review",
+      "blurb": "A few of today's calls are heading into a formal review. Nobody was hurt. The department still wants answers."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 70.3,
+      "p5": 73.9,
+      "p10": 75.4,
+      "p25": 78.3,
+      "p35": 79.8,
+      "p50": 81.7,
+      "p65": 83.6,
+      "p75": 85.0,
+      "p90": 87.8,
+      "p95": 89.2,
+      "p99": 91.8
+    },
+    "realistic": {
+      "p1": 69.3,
+      "p5": 72.8,
+      "p10": 74.0,
+      "p25": 77.3,
+      "p35": 78.9,
+      "p50": 80.8,
+      "p65": 82.8,
+      "p75": 84.3,
+      "p90": 87.4,
+      "p95": 88.6,
+      "p99": 91.7
+    },
+    "chaos": {
+      "p1": 68.4,
+      "p5": 71.9,
+      "p10": 73.8,
+      "p25": 76.9,
+      "p35": 78.3,
+      "p50": 80.35,
+      "p65": 82.3,
+      "p75": 83.9,
+      "p90": 87.1,
+      "p95": 88.5,
+      "p99": 91.4
+    }
+  }
+}

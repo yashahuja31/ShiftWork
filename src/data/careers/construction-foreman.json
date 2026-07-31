@@ -1,0 +1,351 @@
+{
+  "id": "construction_foreman",
+  "title": "The Crane Doesn't Wait",
+  "emoji": "🏗️",
+  "tagline": "A concrete pour scheduled down to the hour, a crew of thirty waiting on your call, and a safety concern that just turned up on the third floor.",
+  "highlightLabel": "Milestones hit safely",
+  "traits": [
+    "responsibility",
+    "hands-on",
+    "high-pressure"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 AM",
+      "text": "Today's the big pour — the third floor slab, scheduled with the concrete supplier down to the hour. Everything downstream depends on this going right.",
+      "choices": [
+        {
+          "id": "review_pour_plan",
+          "text": "Review the full pour plan one more time before leaving",
+          "next": "site_arrival",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_yesterday_prep",
+          "text": "Trust yesterday's prep and get moving",
+          "next": "site_arrival",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "site_arrival": {
+      "time": "06:00 AM",
+      "text": "The site is already stirring — crew arriving, equipment being checked, the concrete trucks scheduled for a nine o'clock arrival.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Run the morning safety briefing",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "random_moment": {
+      "time": "06:45 AM",
+      "text": "The hour before a big pour has its own particular energy on a site — a little different every time.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "crew_ready",
+          "text": "The crew is unusually sharp and ready this morning",
+          "next": "morning_inspection",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "truck_delay_warning",
+          "text": "The concrete supplier calls with a minor scheduling concern",
+          "next": "morning_inspection",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_weather",
+          "text": "The weather forecast is exactly right for a pour today",
+          "next": "morning_inspection",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "morning_inspection": {
+      "time": "07:30 AM",
+      "text": "A final walkthrough of the formwork before the trucks arrive — the last chance to catch anything before concrete makes it permanent.",
+      "choices": [
+        {
+          "id": "full_inspection",
+          "text": "Personally inspect every section of formwork",
+          "next": "safety_concern",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "spot_check",
+          "text": "Spot-check the highest-risk sections only",
+          "next": "safety_concern",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "safety_concern": {
+      "time": "08:15 AM",
+      "text": "A crew member flags a shoring post on the third floor that looks slightly out of plumb — probably fine, but the trucks are forty-five minutes out and re-checking means possibly delaying a pour that's booked down to the hour.",
+      "choices": [
+        {
+          "id": "halt_and_recheck",
+          "text": "Halt everything and have it rechecked properly before the pour",
+          "next": "safety_outcome_halt",
+          "effects": {
+            "stress": -4,
+            "rep": 12,
+            "money": -25
+          }
+        },
+        {
+          "id": "quick_visual_confirm",
+          "text": "Do a quick visual confirmation yourself and proceed",
+          "next": "safety_outcome_visual",
+          "effects": {
+            "stress": 8,
+            "rep": 4
+          }
+        },
+        {
+          "id": "call_structural_engineer",
+          "text": "Get the structural engineer on site before deciding",
+          "next": "safety_outcome_engineer",
+          "effects": {
+            "stress": 6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "proceed_as_scheduled",
+          "text": "Proceed as scheduled — it's probably within tolerance",
+          "next": "safety_outcome_proceed",
+          "effects": {
+            "stress": -8,
+            "rep": -14
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "safety_outcome_halt": {
+      "time": "10:00 AM",
+      "text": "The recheck finds the post genuinely needed adjustment. The pour gets rescheduled for early afternoon, and every person on that floor is safer for the delay — the kind of call that costs money and is still obviously correct.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Coordinate the rescheduled pour",
+          "next": "afternoon_pour",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "safety_outcome_visual": {
+      "time": "08:35 AM",
+      "text": "Your own read says it's within tolerance, and the pour proceeds on schedule. It holds — this time — but it was a judgment call made faster than the situation maybe deserved.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed with the pour",
+          "next": "afternoon_pour",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "safety_outcome_engineer": {
+      "time": "09:00 AM",
+      "text": "The engineer's read is fast and definitive: within tolerance, safe to proceed. A short delay, but everyone on the pour crew works with real confidence instead of a shrug.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed with the pour",
+          "next": "afternoon_pour",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "safety_outcome_proceed": {
+      "time": "08:20 AM",
+      "text": "The pour goes ahead on schedule. It holds, but the shoring concern never actually got resolved — just outrun by the schedule, which is exactly the kind of decision that catches up with a site eventually.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed with the pour",
+          "next": "afternoon_pour",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_pour": {
+      "time": "13:00 PM",
+      "text": "The pour itself goes smoothly, thirty people moving in careful coordination, concrete filling the forms exactly as planned.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Oversee the pour to completion",
+          "next": "afternoon_inspection",
+          "effects": {
+            "energy": -5
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "afternoon_inspection": {
+      "time": "15:30 PM",
+      "text": "A city inspector arrives for a scheduled check on an unrelated part of the site — electrical rough-in on the second floor.",
+      "choices": [
+        {
+          "id": "walk_inspector_personally",
+          "text": "Walk the inspector through personally",
+          "next": "evening_schedule",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "delegate_to_electrician",
+          "text": "Let the lead electrician handle the walkthrough",
+          "next": "evening_schedule",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "evening_schedule": {
+      "time": "17:00 PM",
+      "text": "Tomorrow's schedule needs finalizing — crew assignments, material deliveries, the next phase of work now that today's pour is behind you.",
+      "choices": [
+        {
+          "id": "detailed_planning",
+          "text": "Take the time to plan tomorrow in real detail",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "rough_plan",
+          "text": "Rough out tomorrow's plan and refine it in the morning",
+          "next": "end_shift",
+          "effects": {
+            "energy": 5,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "The site empties out for the night, thirty people going home safe, and a floor slab curing in the dark that wasn't there this morning.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Ahead of Schedule, Zero Incidents",
+      "blurb": "Every call today was the right one, including the hard one. This is the day the whole crew will point to."
+    },
+    "steady_hand": {
+      "title": "Solid Day on Site",
+      "blurb": "No incidents, no shortcuts — just careful, competent site management, decision after decision."
+    },
+    "ordinary_day": {
+      "title": "Another Milestone Hit",
+      "blurb": "A full day of work, a major pour completed. Tomorrow's schedule is already set."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but you're not sure how. This pace, decision after decision, has a real cost."
+    },
+    "written_up": {
+      "title": "Safety Review Called",
+      "blurb": "Something about today's shoring call is heading into a formal safety review. Everyone's safe. The process still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 62.3,
+      "p5": 66.1,
+      "p10": 67.6,
+      "p25": 70.9,
+      "p35": 73.8,
+      "p50": 75.2,
+      "p65": 78.3,
+      "p75": 79.7,
+      "p90": 82.7,
+      "p95": 85.6,
+      "p99": 86.7
+    },
+    "realistic": {
+      "p1": 63.0,
+      "p5": 66.1,
+      "p10": 67.2,
+      "p25": 70.6,
+      "p35": 71.9,
+      "p50": 74.6,
+      "p65": 77.8,
+      "p75": 78.8,
+      "p90": 82.7,
+      "p95": 85.1,
+      "p99": 87.4
+    },
+    "chaos": {
+      "p1": 62.8,
+      "p5": 65.8,
+      "p10": 67.1,
+      "p25": 70.4,
+      "p35": 72.5,
+      "p50": 74.2,
+      "p65": 77.2,
+      "p75": 78.4,
+      "p90": 82.3,
+      "p95": 85.0,
+      "p99": 86.3
+    }
+  }
+}

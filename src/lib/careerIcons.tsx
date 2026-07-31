@@ -11,6 +11,24 @@ import {
   Rocket,
   Stethoscope,
   Terminal,
+  Scale,
+  Shield,
+  Newspaper,
+  Ruler,
+  PawPrint,
+  Fish,
+  Ship,
+  Cat,
+  Heart,
+  Spade,
+  Film,
+  Landmark,
+  Milk,
+  HardHat,
+  Handshake,
+  Phone,
+  Bomb,
+  TreePine,
 } from 'lucide-react';
 
 interface CareerIconProps {
@@ -53,6 +71,42 @@ export function CareerIcon({ careerId, size = 20, strokeWidth = 2.25 }: CareerIc
       return <Ambulance size={size} strokeWidth={strokeWidth} />;
     case 'software_engineer':
       return <Terminal size={size} strokeWidth={strokeWidth} />;
+    case 'lawyer':
+      return <Scale size={size} strokeWidth={strokeWidth} />;
+    case 'police_officer':
+      return <Shield size={size} strokeWidth={strokeWidth} />;
+    case 'journalist':
+      return <Newspaper size={size} strokeWidth={strokeWidth} />;
+    case 'architect':
+      return <Ruler size={size} strokeWidth={strokeWidth} />;
+    case 'veterinarian':
+      return <PawPrint size={size} strokeWidth={strokeWidth} />;
+    case 'marine_biologist':
+      return <Fish size={size} strokeWidth={strokeWidth} />;
+    case 'cruise_ship_captain':
+      return <Ship size={size} strokeWidth={strokeWidth} />;
+    case 'zookeeper':
+      return <Cat size={size} strokeWidth={strokeWidth} />;
+    case 'wedding_planner':
+      return <Heart size={size} strokeWidth={strokeWidth} />;
+    case 'poker_player':
+      return <Spade size={size} strokeWidth={strokeWidth} />;
+    case 'stunt_performer':
+      return <Film size={size} strokeWidth={strokeWidth} />;
+    case 'museum_curator':
+      return <Landmark size={size} strokeWidth={strokeWidth} />;
+    case 'dairy_farmer':
+      return <Milk size={size} strokeWidth={strokeWidth} />;
+    case 'construction_foreman':
+      return <HardHat size={size} strokeWidth={strokeWidth} />;
+    case 'diplomat':
+      return <Handshake size={size} strokeWidth={strokeWidth} />;
+    case 'hostage_negotiator':
+      return <Phone size={size} strokeWidth={strokeWidth} />;
+    case 'bomb_disposal_technician':
+      return <Bomb size={size} strokeWidth={strokeWidth} />;
+    case 'park_ranger':
+      return <TreePine size={size} strokeWidth={strokeWidth} />;
     default:
       return <Briefcase size={size} strokeWidth={strokeWidth} />;
   }

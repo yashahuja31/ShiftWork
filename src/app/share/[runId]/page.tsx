@@ -2,8 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { db } from '@/lib/db';
-import { compatibilityScore, getGraph, getEnding, type EndingKey } from '@/lib/simulationEngine';
+import { compatibilityScore, getGraph, getEnding, CAREER_IDS, type EndingKey } from '@/lib/simulationEngine';
 import { CareerAvatar } from '@/components/CareerAvatar';
+import { ShareButtons } from '@/components/ShareButtons';
 import { moodFor } from '@/lib/mood';
 
 interface PageProps {
@@ -77,13 +78,15 @@ export default async function SharePage({ params }: PageProps) {
           <p className="font-display text-5xl text-vital">{shared.score}%</p>
         </div>
 
+        <ShareButtons runId={runId} shareText={`${shared.score}% compatible — ${shared.graph.title} | Shiftwork`} />
+
         <Link
           href={`/simulation/${shared.careerId}`}
           className="rounded-lg bg-vital text-ink font-medium px-8 py-3.5 hover:brightness-110 transition text-lg"
         >
           Try this shift yourself
         </Link>
-        <p className="text-xs text-muted font-mono">Sign up free — 12 careers to try.</p>
+        <p className="text-xs text-muted font-mono">Sign up free — {CAREER_IDS.length} careers to try.</p>
       </div>
     </main>
   );

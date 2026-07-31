@@ -1,0 +1,397 @@
+{
+  "id": "zookeeper",
+  "title": "Feeding Time Waits for No One",
+  "emoji": "🦁",
+  "tagline": "Forty animals, one schedule, and an enclosure alert that just came through on your radio.",
+  "highlightLabel": "Animals cared for",
+  "traits": [
+    "hands-on",
+    "patient",
+    "physical"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 AM",
+      "text": "The zoo doesn't open for hours, but the animals don't know that — feeding and health checks start now, storm or shine.",
+      "choices": [
+        {
+          "id": "review_health_logs",
+          "text": "Review last night's health logs before heading out",
+          "next": "morning_rounds",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "head_straight_out",
+          "text": "Head straight out to the enclosures",
+          "next": "morning_rounds",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "morning_rounds": {
+      "time": "06:00 AM",
+      "text": "First rounds of the day: checking water, checking fences, checking that everyone made it through the night the way they should have.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin feeding",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "06:45 AM",
+      "text": "The quiet hour before the zoo opens has its own particular texture — a little different every morning.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "playful_otters",
+          "text": "The otters are in an unusually playful mood this morning",
+          "next": "big_cat_feeding",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "stubborn_gate",
+          "text": "A stubborn gate latch costs you a few extra minutes",
+          "next": "big_cat_feeding",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_sunrise",
+          "text": "The sunrise over the savanna enclosure stops you for a second",
+          "next": "big_cat_feeding",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "big_cat_feeding": {
+      "time": "07:30 AM",
+      "text": "Feeding time for the big cats — a precise, careful process that doesn't forgive shortcuts.",
+      "choices": [
+        {
+          "id": "full_protocol",
+          "text": "Follow the full safety protocol exactly, no rushing",
+          "next": "vet_check",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "streamlined_feeding",
+          "text": "Streamline it slightly to save time for the rest of the rounds",
+          "next": "vet_check",
+          "effects": {
+            "rep": -4,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "vet_check": {
+      "time": "08:30 AM",
+      "text": "The zoo vet flags a concern about one of the elephants — favoring a leg slightly, nothing dramatic yet, but worth watching.",
+      "choices": [
+        {
+          "id": "monitor_closely",
+          "text": "Adjust your rounds to monitor the elephant closely today",
+          "next": "gates_open",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "note_and_continue",
+          "text": "Note it and continue with the normal schedule",
+          "next": "gates_open",
+          "effects": {
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "gates_open": {
+      "time": "09:00 AM",
+      "text": "The zoo opens for the day. Somewhere behind the scenes, the actual work of caring for forty animals keeps going regardless of how many visitors show up.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the morning's work",
+          "next": "enclosure_alert",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "enclosure_alert": {
+      "time": "10:15 AM",
+      "text": "Your radio crackles: a latch failure in the primate enclosure, and one of the younger chimps is loose in the service corridor — not near visitors yet, but close, and getting closer every second you spend deciding what to do.",
+      "choices": [
+        {
+          "id": "approach_calmly",
+          "text": "Approach calmly yourself with a familiar food reward",
+          "next": "escape_outcome_calm",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "call_full_team",
+          "text": "Call the full emergency response team before doing anything",
+          "next": "escape_outcome_team",
+          "effects": {
+            "stress": -4,
+            "rep": 4
+          }
+        },
+        {
+          "id": "seal_corridor",
+          "text": "Seal the corridor doors first to contain the area",
+          "next": "escape_outcome_seal",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "alert_visitors_area",
+          "text": "Immediately alert and clear the nearest visitor area",
+          "next": "escape_outcome_alert",
+          "effects": {
+            "stress": -6,
+            "rep": 4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "escape_outcome_calm": {
+      "time": "10:25 AM",
+      "text": "Recognizing you, the chimp comes right to the food reward without any drama at all. Ten minutes after the alert, everyone's exactly where they're supposed to be.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Return the chimp and file the incident report",
+          "next": "afternoon_visitor_talk",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "escape_outcome_team": {
+      "time": "10:35 AM",
+      "text": "The full team arrives and handles it by the book — safe, thorough, and it takes the full protocol's worth of time to actually resolve, which is exactly what the protocol is for.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Assist with the recovery",
+          "next": "afternoon_visitor_talk",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "escape_outcome_seal": {
+      "time": "10:22 AM",
+      "text": "Sealing the corridor first buys real time and certainty — nothing gets worse while you figure out the actual approach, and the recovery that follows goes smoothly.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Complete the recovery",
+          "next": "afternoon_visitor_talk",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "escape_outcome_alert": {
+      "time": "10:20 AM",
+      "text": "Clearing the visitor area first is the safest call for the public, and it costs you time getting to the actual animal — who, it turns out, was never anywhere near visitors at all.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed to the recovery",
+          "next": "afternoon_visitor_talk",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_visitor_talk": {
+      "time": "13:00 PM",
+      "text": "A scheduled visitor talk at the big cat enclosure, right after a morning that tested every part of the job.",
+      "choices": [
+        {
+          "id": "give_full_talk",
+          "text": "Give the full talk anyway, energy or not",
+          "next": "elephant_recheck",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "shorten_talk",
+          "text": "Shorten it today and save your energy",
+          "next": "elephant_recheck",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "elephant_recheck": {
+      "time": "15:00 PM",
+      "text": "Time to check on the elephant from this morning's vet note — the limp seems slightly worse by afternoon.",
+      "choices": [
+        {
+          "id": "call_vet_again",
+          "text": "Call the vet back for a second look right away",
+          "next": "evening_feeding",
+          "effects": {
+            "rep": 10,
+            "stress": 4
+          }
+        },
+        {
+          "id": "wait_until_tomorrow",
+          "text": "Note it for tomorrow's scheduled check instead",
+          "next": "evening_feeding",
+          "effects": {
+            "rep": -6,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "evening_feeding": {
+      "time": "17:00 PM",
+      "text": "Evening feeding rounds, the zoo emptying out of visitors, the animals settling into their own evening rhythms.",
+      "choices": [
+        {
+          "id": "thorough_evening_check",
+          "text": "Do a thorough final check of every enclosure before leaving",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "standard_check",
+          "text": "Do the standard evening check and head out",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "The zoo goes quiet for the night. Forty animals, all accounted for, all exactly where they're supposed to be.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Every Animal, Every Time",
+      "blurb": "Every call today was the right one, including the one that could have gone very differently. This is the day the whole team talks about."
+    },
+    "steady_hand": {
+      "title": "Solid Day",
+      "blurb": "No incidents, no drama — just careful, attentive care for every animal, all day long."
+    },
+    "ordinary_day": {
+      "title": "Routine Rounds",
+      "blurb": "A full day of feeding, checking, and caring for forty animals. Tomorrow's rounds look about the same."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but you're not sure how. This pace, animal after animal, has a real cost."
+    },
+    "written_up": {
+      "title": "Incident Review",
+      "blurb": "Something about today's handling is going in front of a review board. Every animal is safe. The protocol still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 66.0,
+      "p5": 69.4,
+      "p10": 71.4,
+      "p25": 74.9,
+      "p35": 76.5,
+      "p50": 78.9,
+      "p65": 81.0,
+      "p75": 82.6,
+      "p90": 85.3,
+      "p95": 86.3,
+      "p99": 88.5
+    },
+    "realistic": {
+      "p1": 65.3,
+      "p5": 68.9,
+      "p10": 71.09,
+      "p25": 74.4,
+      "p35": 76.1,
+      "p50": 78.2,
+      "p65": 80.4,
+      "p75": 81.7,
+      "p90": 84.7,
+      "p95": 85.9,
+      "p99": 88.1
+    },
+    "chaos": {
+      "p1": 65.0,
+      "p5": 68.5,
+      "p10": 70.8,
+      "p25": 74.17,
+      "p35": 76.0,
+      "p50": 78.0,
+      "p65": 80.1,
+      "p75": 81.4,
+      "p90": 84.5,
+      "p95": 86.0,
+      "p99": 88.1
+    }
+  }
+}

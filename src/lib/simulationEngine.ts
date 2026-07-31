@@ -10,6 +10,24 @@ import firefighter from '@/data/careers/firefighter.json';
 import teacher from '@/data/careers/teacher.json';
 import paramedic from '@/data/careers/paramedic.json';
 import softwareEngineer from '@/data/careers/software-engineer.json';
+import lawyer from '@/data/careers/lawyer.json';
+import policeOfficer from '@/data/careers/police-officer.json';
+import journalist from '@/data/careers/journalist.json';
+import architect from '@/data/careers/architect.json';
+import veterinarian from '@/data/careers/veterinarian.json';
+import marineBiologist from '@/data/careers/marine-biologist.json';
+import cruiseShipCaptain from '@/data/careers/cruise-ship-captain.json';
+import zookeeper from '@/data/careers/zookeeper.json';
+import weddingPlanner from '@/data/careers/wedding-planner.json';
+import pokerPlayer from '@/data/careers/poker-player.json';
+import stuntPerformer from '@/data/careers/stunt-performer.json';
+import museumCurator from '@/data/careers/museum-curator.json';
+import dairyFarmer from '@/data/careers/dairy-farmer.json';
+import constructionForeman from '@/data/careers/construction-foreman.json';
+import diplomat from '@/data/careers/diplomat.json';
+import hostageNegotiator from '@/data/careers/hostage-negotiator.json';
+import bombDisposalTechnician from '@/data/careers/bomb-disposal-technician.json';
+import parkRanger from '@/data/careers/park-ranger.json';
 
 export interface Effects {
   stress?: number;
@@ -111,6 +129,24 @@ export const CAREER_GRAPHS: Record<string, SceneGraph> = {
   teacher: teacher as unknown as SceneGraph,
   paramedic: paramedic as unknown as SceneGraph,
   software_engineer: softwareEngineer as unknown as SceneGraph,
+  lawyer: lawyer as unknown as SceneGraph,
+  police_officer: policeOfficer as unknown as SceneGraph,
+  journalist: journalist as unknown as SceneGraph,
+  architect: architect as unknown as SceneGraph,
+  veterinarian: veterinarian as unknown as SceneGraph,
+  marine_biologist: marineBiologist as unknown as SceneGraph,
+  cruise_ship_captain: cruiseShipCaptain as unknown as SceneGraph,
+  zookeeper: zookeeper as unknown as SceneGraph,
+  wedding_planner: weddingPlanner as unknown as SceneGraph,
+  poker_player: pokerPlayer as unknown as SceneGraph,
+  stunt_performer: stuntPerformer as unknown as SceneGraph,
+  museum_curator: museumCurator as unknown as SceneGraph,
+  dairy_farmer: dairyFarmer as unknown as SceneGraph,
+  construction_foreman: constructionForeman as unknown as SceneGraph,
+  diplomat: diplomat as unknown as SceneGraph,
+  hostage_negotiator: hostageNegotiator as unknown as SceneGraph,
+  bomb_disposal_technician: bombDisposalTechnician as unknown as SceneGraph,
+  park_ranger: parkRanger as unknown as SceneGraph,
 };
 
 export const CAREER_IDS = Object.keys(CAREER_GRAPHS) as [string, ...string[]];

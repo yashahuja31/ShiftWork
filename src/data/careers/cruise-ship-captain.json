@@ -1,0 +1,379 @@
+{
+  "id": "cruise_ship_captain",
+  "title": "A Thousand Passengers, One Bridge",
+  "emoji": "🚢",
+  "tagline": "Three thousand people aboard, a storm system closing in on the planned route, and a bridge crew waiting on your call.",
+  "highlightLabel": "Safe passages made",
+  "traits": [
+    "responsibility",
+    "precision",
+    "high-stakes"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 AM",
+      "text": "The overnight weather report is on your desk before you've even had coffee — a storm system has shifted, and it's now closer to tomorrow's planned route than anyone expected.",
+      "choices": [
+        {
+          "id": "study_weather_fully",
+          "text": "Study the full weather system yourself before the morning briefing",
+          "next": "bridge_briefing",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_navigator_summary",
+          "text": "Trust your navigator's summary and move on",
+          "next": "bridge_briefing",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "bridge_briefing": {
+      "time": "06:30 AM",
+      "text": "Morning bridge briefing: the storm system, today's port call, and three thousand passengers who all have their own itinerary riding on your decisions.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin the morning watch",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "random_moment": {
+      "time": "07:30 AM",
+      "text": "The morning watch on the bridge has its own quiet rhythm — a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "crew_coffee",
+          "text": "The bridge crew shares a genuinely good laugh over coffee",
+          "next": "port_authority_call",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "radar_glitch",
+          "text": "A radar display glitches briefly before resetting itself",
+          "next": "port_authority_call",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "calm_seas",
+          "text": "The seas are unusually calm this morning",
+          "next": "port_authority_call",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "port_authority_call": {
+      "time": "08:30 AM",
+      "text": "Port authority calls about tonight's scheduled arrival — they want confirmation given the storm system's shifting track.",
+      "choices": [
+        {
+          "id": "commit_to_schedule",
+          "text": "Commit to the original schedule, weather permitting",
+          "next": "morning_rounds",
+          "effects": {
+            "rep": 6,
+            "stress": 4
+          }
+        },
+        {
+          "id": "flag_possible_delay",
+          "text": "Flag a possible delay now, before it becomes urgent",
+          "next": "morning_rounds",
+          "effects": {
+            "rep": 4,
+            "stress": -4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "morning_rounds": {
+      "time": "10:00 AM",
+      "text": "A walk through the ship — engine room, guest services, the kitchens — the part of the job that reminds you how many people's day depends on this ship running smoothly.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Return to the bridge",
+          "next": "storm_decision",
+          "effects": {
+            "energy": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "storm_decision": {
+      "time": "12:00 PM",
+      "text": "The storm system has intensified faster than forecast. Staying on course cuts hours off the trip but sails closer to rough water than you'd like; diverting protects the ship but means disappointing three thousand people's port day, and the decision has to go out to the whole ship in the next few minutes.",
+      "choices": [
+        {
+          "id": "divert_immediately",
+          "text": "Divert course immediately and announce it",
+          "next": "storm_outcome_divert",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "money": -20
+          }
+        },
+        {
+          "id": "hold_course_monitor",
+          "text": "Hold course and monitor the system closely before deciding",
+          "next": "storm_outcome_hold",
+          "effects": {
+            "stress": 16,
+            "rep": -6
+          }
+        },
+        {
+          "id": "consult_meteorologist",
+          "text": "Get the ship's meteorologist on the bridge before deciding anything",
+          "next": "storm_outcome_consult",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "partial_reroute",
+          "text": "Choose a partial reroute that splits the difference",
+          "next": "storm_outcome_partial",
+          "effects": {
+            "stress": 4,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "storm_outcome_divert": {
+      "time": "12:15 PM",
+      "text": "The ship turns well clear of the worst of it. Passengers grumble about the missed port call, but the crossing stays smooth the whole way through — exactly the kind of decision nobody thanks you for making correctly.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Address the passengers directly",
+          "next": "afternoon_watch",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "storm_outcome_hold": {
+      "time": "12:30 PM",
+      "text": "Holding course saves the port call, and the ship rides out rougher water than anyone would have liked — nothing broke, but it was closer than the forecast promised, and the bridge crew knows it.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue toward port",
+          "next": "afternoon_watch",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "storm_outcome_consult": {
+      "time": "12:20 PM",
+      "text": "The meteorologist's updated read shows a safe corridor nobody else had spotted yet — a genuinely good, ten-minutes-costlier decision that gets you both the port call and the safety margin.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Adjust course along the safe corridor",
+          "next": "afternoon_watch",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "storm_outcome_partial": {
+      "time": "12:25 PM",
+      "text": "The partial reroute adds two hours but keeps the ship well clear of the worst cells. Not the cleanest call in hindsight, but a reasonable one made with the information available at the time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue on the adjusted route",
+          "next": "afternoon_watch",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_watch": {
+      "time": "14:00 PM",
+      "text": "Guest services radios the bridge: a passenger has collapsed near the pool deck, and the ship's small medical team wants your call on whether to divert for a medical evacuation.",
+      "choices": [
+        {
+          "id": "divert_for_medical",
+          "text": "Divert toward the nearest port for medical evacuation",
+          "next": "vip_dinner",
+          "effects": {
+            "rep": 12,
+            "money": -30,
+            "stress": 4
+          }
+        },
+        {
+          "id": "trust_ship_medical",
+          "text": "Trust the ship's medical team to stabilize the passenger",
+          "next": "vip_dinner",
+          "effects": {
+            "rep": -6,
+            "stress": 6
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "vip_dinner": {
+      "time": "19:00 PM",
+      "text": "Captain's dinner tonight, a tradition passengers look forward to, on a day that's given you very little room to look forward to anything.",
+      "choices": [
+        {
+          "id": "attend_fully_present",
+          "text": "Attend and be genuinely present for it",
+          "next": "evening_watch",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "make_brief_appearance",
+          "text": "Make a brief appearance and get back to the bridge",
+          "next": "evening_watch",
+          "effects": {
+            "rep": -4,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "evening_watch": {
+      "time": "21:00 PM",
+      "text": "Evening watch, the ship settling into its night rhythm. Tomorrow's port arrival still depends on how the night unfolds.",
+      "choices": [
+        {
+          "id": "personal_final_check",
+          "text": "Do a personal final check of tomorrow's approach plan",
+          "next": "end_shift",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "hand_off_to_officer",
+          "text": "Hand the watch to your officer of the deck and rest",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "22:00 PM",
+      "text": "The ship moves on through the dark, three thousand people asleep or dancing somewhere below, all of it resting on a bridge that never actually stops.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Retire to your quarters",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "rest"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Captain They'll Remember",
+      "blurb": "Every call today was the right one, made calmly, under real pressure. This is the crossing passengers talk about for years."
+    },
+    "steady_hand": {
+      "title": "Safe Passage",
+      "blurb": "No headlines, no incidents — just careful, competent command, mile after mile."
+    },
+    "ordinary_day": {
+      "title": "Routine Crossing",
+      "blurb": "A normal day at sea, weather handled, passengers content. Tomorrow's port call is already on the schedule."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the watch, but you're not sure how. This pace, decision after decision, has a real cost."
+    },
+    "written_up": {
+      "title": "Incident Report Filed",
+      "blurb": "Something about today's calls is heading into a formal review with the line. Everyone's safe. The company still wants answers."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 57.5,
+      "p5": 63.0,
+      "p10": 66.4,
+      "p25": 71.7,
+      "p35": 74.5,
+      "p50": 78.0,
+      "p65": 81.1,
+      "p75": 83.3,
+      "p90": 86.6,
+      "p95": 88.4,
+      "p99": 91.1
+    },
+    "realistic": {
+      "p1": 56.5,
+      "p5": 62.2,
+      "p10": 65.4,
+      "p25": 70.7,
+      "p35": 73.4,
+      "p50": 77.1,
+      "p65": 80.3,
+      "p75": 82.7,
+      "p90": 86.9,
+      "p95": 88.0,
+      "p99": 90.7
+    },
+    "chaos": {
+      "p1": 54.9,
+      "p5": 60.6,
+      "p10": 64.4,
+      "p25": 69.9,
+      "p35": 72.8,
+      "p50": 76.5,
+      "p65": 79.8,
+      "p75": 82.5,
+      "p90": 86.5,
+      "p95": 87.7,
+      "p99": 90.4
+    }
+  }
+}

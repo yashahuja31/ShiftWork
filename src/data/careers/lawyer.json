@@ -1,0 +1,415 @@
+{
+  "id": "lawyer",
+  "title": "The Verdict Doesn't Wait",
+  "emoji": "⚖️",
+  "tagline": "Closing arguments due by five, a client who won't stop second-guessing you, and a witness who just went off script.",
+  "highlightLabel": "Cases won",
+  "traits": [
+    "analytical",
+    "high-pressure",
+    "communication"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 AM",
+      "text": "Trial day. Closing arguments are due by end of day, and the draft on your desk still isn't the one you want to give.",
+      "choices": [
+        {
+          "id": "rewrite_closing",
+          "text": "Rewrite the closing argument one more time before you leave",
+          "next": "morning_prep",
+          "effects": {
+            "energy": -6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_draft",
+          "text": "Trust last night's draft and get moving",
+          "next": "morning_prep",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_prep": {
+      "time": "06:45 AM",
+      "text": "Case files spread across the back seat, coffee going cold, the courthouse twenty minutes out.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to the courthouse",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "07:15 AM",
+      "text": "The walk from the parking garage to the courthouse steps has its own small rhythm every morning — a little different each time.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "reporter_question",
+          "text": "A reporter outside the courthouse asks for a quick comment",
+          "next": "client_meeting",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "old_colleague",
+          "text": "An old colleague from law school catches you for a quick hello",
+          "next": "client_meeting",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "good_parking",
+          "text": "You catch an easy parking spot for once",
+          "next": "client_meeting",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "client_meeting": {
+      "time": "08:00 AM",
+      "text": "Your client is in the consultation room, visibly shaking. \"What if the jury doesn't believe me?\" is not a question there's a clean answer to this morning.",
+      "choices": [
+        {
+          "id": "reassure_thoroughly",
+          "text": "Take the extra time to reassure them properly before court",
+          "next": "jury_arrival",
+          "effects": {
+            "stress": 4,
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "keep_it_brief",
+          "text": "Keep it brief — court starts in twenty minutes",
+          "next": "jury_arrival",
+          "effects": {
+            "rep": -4,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "jury_arrival": {
+      "time": "08:45 AM",
+      "text": "The jury files in. Twelve strangers who are about to decide something that will follow your client for the rest of their life.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Court is called to order",
+          "next": "trial_begins",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "trial_begins": {
+      "time": "09:00 AM",
+      "text": "The prosecution calls its key witness sooner than expected. Your cross-examination notes are ready — mostly.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Prepare for cross-examination",
+          "next": "witness_cross",
+          "effects": {}
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "witness_cross": {
+      "time": "10:15 AM",
+      "text": "Mid cross-examination, the witness says something that isn't in any statement you've seen before — a detail that could help your client, or could be a trap. The jury is watching you decide what to do with it, right now.",
+      "choices": [
+        {
+          "id": "aggressive_cross",
+          "text": "Press hard on the new detail immediately",
+          "next": "cross_outcome_aggressive",
+          "effects": {
+            "stress": 16,
+            "rep": 6
+          }
+        },
+        {
+          "id": "gentle_probe",
+          "text": "Probe gently to see where it leads before committing",
+          "next": "cross_outcome_gentle",
+          "effects": {
+            "stress": 6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "request_recess",
+          "text": "Object and request a brief recess to consult your notes",
+          "next": "cross_outcome_recess",
+          "effects": {
+            "stress": -6,
+            "rep": -8
+          }
+        },
+        {
+          "id": "pivot_strategy",
+          "text": "Pivot away from it and stick to your planned line of questions",
+          "next": "cross_outcome_pivot",
+          "effects": {
+            "stress": -4,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "cross_outcome_aggressive": {
+      "time": "10:25 AM",
+      "text": "The pressure pays off — the witness contradicts their earlier statement under the weight of your questions, right in front of the jury. It's the kind of moment that decides trials.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the cross-examination",
+          "next": "lunch_recess",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "cross_outcome_gentle": {
+      "time": "10:30 AM",
+      "text": "The careful approach draws the witness out further than a direct challenge would have, and they say more than they meant to. Patience, this time, was the sharper tool.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the cross-examination",
+          "next": "lunch_recess",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "cross_outcome_recess": {
+      "time": "10:40 AM",
+      "text": "The judge grants a short recess. Your notes confirm the detail is real and usable — but the jury watched you need to stop and check, and juries notice hesitation.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Resume the cross-examination",
+          "next": "lunch_recess",
+          "effects": {}
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "cross_outcome_pivot": {
+      "time": "10:20 AM",
+      "text": "You stay on script. It's safe, and it leaves an opening on the table that the prosecution's redirect examination picks up on almost immediately.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Finish the cross-examination",
+          "next": "lunch_recess",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "lunch_recess": {
+      "time": "12:30 PM",
+      "text": "A short recess before the afternoon session. Your client wants to talk through what just happened; your closing argument still needs work.",
+      "choices": [
+        {
+          "id": "sit_with_client",
+          "text": "Spend the recess with your client instead",
+          "next": "closing_prep",
+          "effects": {
+            "stress": -4,
+            "rep": 6,
+            "energy": -3
+          }
+        },
+        {
+          "id": "polish_closing",
+          "text": "Use every minute to polish the closing argument",
+          "next": "closing_prep",
+          "effects": {
+            "rep": 4,
+            "stress": 4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "closing_prep": {
+      "time": "14:00 PM",
+      "text": "Afternoon session resumes. The prosecution rests. It's almost time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Prepare to deliver the closing argument",
+          "next": "closing_argument",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "closing_argument": {
+      "time": "15:00 PM",
+      "text": "You stand, and the courtroom goes quiet in the particular way it does right before a closing argument. Everything from this case funnels down to the next fifteen minutes.",
+      "choices": [
+        {
+          "id": "emotional_appeal",
+          "text": "Lead with the human stakes of the case",
+          "next": "jury_deliberation",
+          "effects": {
+            "rep": 8,
+            "stress": 6
+          }
+        },
+        {
+          "id": "methodical_case",
+          "text": "Walk the jury methodically back through the evidence",
+          "next": "jury_deliberation",
+          "effects": {
+            "rep": 8,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "jury_deliberation": {
+      "time": "16:00 PM",
+      "text": "The jury files out to deliberate. There is nothing left to do now but wait, which is its own particular kind of exhausting.",
+      "choices": [
+        {
+          "id": "wait_at_courthouse",
+          "text": "Stay at the courthouse in case they come back fast",
+          "next": "verdict",
+          "effects": {
+            "energy": -5,
+            "rep": 4
+          }
+        },
+        {
+          "id": "step_out_briefly",
+          "text": "Step out for air and clear your head",
+          "next": "verdict",
+          "effects": {
+            "energy": 5,
+            "stress": -6
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "verdict": {
+      "time": "18:15 PM",
+      "text": "Word comes down: the jury has reached a verdict. You head back into the courtroom, and for a moment none of the last twelve hours matter as much as the next thirty seconds.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hear the verdict",
+          "next": "end_shift",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:45 PM",
+      "text": "Whatever the jury decided, the courthouse empties out the same way it does every night — slowly, and then all at once.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Case of the Year",
+      "blurb": "Every call today held up, including the one that mattered most. This is the case other attorneys will ask you about for years."
+    },
+    "steady_hand": {
+      "title": "Solid Representation",
+      "blurb": "No fireworks, no theatrics — just careful, competent lawyering from open to close."
+    },
+    "ordinary_day": {
+      "title": "Another Trial",
+      "blurb": "A full trial day, argued and closed. Tomorrow there's another file on the desk exactly like it."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You made it through closing arguments, but you're not sure how. This pace, case after case, has a real cost."
+    },
+    "written_up": {
+      "title": "Bar Complaint Pending",
+      "blurb": "Something about today's tactics is going to draw scrutiny. The trial is over. The questions about how it was tried aren't."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 70.7,
+      "p5": 72.7,
+      "p10": 74.0,
+      "p25": 76.5,
+      "p35": 77.7,
+      "p50": 79.4,
+      "p65": 81.2,
+      "p75": 82.5,
+      "p90": 84.9,
+      "p95": 86.3,
+      "p99": 88.7
+    },
+    "realistic": {
+      "p1": 70.0,
+      "p5": 72.1,
+      "p10": 73.4,
+      "p25": 75.8,
+      "p35": 77.1,
+      "p50": 78.8,
+      "p65": 80.4,
+      "p75": 81.7,
+      "p90": 84.5,
+      "p95": 85.8,
+      "p99": 88.0
+    },
+    "chaos": {
+      "p1": 68.6,
+      "p5": 71.4,
+      "p10": 72.3,
+      "p25": 75.3,
+      "p35": 77.1,
+      "p50": 78.4,
+      "p65": 80.6,
+      "p75": 81.5,
+      "p90": 84.5,
+      "p95": 85.4,
+      "p99": 88.2
+    }
+  }
+}

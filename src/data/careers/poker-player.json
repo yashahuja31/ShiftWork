@@ -1,0 +1,388 @@
+{
+  "id": "poker_player",
+  "title": "The Table Doesn't Care About Your Feelings",
+  "emoji": "🃏",
+  "tagline": "A ten-thousand-dollar buy-in, a final table forming, and a hand that's about to decide the whole tournament.",
+  "highlightLabel": "Big pots won",
+  "traits": [
+    "analytical",
+    "patient",
+    "high-pressure"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "08:00 AM",
+      "text": "Day two of the tournament. You're mid-pack in chips, well-rested, and the field has thinned considerably overnight.",
+      "choices": [
+        {
+          "id": "review_opponent_notes",
+          "text": "Review your notes on today's likely opponents",
+          "next": "breakfast",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "skip_the_prep",
+          "text": "Skip the prep and trust your instincts today",
+          "next": "breakfast",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "breakfast": {
+      "time": "09:00 AM",
+      "text": "A proper breakfast before a twelve-hour day at the table, or a quick one to get to the room early and watch the room fill in.",
+      "choices": [
+        {
+          "id": "eat_properly",
+          "text": "Take the time to eat a real breakfast",
+          "next": "random_moment",
+          "effects": {
+            "energy": 10,
+            "stress": -4
+          }
+        },
+        {
+          "id": "quick_bite",
+          "text": "Grab something quick and get to the room early",
+          "next": "random_moment",
+          "effects": {
+            "rep": 4,
+            "energy": -2
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "10:00 AM",
+      "text": "The hour before play resumes has its own texture in a room like this — a little different every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "friendly_player",
+          "text": "A friendly player from an earlier table wishes you luck",
+          "next": "morning_session",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "noisy_rail",
+          "text": "A noisy group of spectators sets up right behind your table",
+          "next": "morning_session",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_seat_draw",
+          "text": "You draw a favorable seat for the morning session",
+          "next": "morning_session",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_session": {
+      "time": "11:00 AM",
+      "text": "Play resumes. The morning is quiet, a few small pots, nothing that tests you yet. The field keeps shrinking around you.",
+      "choices": [
+        {
+          "id": "play_tight",
+          "text": "Play tight and conserve chips through the quiet stretch",
+          "next": "bubble_approaching",
+          "effects": {
+            "stress": -4,
+            "rep": 4
+          }
+        },
+        {
+          "id": "look_for_spots",
+          "text": "Look actively for spots to build your stack",
+          "next": "bubble_approaching",
+          "effects": {
+            "stress": 4,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "bubble_approaching": {
+      "time": "13:00 PM",
+      "text": "The money bubble is close — the next elimination means everyone left cashes. Play tightens noticeably around the table.",
+      "choices": [
+        {
+          "id": "apply_pressure",
+          "text": "Apply pressure on the shorter stacks while they're playing scared",
+          "next": "afternoon_session",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "coast_through_bubble",
+          "text": "Coast through the bubble and let others take the risk",
+          "next": "afternoon_session",
+          "effects": {
+            "stress": -4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_session": {
+      "time": "15:00 PM",
+      "text": "You're through the bubble and building a real stack. The final table is starting to feel possible instead of theoretical.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep playing",
+          "next": "massive_hand",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "massive_hand": {
+      "time": "16:30 PM",
+      "text": "A hand develops that could double you into serious final-table contention — or send you home entirely. Your opponent, a tight player all day, just made an aggressive bet that doesn't fit their pattern. Everything you've read about them says this is either a monster hand or a huge bluff, and you have maybe thirty seconds to decide.",
+      "choices": [
+        {
+          "id": "call_the_bet",
+          "text": "Call, trusting your read that this is a bluff",
+          "next": "hand_outcome_call",
+          "effects": {
+            "stress": 18,
+            "rep": 8
+          }
+        },
+        {
+          "id": "fold_and_preserve",
+          "text": "Fold and preserve your stack for a clearer spot later",
+          "next": "hand_outcome_fold",
+          "effects": {
+            "stress": -6,
+            "rep": -4
+          }
+        },
+        {
+          "id": "raise_back",
+          "text": "Raise back and put the decision on them instead",
+          "next": "hand_outcome_raise",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "take_extra_time",
+          "text": "Take your full time bank to think it through completely",
+          "next": "hand_outcome_tank",
+          "effects": {
+            "stress": 4,
+            "rep": 6
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "hand_outcome_call": {
+      "time": "16:35 PM",
+      "text": "The read was right — it was a bluff, and the call doubles your stack right when it matters most. Your table image just changed completely.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Bank the chips and keep playing",
+          "next": "final_table_bubble",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "hand_outcome_fold": {
+      "time": "16:32 PM",
+      "text": "You fold, and never find out what they had — the disciplined, unglamorous choice that keeps you alive without the swing either way. Sometimes the best decision is the one nobody remembers.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep playing",
+          "next": "final_table_bubble",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "hand_outcome_raise": {
+      "time": "16:38 PM",
+      "text": "The re-raise forces a fold from your opponent — you take down a healthy pot without ever needing to know if your read was right, which is its own kind of clean win.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep playing",
+          "next": "final_table_bubble",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "hand_outcome_tank": {
+      "time": "16:40 PM",
+      "text": "The extra time lets you notice a small tell you'd have missed rushing — enough to make a confident, correct fold, saving your stack for a cleaner spot.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Keep playing",
+          "next": "final_table_bubble",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "final_table_bubble": {
+      "time": "18:00 PM",
+      "text": "One elimination away from the final table. The room's energy shifts entirely — everyone left can feel how close it is.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Play out the bubble",
+          "next": "dinner_break",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "dinner_break": {
+      "time": "19:00 PM",
+      "text": "A dinner break before the final table plays out. Your body's running on adrenaline more than the actual meal in front of you.",
+      "choices": [
+        {
+          "id": "eat_and_rest",
+          "text": "Eat properly and rest for the final stretch",
+          "next": "final_table",
+          "effects": {
+            "energy": 10,
+            "stress": -6
+          }
+        },
+        {
+          "id": "study_final_opponents",
+          "text": "Study your remaining opponents instead of resting",
+          "next": "final_table",
+          "effects": {
+            "rep": 6,
+            "energy": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "final_table": {
+      "time": "20:30 PM",
+      "text": "The final table. Cameras, a rail full of spectators, and a stack that puts you in genuine contention for the win.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Play the final table",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "23:00 PM",
+      "text": "The final table plays out late into the night. Win or bust, the tournament is over, and there's nothing left to do about it now.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Cash out and head back to the hotel",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Final Table, Big Stack",
+      "blurb": "Every read today was sharp, every decision earned. This is the run other players will remember you for."
+    },
+    "steady_hand": {
+      "title": "Deep Run",
+      "blurb": "Disciplined, patient play the whole way through — no drama, just consistently good decisions."
+    },
+    "ordinary_day": {
+      "title": "Cashed, Nothing More",
+      "blurb": "A solid day at the table. You cashed. Tomorrow there's another tournament exactly like it."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You made it through the day, but you're not sure how. Hand after hand, this pace has a real cost."
+    },
+    "written_up": {
+      "title": "A Rules Dispute",
+      "blurb": "Something about today's play is going in front of the tournament director. The chips are counted. The conduct still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 72.2,
+      "p5": 74.2,
+      "p10": 75.2,
+      "p25": 76.8,
+      "p35": 77.9,
+      "p50": 79.3,
+      "p65": 80.7,
+      "p75": 81.6,
+      "p90": 83.7,
+      "p95": 84.7,
+      "p99": 86.3
+    },
+    "realistic": {
+      "p1": 71.0,
+      "p5": 73.3,
+      "p10": 74.5,
+      "p25": 76.3,
+      "p35": 77.4,
+      "p50": 79.1,
+      "p65": 80.2,
+      "p75": 81.4,
+      "p90": 83.6,
+      "p95": 84.7,
+      "p99": 86.1
+    },
+    "chaos": {
+      "p1": 70.1,
+      "p5": 72.3,
+      "p10": 73.7,
+      "p25": 75.4,
+      "p35": 76.5,
+      "p50": 78.2,
+      "p65": 79.5,
+      "p75": 80.6,
+      "p90": 83.0,
+      "p95": 84.1,
+      "p99": 85.6
+    }
+  }
+}

@@ -1,0 +1,399 @@
+{
+  "id": "marine_biologist",
+  "title": "The Reef Doesn't Wait for Funding",
+  "emoji": "🐠",
+  "tagline": "A research grant hanging by a thread, a dive survey that can't be redone, and a reef that's telling you something's wrong.",
+  "highlightLabel": "Discoveries logged",
+  "traits": [
+    "analytical",
+    "patient",
+    "solitary"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:00 AM",
+      "text": "The boat leaves the dock at six. Today's dive survey is the last data collection window before the grant report is due.",
+      "choices": [
+        {
+          "id": "review_dive_plan",
+          "text": "Review the full dive plan one more time before leaving",
+          "next": "dock_arrival",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_yesterday_plan",
+          "text": "Trust yesterday's planning and get moving",
+          "next": "dock_arrival",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "dock_arrival": {
+      "time": "05:45 AM",
+      "text": "The research boat rocks gently at the dock, gear already loaded by your dive partner. The water's calm, at least for now.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head out to the survey site",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "random_moment": {
+      "time": "06:30 AM",
+      "text": "The boat ride out to the reef has its own quiet rhythm — a little different every morning.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "dolphin_pod",
+          "text": "A pod of dolphins rides the wake alongside the boat for a while",
+          "next": "dive_briefing",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "equipment_check_issue",
+          "text": "A minor issue turns up during the equipment check",
+          "next": "dive_briefing",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "calm_seas",
+          "text": "The water is unusually calm and clear today",
+          "next": "dive_briefing",
+          "effects": {
+            "stress": -3,
+            "energy": 2
+          }
+        }
+      ],
+      "environment": "rest"
+    },
+    "dive_briefing": {
+      "time": "07:00 AM",
+      "text": "Final dive briefing with your partner — survey transects, depth limits, the usual safety check before going under.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Suit up and dive",
+          "next": "first_transect",
+          "effects": {}
+        }
+      ],
+      "environment": "briefing"
+    },
+    "first_transect": {
+      "time": "07:30 AM",
+      "text": "The first survey transect goes smoothly — coral cover looks stable, fish counts within normal range. A good, quiet start.",
+      "choices": [
+        {
+          "id": "thorough_documentation",
+          "text": "Document every detail thoroughly before moving on",
+          "next": "second_transect",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "move_efficiently",
+          "text": "Move efficiently to cover more ground before air runs low",
+          "next": "second_transect",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "second_transect": {
+      "time": "08:15 AM",
+      "text": "Moving to the second transect, you notice something off — a patch of coral with unusual discoloration that wasn't in last month's survey.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get a closer look",
+          "next": "die_off_discovery",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "die_off_discovery": {
+      "time": "08:30 AM",
+      "text": "It's worse up close: an active bleaching event spreading fast across a section of reef nobody flagged before. Your air supply gives you maybe fifteen more minutes to decide how to respond, and this could be the most important data of the whole grant cycle.",
+      "choices": [
+        {
+          "id": "full_documentation",
+          "text": "Use your remaining air to document this section as thoroughly as possible",
+          "next": "discovery_outcome_document",
+          "effects": {
+            "stress": 14,
+            "rep": 10
+          }
+        },
+        {
+          "id": "surface_immediately",
+          "text": "Surface immediately and report it before doing anything else",
+          "next": "discovery_outcome_surface",
+          "effects": {
+            "stress": -6,
+            "rep": -6
+          }
+        },
+        {
+          "id": "collect_samples",
+          "text": "Take physical samples despite the time pressure",
+          "next": "discovery_outcome_samples",
+          "effects": {
+            "stress": 10,
+            "rep": 8
+          }
+        },
+        {
+          "id": "signal_partner_first",
+          "text": "Signal your dive partner over before doing anything else",
+          "next": "discovery_outcome_partner",
+          "effects": {
+            "stress": -4,
+            "rep": 4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "discovery_outcome_document": {
+      "time": "08:44 AM",
+      "text": "You surface right at your air limit, but the photo and video documentation is comprehensive — exactly the kind of data that turns a grant renewal into an actual finding.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Surface and report the finding",
+          "next": "boat_return",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "discovery_outcome_surface": {
+      "time": "08:38 AM",
+      "text": "You surface fast and report it immediately — safe, by the book, and the site is properly flagged for a follow-up dive that afternoon instead of being documented incompletely under time pressure.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Plan the follow-up dive",
+          "next": "boat_return",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "discovery_outcome_samples": {
+      "time": "08:42 AM",
+      "text": "The physical samples are exactly what the lab will need to confirm what's actually causing the bleaching — worth every extra minute of bottom time it cost.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Surface with the samples",
+          "next": "boat_return",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "discovery_outcome_partner": {
+      "time": "08:40 AM",
+      "text": "Your partner confirms the finding independently, which strengthens the eventual report — a second, careful set of eyes, at the cost of a few minutes neither of you had much of to spare.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Surface together",
+          "next": "boat_return",
+          "effects": {}
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "boat_return": {
+      "time": "10:00 AM",
+      "text": "Back on the boat, gear stowed, the reality of what you just found starting to sink in. This changes the rest of the day's plan.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head back to the research station",
+          "next": "afternoon_analysis",
+          "effects": {}
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "afternoon_analysis": {
+      "time": "13:00 PM",
+      "text": "Back at the station, the data needs processing before anyone else sees it — and the department head wants a preliminary read by end of day.",
+      "choices": [
+        {
+          "id": "careful_analysis",
+          "text": "Take the time to analyze the data carefully before reporting",
+          "next": "grant_call",
+          "effects": {
+            "energy": -5,
+            "rep": 10
+          }
+        },
+        {
+          "id": "quick_preliminary",
+          "text": "Give a quick preliminary read now, refine later",
+          "next": "grant_call",
+          "effects": {
+            "rep": -4,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "grant_call": {
+      "time": "15:30 PM",
+      "text": "A call with the grant committee, originally scheduled to discuss funding renewal, now has much bigger news to deliver.",
+      "choices": [
+        {
+          "id": "lead_with_finding",
+          "text": "Lead with the bleaching discovery, not the funding ask",
+          "next": "evening_writeup",
+          "effects": {
+            "rep": 10,
+            "stress": 4
+          }
+        },
+        {
+          "id": "stick_to_agenda",
+          "text": "Stick to the original funding agenda as planned",
+          "next": "evening_writeup",
+          "effects": {
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "evening_writeup": {
+      "time": "17:30 PM",
+      "text": "The day's findings need to go into a preliminary report before anyone forgets a detail that seemed obvious in the moment.",
+      "choices": [
+        {
+          "id": "write_tonight",
+          "text": "Write the full report tonight while it's fresh",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "leave_notes",
+          "text": "Leave detailed notes and write the full report tomorrow",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "end_shift": {
+      "time": "18:30 PM",
+      "text": "The research station goes quiet for the night. Somewhere out past the breakers, the reef keeps doing whatever it's doing, with or without anyone watching.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head back to your quarters",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "rest"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Finding That Mattered",
+      "blurb": "Every call today was the right one, and today's dive turned into the kind of discovery that actually changes something. This is the work people remember you for."
+    },
+    "steady_hand": {
+      "title": "Solid Fieldwork",
+      "blurb": "Careful, methodical science, start to finish — no shortcuts, no drama, just good data."
+    },
+    "ordinary_day": {
+      "title": "Another Survey Logged",
+      "blurb": "A normal day of fieldwork, data collected and filed. Tomorrow's transect is already scheduled."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it back to the station, but there's nothing left in you for tonight's writeup. This pace has a real cost."
+    },
+    "written_up": {
+      "title": "Methodology Questioned",
+      "blurb": "Something about today's fieldwork protocol is going to come up in review. The data's safe. The process still needs explaining."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 65.0,
+      "p5": 68.8,
+      "p10": 70.7,
+      "p25": 74.2,
+      "p35": 75.7,
+      "p50": 77.9,
+      "p65": 80.1,
+      "p75": 81.5,
+      "p90": 84.1,
+      "p95": 85.1,
+      "p99": 88.4
+    },
+    "realistic": {
+      "p1": 65.3,
+      "p5": 67.7,
+      "p10": 70.3,
+      "p25": 73.3,
+      "p35": 74.9,
+      "p50": 76.9,
+      "p65": 79.2,
+      "p75": 80.3,
+      "p90": 83.3,
+      "p95": 84.3,
+      "p99": 87.8
+    },
+    "chaos": {
+      "p1": 65.7,
+      "p5": 67.1,
+      "p10": 69.9,
+      "p25": 73.3,
+      "p35": 74.5,
+      "p50": 76.3,
+      "p65": 78.8,
+      "p75": 79.8,
+      "p90": 83.0,
+      "p95": 84.1,
+      "p99": 87.8
+    }
+  }
+}

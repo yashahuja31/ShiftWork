@@ -1,0 +1,379 @@
+{
+  "id": "park_ranger",
+  "title": "The Wilderness Doesn't Read the Schedule",
+  "emoji": "🌲",
+  "tagline": "Forty thousand acres, a storm rolling in early, and a hiker who was supposed to check in three hours ago.",
+  "highlightLabel": "Rescues completed",
+  "traits": [
+    "physical",
+    "solitary",
+    "responsibility"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "05:30 AM",
+      "text": "Ranger station radio crackles before you've even had coffee — a weather advisory moving up the timeline, and a family reporting their hiker hasn't checked in as planned.",
+      "choices": [
+        {
+          "id": "check_weather_fully",
+          "text": "Check the full weather system before responding",
+          "next": "station_briefing",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "respond_immediately",
+          "text": "Respond immediately and check conditions on the way",
+          "next": "station_briefing",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "station_briefing": {
+      "time": "06:15 AM",
+      "text": "Quick briefing with the other rangers on duty — the missing hiker's last known trailhead, the incoming storm, and how much daylight you actually have.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head out to the trailhead",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "random_moment": {
+      "time": "07:00 AM",
+      "text": "The drive out to the trailhead has its own quiet — a little different every time you make this trip.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "clear_morning",
+          "text": "The morning is unusually clear before the storm's expected arrival",
+          "next": "trailhead_arrival",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "radio_static",
+          "text": "The radio cuts to static for an uneasy stretch of the drive",
+          "next": "trailhead_arrival",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_visibility",
+          "text": "Visibility up the ridge is better than expected today",
+          "next": "trailhead_arrival",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "commute"
+    },
+    "trailhead_arrival": {
+      "time": "07:45 AM",
+      "text": "The hiker's car is still in the lot. Their planned route would put them well past the ridge line by now, right in the path of the incoming weather.",
+      "choices": [
+        {
+          "id": "study_route_carefully",
+          "text": "Study their planned route in detail before setting out",
+          "next": "search_begins",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "start_search_now",
+          "text": "Start the search immediately along the most likely path",
+          "next": "search_begins",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "outdoors"
+    },
+    "search_begins": {
+      "time": "08:30 AM",
+      "text": "Two hours into the search, the storm is visibly closer than the forecast promised. No sign of the hiker yet.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Push further up the trail",
+          "next": "storm_decision",
+          "effects": {
+            "energy": -5
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "storm_decision": {
+      "time": "10:30 AM",
+      "text": "The storm is now close enough that continuing the search on foot means real risk to yourself, with no confirmed sighting yet and only a rough idea of where the hiker actually is.",
+      "choices": [
+        {
+          "id": "push_forward_anyway",
+          "text": "Push forward regardless of the worsening weather",
+          "next": "storm_outcome_push",
+          "effects": {
+            "stress": 16,
+            "rep": 8
+          }
+        },
+        {
+          "id": "call_helicopter_support",
+          "text": "Call in helicopter support before continuing on foot",
+          "next": "storm_outcome_helicopter",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "money": -30
+          }
+        },
+        {
+          "id": "take_shelter_and_wait",
+          "text": "Take shelter and wait for the worst of the storm to pass",
+          "next": "storm_outcome_wait",
+          "effects": {
+            "stress": -8,
+            "rep": -8
+          }
+        },
+        {
+          "id": "radio_for_ground_backup",
+          "text": "Radio for additional ground rangers before continuing",
+          "next": "storm_outcome_backup",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "storm_outcome_push": {
+      "time": "11:00 AM",
+      "text": "Pushing on through worsening conditions, you find the hiker sheltering under a rock overhang, cold and shaken but unhurt — found just before the storm made the search genuinely impossible.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get the hiker to safety",
+          "next": "afternoon_evacuation",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "storm_outcome_helicopter": {
+      "time": "11:15 AM",
+      "text": "The helicopter's thermal camera spots the hiker within twenty minutes, well before you'd have reached that section on foot — exactly the resource this situation actually called for.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Coordinate the extraction",
+          "next": "afternoon_evacuation",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "storm_outcome_wait": {
+      "time": "13:00 PM",
+      "text": "Waiting out the storm is the safe call for you personally, and it costs real hours the hiker may not have had to spare. When the search resumes, the trail is colder in every sense.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Resume the search once conditions clear",
+          "next": "afternoon_evacuation",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "storm_outcome_backup": {
+      "time": "11:30 AM",
+      "text": "Additional rangers arrive to expand the search grid safely, splitting the risk instead of concentrating it on one person alone. The hiker is found not long after, cold but stable.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Get the hiker to safety",
+          "next": "afternoon_evacuation",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_evacuation": {
+      "time": "14:00 PM",
+      "text": "The hiker is safe, but mildly hypothermic, and the trail back down is still exposed to the tail end of the storm.",
+      "choices": [
+        {
+          "id": "careful_slow_descent",
+          "text": "Take the slower, more careful route down",
+          "next": "family_notification",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "fastest_route_down",
+          "text": "Take the fastest route down despite the exposure",
+          "next": "family_notification",
+          "effects": {
+            "rep": -3,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "family_notification": {
+      "time": "15:30 PM",
+      "text": "The hiker's family has been waiting at the ranger station all day for news.",
+      "choices": [
+        {
+          "id": "personally_deliver_news",
+          "text": "Deliver the good news to the family yourself",
+          "next": "evening_report",
+          "effects": {
+            "stress": -4,
+            "rep": 10,
+            "energy": -3
+          }
+        },
+        {
+          "id": "let_dispatch_call",
+          "text": "Let dispatch make the call while you finish paperwork",
+          "next": "evening_report",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "evening_report": {
+      "time": "17:00 PM",
+      "text": "The search-and-rescue log needs completing before the day is done — details that matter for the next ranger who searches these trails.",
+      "choices": [
+        {
+          "id": "detailed_log",
+          "text": "Write a fully detailed report of the search and conditions",
+          "next": "end_shift",
+          "effects": {
+            "rep": 8,
+            "energy": -4
+          }
+        },
+        {
+          "id": "brief_log",
+          "text": "Keep the log brief and call it a day",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "The storm passes on through, leaving the park quiet and washed clean. Somewhere out there, forty thousand acres wait for tomorrow's hikers, indifferent to how close today came.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head back to the station",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Found in Time",
+      "blurb": "Every call today was the right one, including the hardest one. This is the rescue the whole station will remember."
+    },
+    "steady_hand": {
+      "title": "Solid Response",
+      "blurb": "No unnecessary risks, no wasted time — just careful, competent search-and-rescue work from start to finish."
+    },
+    "ordinary_day": {
+      "title": "Another Day on the Trails",
+      "blurb": "A tense search that ended well. Tomorrow the trails are open again, same as always."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it back to the station, but your body is telling you exactly what today cost. This pace needs real recovery."
+    },
+    "written_up": {
+      "title": "Incident Review",
+      "blurb": "Something about today's search call is heading into a formal review. Everyone's safe. The process still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 64.5,
+      "p5": 68.4,
+      "p10": 70.1,
+      "p25": 73.6,
+      "p35": 75.8,
+      "p50": 78.1,
+      "p65": 80.5,
+      "p75": 82.7,
+      "p90": 86.4,
+      "p95": 87.3,
+      "p99": 90.2
+    },
+    "realistic": {
+      "p1": 64.8,
+      "p5": 68.1,
+      "p10": 69.4,
+      "p25": 73.0,
+      "p35": 75.7,
+      "p50": 77.3,
+      "p65": 80.2,
+      "p75": 82.6,
+      "p90": 86.3,
+      "p95": 87.5,
+      "p99": 90.5
+    },
+    "chaos": {
+      "p1": 63.4,
+      "p5": 67.0,
+      "p10": 69.1,
+      "p25": 72.8,
+      "p35": 74.8,
+      "p50": 76.9,
+      "p65": 79.6,
+      "p75": 81.0,
+      "p90": 85.3,
+      "p95": 86.8,
+      "p99": 89.7
+    }
+  }
+}

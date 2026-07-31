@@ -1,0 +1,364 @@
+{
+  "id": "architect",
+  "title": "Every Line Has to Hold",
+  "emoji": "📐",
+  "tagline": "A client presentation at nine, a construction site at two, and a structural problem that only shows up once the concrete's already poured.",
+  "highlightLabel": "Designs approved",
+  "traits": [
+    "precision",
+    "creative",
+    "analytical"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:30 AM",
+      "text": "Today's the client presentation for the community center design — eight months of work distilled into forty-five minutes.",
+      "choices": [
+        {
+          "id": "final_review",
+          "text": "Do one more full review of the presentation before leaving",
+          "next": "studio_arrival",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "trust_the_work",
+          "text": "Trust the work you've already put in",
+          "next": "studio_arrival",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "studio_arrival": {
+      "time": "07:30 AM",
+      "text": "The studio is quiet this early. Renderings printed, models on the table, everything ready except the nerves.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Set up for the presentation",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "08:15 AM",
+      "text": "The last hour before a big presentation has its own particular texture — a little different every time.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "junior_compliment",
+          "text": "A junior architect stops by just to say the design is beautiful",
+          "next": "client_presentation",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "printer_trouble",
+          "text": "The plotter jams printing the final boards",
+          "next": "client_presentation",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_light",
+          "text": "Morning light through the studio windows hits the model just right",
+          "next": "client_presentation",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "client_presentation": {
+      "time": "09:00 AM",
+      "text": "The client loves the design — until they ask to move the main entrance, a change that would ripple through half the structural plan.",
+      "choices": [
+        {
+          "id": "explain_tradeoffs",
+          "text": "Explain honestly what the change would actually cost the design",
+          "next": "site_visit_prep",
+          "effects": {
+            "stress": 6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "agree_to_explore",
+          "text": "Agree to explore it without raising concerns yet",
+          "next": "site_visit_prep",
+          "effects": {
+            "rep": -4,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "site_visit_prep": {
+      "time": "11:00 AM",
+      "text": "The presentation wraps with a tentative yes on the design. Now it's time to check on the community center that's already under construction.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Head to the construction site",
+          "next": "site_arrival",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "site_arrival": {
+      "time": "13:00 PM",
+      "text": "The general contractor meets you at the gate, hard hat already in hand. \"You're going to want to see this before we pour any more.\"",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "See what he's talking about",
+          "next": "structural_conflict",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "structural_conflict": {
+      "time": "13:15 PM",
+      "text": "A load-bearing beam location conflicts with an HVAC run that was added after your drawings were finalized — nobody caught it until now, and the concrete for the next phase is scheduled to pour in six hours.",
+      "choices": [
+        {
+          "id": "redesign_on_site",
+          "text": "Redesign the connection on-site, right now, with the contractor",
+          "next": "conflict_outcome_onsite",
+          "effects": {
+            "stress": 16,
+            "rep": 10
+          }
+        },
+        {
+          "id": "halt_the_pour",
+          "text": "Halt the pour and take it back to the studio to solve properly",
+          "next": "conflict_outcome_halt",
+          "effects": {
+            "stress": -6,
+            "rep": 6,
+            "money": -20
+          }
+        },
+        {
+          "id": "call_structural_engineer",
+          "text": "Get the structural engineer on the phone before deciding anything",
+          "next": "conflict_outcome_engineer",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "approve_workaround",
+          "text": "Approve the contractor's proposed workaround without a full review",
+          "next": "conflict_outcome_workaround",
+          "effects": {
+            "stress": -8,
+            "rep": -12
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "conflict_outcome_onsite": {
+      "time": "14:00 PM",
+      "text": "Forty-five minutes of sketching on a plywood sheet with the contractor produces a clean solution that actually works. It's not how you pictured spending the afternoon, but the pour goes ahead on schedule.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Confirm the revised plan",
+          "next": "afternoon_site_walk",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "conflict_outcome_halt": {
+      "time": "14:15 PM",
+      "text": "The pour gets pushed two days. It costs the project real time and money, and the solution that comes out of a proper studio review is noticeably cleaner for the extra care.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Send the revised drawings",
+          "next": "afternoon_site_walk",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "conflict_outcome_engineer": {
+      "time": "14:10 PM",
+      "text": "The structural engineer talks through a fix over the phone in twenty minutes — a genuine collaboration under real time pressure, and it holds.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Confirm the plan with the contractor",
+          "next": "afternoon_site_walk",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "conflict_outcome_workaround": {
+      "time": "13:45 PM",
+      "text": "The contractor's workaround goes in fast — and it's not what you would have designed. Whether it holds up to code review later is now an open question hanging over the whole project.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Continue the site walk",
+          "next": "afternoon_site_walk",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_site_walk": {
+      "time": "15:30 PM",
+      "text": "The rest of the site walk goes smoothly — until a subcontractor asks a question about a detail that was never fully resolved in the drawings.",
+      "choices": [
+        {
+          "id": "resolve_properly",
+          "text": "Stop and resolve the detail properly before moving on",
+          "next": "studio_return",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "answer_verbally",
+          "text": "Give a verbal answer and follow up with drawings later",
+          "next": "studio_return",
+          "effects": {
+            "rep": -4,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "studio_return": {
+      "time": "17:00 PM",
+      "text": "Back at the studio, the day's site notes need to become actual updated drawings before anyone else touches the project.",
+      "choices": [
+        {
+          "id": "update_drawings_now",
+          "text": "Update the drawings tonight while everything's fresh",
+          "next": "end_shift",
+          "effects": {
+            "energy": -6,
+            "rep": 10
+          }
+        },
+        {
+          "id": "leave_for_tomorrow",
+          "text": "Leave detailed notes and update them tomorrow",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "paperwork"
+    },
+    "end_shift": {
+      "time": "19:00 PM",
+      "text": "The studio empties out. Somewhere across town, concrete is curing around a decision you made this afternoon.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "The Detail That Held",
+      "blurb": "Every call today was the right one, including the one made standing on plywood with a pencil. This is the project people point to."
+    },
+    "steady_hand": {
+      "title": "Solid Work",
+      "blurb": "No drama, no compromises that mattered — just careful, competent design decisions all day long."
+    },
+    "ordinary_day": {
+      "title": "Another Day on Site",
+      "blurb": "A presentation, a site visit, a problem solved. Tomorrow there's another drawing set waiting."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through the day, but there's nothing left for tonight's drawings. This pace has a real cost."
+    },
+    "written_up": {
+      "title": "Under Review",
+      "blurb": "Something about today's on-site decision is going to come up in a code review. Nobody was hurt. The engineering still needs answers."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 63.3,
+      "p5": 67.2,
+      "p10": 68.9,
+      "p25": 72.0,
+      "p35": 73.96,
+      "p50": 76.1,
+      "p65": 78.3,
+      "p75": 80.2,
+      "p90": 82.6,
+      "p95": 84.6,
+      "p99": 85.82
+    },
+    "realistic": {
+      "p1": 64.1,
+      "p5": 67.0,
+      "p10": 68.3,
+      "p25": 71.8,
+      "p35": 73.3,
+      "p50": 75.4,
+      "p65": 77.5,
+      "p75": 79.1,
+      "p90": 81.9,
+      "p95": 84.3,
+      "p99": 87.3
+    },
+    "chaos": {
+      "p1": 64.8,
+      "p5": 66.3,
+      "p10": 68.8,
+      "p25": 71.4,
+      "p35": 73.3,
+      "p50": 74.7,
+      "p65": 77.4,
+      "p75": 78.4,
+      "p90": 81.6,
+      "p95": 84.2,
+      "p99": 85.12
+    }
+  }
+}

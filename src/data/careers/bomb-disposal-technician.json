@@ -1,0 +1,350 @@
+{
+  "id": "bomb_disposal_technician",
+  "title": "One Wrong Move",
+  "emoji": "💣",
+  "tagline": "A suspicious device in a crowded area, a bomb suit that buys you time but not certainty, and a design that doesn't match anything in the manual.",
+  "highlightLabel": "Devices safely neutralized",
+  "traits": [
+    "precision",
+    "high-pressure",
+    "solitary"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "On-call rotation for the regional bomb squad. The pager goes off before your alarm does — a suspicious package report at a transit station downtown.",
+      "choices": [
+        {
+          "id": "full_gear_check",
+          "text": "Do a complete equipment check before responding",
+          "next": "scene_arrival",
+          "effects": {
+            "energy": -3,
+            "rep": 8
+          }
+        },
+        {
+          "id": "respond_immediately",
+          "text": "Respond immediately, gear check on arrival",
+          "next": "scene_arrival",
+          "effects": {
+            "energy": 3,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "scene_arrival": {
+      "time": "06:45 AM",
+      "text": "The station is already evacuated and cordoned off. Local police point you toward an unattended bag near the main platform.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Begin the initial assessment",
+          "next": "random_moment",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "random_moment": {
+      "time": "07:00 AM",
+      "text": "The setup phase before an approach has its own particular quiet — a little different at every call.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "good_visibility",
+          "text": "The robot's camera feed is unusually clear today",
+          "next": "robot_assessment",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "crowd_noise",
+          "text": "A crowd gathers at the perimeter despite the cordon",
+          "next": "robot_assessment",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "calm_morning",
+          "text": "The scene is quiet and the team is well coordinated today",
+          "next": "robot_assessment",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "robot_assessment": {
+      "time": "07:30 AM",
+      "text": "The robot's camera gets a clear look at the device inside the bag — wiring and components that don't match any known design in the reference manual.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Review the imagery carefully",
+          "next": "unfamiliar_device",
+          "effects": {}
+        }
+      ],
+      "environment": "alert"
+    },
+    "unfamiliar_device": {
+      "time": "08:00 AM",
+      "text": "This isn't a design you or anyone on your team has seen before. The safe, standard move is a controlled disruption from a distance — reliable, but it destroys any chance of learning who built this or why. A closer, manual approach in the suit could disarm it intact, with real evidence, but nothing about an unfamiliar device is ever fully predictable.",
+      "choices": [
+        {
+          "id": "controlled_disruption",
+          "text": "Use controlled disruption from a safe distance",
+          "next": "device_outcome_disruption",
+          "effects": {
+            "stress": -4,
+            "rep": 6
+          }
+        },
+        {
+          "id": "manual_approach",
+          "text": "Suit up and approach manually to disarm it intact",
+          "next": "device_outcome_manual",
+          "effects": {
+            "stress": 18,
+            "rep": 10
+          }
+        },
+        {
+          "id": "request_second_technician",
+          "text": "Call in a second technician to review the imagery with you first",
+          "next": "device_outcome_second",
+          "effects": {
+            "stress": 6,
+            "rep": 8
+          }
+        },
+        {
+          "id": "extend_evacuation_wait",
+          "text": "Extend the evacuation perimeter and take more time to study it remotely",
+          "next": "device_outcome_wait",
+          "effects": {
+            "stress": -6,
+            "rep": 4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "device_outcome_disruption": {
+      "time": "08:20 AM",
+      "text": "The disruption neutralizes the device cleanly and safely from a distance. Whoever built it, and why, will likely never be known — but every person at that station goes home today.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Clear the scene",
+          "next": "afternoon_report",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "device_outcome_manual": {
+      "time": "09:00 AM",
+      "text": "The longest forty minutes of your year, hands steady inside the suit, and it works — the device comes apart intact, exactly as it needed to, and now investigators have something real to work with.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Hand the device to investigators",
+          "next": "afternoon_report",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "device_outcome_second": {
+      "time": "08:40 AM",
+      "text": "A second set of eyes on the imagery spots a detail you'd missed — enough to inform a safer, better-planned approach than either of you would have made alone.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed with the informed approach",
+          "next": "afternoon_report",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "device_outcome_wait": {
+      "time": "09:30 AM",
+      "text": "The extra time confirms a few key details remotely, at the cost of keeping a busy station closed longer than anyone upstairs is happy about. Careful, and slow, in roughly equal measure.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Proceed with a now better-informed plan",
+          "next": "afternoon_report",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "afternoon_report": {
+      "time": "12:00 PM",
+      "text": "The device is neutralized, but the paperwork and evidence handoff to investigators is its own careful process, done right the first time or not at all.",
+      "choices": [
+        {
+          "id": "thorough_documentation",
+          "text": "Document every detail of the response thoroughly",
+          "next": "second_call",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "summary_report",
+          "text": "File a summary report and move on",
+          "next": "second_call",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "second_call": {
+      "time": "14:00 PM",
+      "text": "A second call comes in the same day — far more likely a false alarm based on the description, but every call gets treated the same way until proven otherwise.",
+      "choices": [
+        {
+          "id": "full_protocol_again",
+          "text": "Run the full protocol exactly as if it were the first call",
+          "next": "training_review",
+          "effects": {
+            "energy": -5,
+            "rep": 8
+          }
+        },
+        {
+          "id": "expedited_check",
+          "text": "Run an expedited check given the low-risk description",
+          "next": "training_review",
+          "effects": {
+            "rep": -4,
+            "energy": 4
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "training_review": {
+      "time": "16:30 PM",
+      "text": "Back at the unit, this morning's unfamiliar device needs to go into the training materials so the next technician who sees one isn't starting from zero.",
+      "choices": [
+        {
+          "id": "write_up_fully",
+          "text": "Write up the full technical details for training",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -4
+          }
+        },
+        {
+          "id": "brief_note_only",
+          "text": "Leave a brief note and let the report speak for itself",
+          "next": "end_shift",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "end_shift": {
+      "time": "18:00 PM",
+      "text": "The pager stays quiet for the rest of the day. Somewhere, a station that was evacuated this morning is back to its normal rush hour, with no idea how close a call it actually was.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Textbook Response",
+      "blurb": "Every call today was the right one, including the hardest one. This is the response other technicians study for years."
+    },
+    "steady_hand": {
+      "title": "Clean and Careful",
+      "blurb": "No shortcuts, no unnecessary risks — just precise, disciplined work, call after call."
+    },
+    "ordinary_day": {
+      "title": "Another Device Neutralized",
+      "blurb": "A tense day, handled professionally. The pager could go off again any minute."
+    },
+    "burned_out": {
+      "title": "Running on Empty",
+      "blurb": "You made it through both calls, but there's nothing left in you. This kind of pressure has a real, cumulative cost."
+    },
+    "written_up": {
+      "title": "Procedure Review",
+      "blurb": "Something about today's approach is heading into a formal procedure review. Everyone's safe. The process still needs a look."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 66.8,
+      "p5": 69.3,
+      "p10": 71.3,
+      "p25": 74.2,
+      "p35": 75.7,
+      "p50": 77.9,
+      "p65": 80.0,
+      "p75": 80.6,
+      "p90": 84.3,
+      "p95": 84.9,
+      "p99": 88.8
+    },
+    "realistic": {
+      "p1": 65.9,
+      "p5": 69.1,
+      "p10": 70.6,
+      "p25": 73.8,
+      "p35": 75.3,
+      "p50": 77.4,
+      "p65": 79.5,
+      "p75": 80.6,
+      "p90": 84.2,
+      "p95": 85.0,
+      "p99": 88.6
+    },
+    "chaos": {
+      "p1": 65.3,
+      "p5": 69.1,
+      "p10": 70.0,
+      "p25": 73.3,
+      "p35": 74.9,
+      "p50": 77.1,
+      "p65": 79.1,
+      "p75": 80.7,
+      "p90": 84.3,
+      "p95": 84.9,
+      "p99": 88.5
+    }
+  }
+}

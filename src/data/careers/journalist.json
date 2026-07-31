@@ -1,0 +1,364 @@
+{
+  "id": "journalist",
+  "title": "Deadline Is Now",
+  "emoji": "📰",
+  "tagline": "A tip that could be the story of the year, twenty minutes to verify it, and an editor who wants it filed by six.",
+  "highlightLabel": "Stories broken",
+  "traits": [
+    "fast-paced",
+    "communication",
+    "analytical"
+  ],
+  "startScene": "wake_up",
+  "scenes": {
+    "wake_up": {
+      "time": "06:00 AM",
+      "text": "Your phone has eleven notifications before you're fully awake — the overnight news desk, a source, and an editor already asking where yesterday's follow-up piece is.",
+      "choices": [
+        {
+          "id": "read_everything_first",
+          "text": "Read through everything before responding to anyone",
+          "next": "morning_pitch",
+          "effects": {
+            "energy": -4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "triage_fast",
+          "text": "Skim for what's actually urgent and move",
+          "next": "morning_pitch",
+          "effects": {
+            "rep": -3,
+            "energy": 3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "morning_pitch": {
+      "time": "08:00 AM",
+      "text": "Morning editorial meeting. You pitch today's follow-up piece; the editor wants it filed with real depth, not a rehash.",
+      "choices": [
+        {
+          "id": "commit_deep_dive",
+          "text": "Commit to a real deep-dive version, even if it takes longer",
+          "next": "random_moment",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "safe_version",
+          "text": "Pitch a safer, faster version instead",
+          "next": "random_moment",
+          "effects": {
+            "rep": -4,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "briefing"
+    },
+    "random_moment": {
+      "time": "09:00 AM",
+      "text": "The newsroom fills in around you the way it always does mid-morning — a little differently every day.",
+      "randomized": true,
+      "choices": [
+        {
+          "id": "good_lead",
+          "text": "A colleague passes along a useful lead unprompted",
+          "next": "source_call",
+          "effects": {
+            "stress": -4
+          }
+        },
+        {
+          "id": "printer_jam",
+          "text": "The printer jams at the worst possible moment",
+          "next": "source_call",
+          "effects": {
+            "stress": 4
+          }
+        },
+        {
+          "id": "good_coffee_run",
+          "text": "Someone does a coffee run for the whole desk",
+          "next": "source_call",
+          "effects": {
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "social"
+    },
+    "source_call": {
+      "time": "10:00 AM",
+      "text": "A source calls back with the detail you needed for the follow-up — reluctant, but it's on the record if you handle it carefully.",
+      "choices": [
+        {
+          "id": "protect_source_carefully",
+          "text": "Take the extra time to protect their identity properly",
+          "next": "midday_deadline",
+          "effects": {
+            "stress": 4,
+            "rep": 10,
+            "energy": -3
+          }
+        },
+        {
+          "id": "move_fast",
+          "text": "Get the quote and move fast toward deadline",
+          "next": "midday_deadline",
+          "effects": {
+            "rep": -4,
+            "stress": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "midday_deadline": {
+      "time": "12:30 PM",
+      "text": "The follow-up piece is filed. Your editor is already asking what's next — and what's next just landed in your inbox.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Open the new message",
+          "next": "breaking_tip",
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    },
+    "breaking_tip": {
+      "time": "13:00 PM",
+      "text": "An anonymous tip lands: a local official is allegedly involved in something serious. If it's true, it's the biggest story of the year. If it's wrong, it's a career-damaging retraction. You have maybe twenty minutes before a rival outlet could have the same tip.",
+      "choices": [
+        {
+          "id": "publish_with_one_source",
+          "text": "Verify with your one strong source and publish fast",
+          "next": "tip_outcome_fast",
+          "effects": {
+            "stress": 16,
+            "rep": 6
+          }
+        },
+        {
+          "id": "seek_second_source",
+          "text": "Hold it and seek a second independent source first",
+          "next": "tip_outcome_careful",
+          "effects": {
+            "stress": 8,
+            "rep": 10
+          }
+        },
+        {
+          "id": "call_the_official",
+          "text": "Call the official's office directly for comment before running anything",
+          "next": "tip_outcome_comment",
+          "effects": {
+            "stress": 4,
+            "rep": 8
+          }
+        },
+        {
+          "id": "run_it_anonymously",
+          "text": "Publish based on the tip alone, sourced anonymously",
+          "next": "tip_outcome_anonymous",
+          "effects": {
+            "stress": -6,
+            "rep": -12
+          }
+        }
+      ],
+      "environment": "alert"
+    },
+    "tip_outcome_fast": {
+      "time": "13:25 PM",
+      "text": "The story goes up first, ahead of anyone else, and it holds up under the scrutiny that follows. Fast and right — this time.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Handle the aftermath",
+          "next": "afternoon_followup",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "tip_outcome_careful": {
+      "time": "13:45 PM",
+      "text": "The second source takes twenty extra minutes to reach — and confirms everything, with a detail the first source never mentioned. The story that runs is airtight.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Handle the aftermath",
+          "next": "afternoon_followup",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "tip_outcome_comment": {
+      "time": "13:40 PM",
+      "text": "The official's office denies everything on the record — which becomes its own part of the story, and protects you from a one-sided piece if this ever gets contested.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Handle the aftermath",
+          "next": "afternoon_followup",
+          "effects": {
+            "highlights": 1
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "tip_outcome_anonymous": {
+      "time": "13:20 PM",
+      "text": "The story runs fast and gets attention fast — and by evening, the details are already unraveling under public scrutiny. This is exactly the kind of story that follows a reporter around.",
+      "choices": [
+        {
+          "id": "continue",
+          "text": "Handle the aftermath",
+          "next": "afternoon_followup",
+          "effects": {}
+        }
+      ],
+      "environment": "social"
+    },
+    "afternoon_followup": {
+      "time": "15:00 PM",
+      "text": "Reaction to the story is already rolling in — some of it useful, some of it just noise. Your editor wants a same-day follow-up.",
+      "choices": [
+        {
+          "id": "engage_thoughtfully",
+          "text": "Engage thoughtfully with the substantive criticism",
+          "next": "evening_filing",
+          "effects": {
+            "stress": -3,
+            "rep": 8,
+            "energy": -3
+          }
+        },
+        {
+          "id": "ignore_and_move",
+          "text": "Ignore the noise and move straight to the next piece",
+          "next": "evening_filing",
+          "effects": {
+            "energy": 4,
+            "rep": -3
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "evening_filing": {
+      "time": "17:00 PM",
+      "text": "One more piece due before the desk closes for the night — the corrections/clarifications process if anything in today's stories needs it.",
+      "choices": [
+        {
+          "id": "review_everything",
+          "text": "Review every fact in today's pieces one more time",
+          "next": "end_shift",
+          "effects": {
+            "rep": 10,
+            "energy": -6
+          }
+        },
+        {
+          "id": "trust_earlier_work",
+          "text": "Trust the work already done and call it a day",
+          "next": "end_shift",
+          "effects": {
+            "energy": 6,
+            "rep": -4
+          }
+        }
+      ],
+      "environment": "work"
+    },
+    "end_shift": {
+      "time": "18:30 PM",
+      "text": "The newsroom quiets down for the night. Tomorrow's front page is already half-decided by what happened today.",
+      "choices": [
+        {
+          "id": "finish",
+          "text": "Head home",
+          "next": null,
+          "effects": {}
+        }
+      ],
+      "environment": "work"
+    }
+  },
+  "endings": {
+    "triumphant": {
+      "title": "Front Page, Airtight",
+      "blurb": "The story of the year, verified and unshakeable. This is the byline people remember."
+    },
+    "steady_hand": {
+      "title": "Solid Reporting",
+      "blurb": "No corrections, no controversy — just careful, accurate journalism all day long."
+    },
+    "ordinary_day": {
+      "title": "Another Deadline Made",
+      "blurb": "A full news day, filed and closed. Tomorrow's deadline is already ticking."
+    },
+    "burned_out": {
+      "title": "Running on Fumes",
+      "blurb": "You filed everything, but you're not sure how. Deadline after deadline, this pace has a real cost."
+    },
+    "written_up": {
+      "title": "Correction Pending",
+      "blurb": "Something in today's reporting is going to need a formal correction. The story ran. The facts are still being sorted out."
+    }
+  },
+  "calibration": {
+    "normal": {
+      "p1": 63.9,
+      "p5": 66.7,
+      "p10": 68.9,
+      "p25": 72.8,
+      "p35": 73.9,
+      "p50": 76.8,
+      "p65": 78.5,
+      "p75": 80.5,
+      "p90": 82.9,
+      "p95": 84.6,
+      "p99": 86.7
+    },
+    "realistic": {
+      "p1": 63.0,
+      "p5": 66.4,
+      "p10": 68.4,
+      "p25": 71.9,
+      "p35": 73.4,
+      "p50": 76.0,
+      "p65": 77.9,
+      "p75": 79.7,
+      "p90": 82.2,
+      "p95": 83.7,
+      "p99": 86.1
+    },
+    "chaos": {
+      "p1": 63.6,
+      "p5": 67.0,
+      "p10": 68.1,
+      "p25": 71.7,
+      "p35": 73.4,
+      "p50": 75.8,
+      "p65": 77.6,
+      "p75": 79.5,
+      "p90": 82.2,
+      "p95": 83.6,
+      "p99": 85.7
+    }
+  }
+}
