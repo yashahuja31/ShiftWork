@@ -138,6 +138,51 @@ Applied to every response:
   — this is the one place where "works today" and "works at scale" diverge,
   and it's called out explicitly rather than glossed over.
 
+### Dependency vulnerabilities (last checked when this batch of careers was added)
+
+`npm audit --omit=dev` surfaced 4 findings, all recently disclosed (within
+days of each other) rather than long-standing. Two were genuinely
+fixable and are fixed as of this project state:
+
+- **Next.js core** was pinned to an exact version (`"next": "16.2.10"`,
+  no `^`), inconsistent with every other dependency in `package.json` and
+  actively blocking security patches from installing normally. Switched to
+  `^16.2.10` and updated to `16.2.12`, which resolved several disclosed
+  CVEs (a middleware/proxy bypass, a few SSRF and cache-confusion issues,
+  a Server Actions DoS).
+- **postcss** (a build-time CSS processing tool, pulled in by Tailwind)
+  had a since-patched path-traversal advisory
+  (`GHSA-r28c-9q8g-f849`/CVE-2026-45623). Updated the direct
+  `devDependency` from `^8.5.10` to `^8.5.18`, the first patched release.
+
+Two findings remain, and neither has an available fix as of this writing —
+here's the honest reasoning for shipping anyway rather than blocking on
+them indefinitely:
+
+- **`sharp`** (bundled by Next.js for its built-in Image Optimization
+  API) has inherited `libvips` CVEs with no patched `sharp` release yet.
+  This app **never imports `next/image`** anywhere (confirmed by
+  grepping the codebase) — the vulnerable code path is present in
+  `node_modules` but never executed by anything this app's code calls.
+- **Next.js's own internal, bundled copy of postcss** (a second,
+  separate copy from the one in this project's own `devDependencies`,
+  vendored inside `next`'s package internals for Next's own build
+  tooling) is still on the vulnerable version. This can't be safely
+  forced to a newer version from a downstream `package.json` — attempting
+  it (via a nested `overrides` entry) left npm reporting the installed
+  copy as `invalid`, meaning Next's internal code expects that exact
+  version's API shape. The underlying vulnerability also specifically
+  requires processing **untrusted, attacker-supplied CSS** at runtime
+  (CMS themes, user-uploaded stylesheets) — Next's internal postcss usage
+  processes its own build pipeline, not arbitrary runtime input, so the
+  practical exposure here is low even though the finding is real.
+
+**What this means going forward, not just right now**: re-run `npm audit
+--omit=dev` periodically, especially before major releases, and update
+`next` (and re-check `postcss`) again once patched versions ship — this
+isn't a one-time fix, it's an ongoing maintenance habit for any project
+with real dependencies.
+
 ### Secrets management
 - `.env.example` contains placeholders only, and is the only env file
   tracked in git. `.gitignore` explicitly excludes `.env`, `.env.local`, and
