@@ -3,7 +3,7 @@
 A branching, stat-driven day-in-the-life career simulator — Sims-style
 mechanics (tracked needs, a living animated character, a day that visibly
 moves from dawn to night) applied to the question "what does this job
-actually feel like, minute to minute?" **12 careers** are fully playable end
+actually feel like, minute to minute?" **30 careers** are fully playable end
 to end, sharing one engine.
 
 > **Before you read further:** see [`SECURITY.md`](./SECURITY.md). It explains
@@ -23,7 +23,7 @@ to end, sharing one engine.
 | Feature | Status |
 |---|---|
 | Landing page (animated hero, rotating live career preview pulled from real content, entrance animations), career picker, difficulty picker | ✅ |
-| **12 fully playable careers** (~15-19 scenes each, a signature high-stakes 4-way decision, 5 possible endings, one randomized "life happens" beat for replay variety): Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller, Firefighter, Teacher, Paramedic, Software Engineer | ✅ |
+| **30 fully playable careers** (~15-19 scenes each, a signature high-stakes 4-way decision, 5 possible endings, one randomized "life happens" beat for replay variety): Trauma Surgeon, Astronaut, Detective, Michelin Chef, Pilot, Wildlife Photographer, Investment Banker, Air Traffic Controller, Firefighter, Teacher, Paramedic, Software Engineer, Lawyer, Police Officer, Journalist, Architect, Veterinarian, Marine Biologist, Cruise Ship Captain, Zookeeper, Wedding Planner, Poker Player, Stunt Performer, Museum Curator, Dairy Farmer, Construction Foreman, Diplomat, Hostage Negotiator, Bomb Disposal Technician, Park Ranger | ✅ |
 | Live stat tracking (stress / energy / reputation / pay / a career-specific highlight counter) | ✅ |
 | **An animated visual character** (`CareerAvatar.tsx`) — not text, an actual SVG figure with a career-specific prop icon, whose posture, expression, and pace change with mood and react to the big-decision moments — see below | ✅ |
 | **A full animated scene vignette for every scene** (`SceneStage.tsx`) — not an icon, a small multi-element illustrated scene (moving car, twinkling stars, a pulsing ECG line, a rotating gear...) matched to each scene's environment tag — see below | ✅ |
@@ -58,7 +58,7 @@ a back-and-forth bounce, a sun rotating over swaying trees, a pen "writing"
 across a clipboard with a checkmark landing, a turning gear throwing off
 sparks. Each environment's motion *means* something rather than just
 looking different — commute drifts sideways like movement, alert is sharp
-and fast, rest is slow and soft. All ~200 scenes across the 12 careers were
+and fast, rest is slow and soft. All 463 scenes across the 30 careers were
 tagged (auto-classified from scene content, with every signature 4-choice
 decision forced to `alert` regardless of wording) and verified structurally
 sound the same way the rest of the content is (see
@@ -354,15 +354,9 @@ shiftwork/
 │       ├── trauma-surgeon.json
 │       ├── astronaut.json
 │       ├── detective.json
-│       ├── chef.json
-│       ├── pilot.json
-│       ├── wildlife-photographer.json
-│       ├── investment-banker.json
-│       ├── air-traffic-controller.json
-│       ├── firefighter.json
-│       ├── teacher.json
-│       ├── paramedic.json
-│       └── software-engineer.json
+│       ├── lawyer.json
+│       ├── bomb-disposal-technician.json
+│       └── ... 25 more (30 total — see the feature table above for the full list)
 └── SECURITY.md
 ```
 
@@ -449,10 +443,11 @@ rather than having it hardcoded.
 
 Roughly in the order they'd add the most value:
 
-- **More careers.** 12 are built now (the original brainstorm's own
+- **More careers.** 30 are built now (the original brainstorm's own
   examples — astronaut, trauma surgeon, investment banker, air traffic
-  controller — plus firefighter, teacher, paramedic, and software engineer).
-  See "On 'every career in the world'" below for the honest scope on this.
+  controller — plus 26 more spanning law, medicine, media, the trades,
+  entertainment, and public service). See "On 'every career in the world'"
+  below for the honest scope on this.
 - **Richer randomized events.** Right now each career has exactly one
   randomized beat and "chaos mode" scales existing effect magnitudes. The
   original design doc's Feature 4 envisioned a broader pool of injectable
@@ -509,16 +504,19 @@ version of "every career in the world" that gets hand-authored in a chat
 session, or realistically by any small team — O\*NET alone lists roughly a
 thousand distinct occupations, and this project's bar for a career (15+
 scenes, a real signature decision, calibrated scoring, a distinct voice) is
-intentionally higher than a one-line description would need. What *is* true
-now: adding one is a bounded, mechanical, well-documented process — write
-one JSON file, run two scripts, done (see "Adding a new career") — rather
-than something that requires touching the engine, the database, or the UI.
-That's the honest version of "scales to any career": the infrastructure to
-add the 13th, the 50th, or the 200th career is now fully in place and
-doesn't get harder as the library grows; actually writing that many is a
-content project, not a software one, and would reasonably be its own
-multi-session effort (or a good candidate for a contribution process if
-this were opened up beyond one person).
+intentionally higher than a one-line description would need. 30 careers is
+real progress against that thousand, not a rounding error, but it's still
+3%, and that's worth saying plainly rather than letting "30 careers" imply
+more coverage than it is. What *is* true now: adding one is a bounded,
+mechanical, well-documented process — write one JSON file, run two scripts,
+done (see "Adding a new career") — rather than something that requires
+touching the engine, the database, or the UI. That's the honest version of
+"scales to any career": the infrastructure to add the 31st, the 100th, or
+the 500th career is now fully in place and doesn't get harder as the
+library grows; actually writing that many is a content project, not a
+software one, and would reasonably be its own multi-session effort (or a
+good candidate for a contribution process if this were opened up beyond
+one person).
 
 ---
 
